@@ -1,0 +1,9 @@
+# Dockerfile.base
+
+FROM lambdalinux/baseimage-amzn:2016.09-000
+
+RUN \
+	yum -y update; \
+	yum install -y python27-devel python27-pip; \
+	pip install --upgrade pip; \
+	pip install boto3 nose;

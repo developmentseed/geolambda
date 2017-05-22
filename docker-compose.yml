@@ -1,0 +1,36 @@
+version: '2'
+
+services:
+
+  base:
+    build:
+      context: .
+      dockerfile: Dockerfile.base
+    image: 'developmentseed/geolambda:base'
+    entrypoint: /bin/bash
+
+  core:
+    build:
+      context: .
+    image: 'developmentseed/geolambda:core'
+    entrypoint: /bin/bash
+    links:
+      - base
+
+  gdal2min:
+    build:
+      context: .
+      dockerfile: gdal2min/Dockerfile
+    image: 'developmentseed/geolambda:gdal2min'
+    entrypoint: /bin/bash
+    links:
+      - core
+
+  gdal2hdf:
+    build:
+      context: .
+      dockerfile: gdal2hdf/Dockerfile
+    image: 'developmentseed/geolambda:gdal2hdf'
+    entrypoint: /bin/bash
+    links:
+      - core
