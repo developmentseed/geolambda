@@ -14,4 +14,4 @@ rsync -ax /usr/local/lib/python2.7/site-packages/ $DEPLOY_DIR/site-packages/ --e
 
 # zip up deploy package
 cd $DEPLOY_DIR
-zip -ruq deploy.zip ./ -x deploy.zip -x excluded_packages -x package.sh test_lambda.py
+zip -ruq ../deploy.zip ./ -x excluded_packages
