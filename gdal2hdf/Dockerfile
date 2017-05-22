@@ -52,7 +52,6 @@ RUN \
 	make && make install && cd .. && \
 	rm -rf gdal-$GDAL_VERSION*
 
-COPY \
-	gdal2hdf/lambda-package.sh /usr/local/bin/lambda-package.sh \
-    gdal2hdf/lambda-excluded-packages /usr/local/etc/lambda-excluded-packages
+COPY gdal2hdf/lambda-package.sh /usr/local/bin/lambda-package.sh
+COPY gdal2hdf/lambda-excluded-packages /usr/local/etc/lambda-excluded-packages
 
