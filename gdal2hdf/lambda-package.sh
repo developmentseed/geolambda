@@ -15,7 +15,7 @@ cp /usr/local/lib/libgdal.so.1 $DEPLOY_DIR/lib/
 
 # package app and python libs
 pip install .
-rsync -ax /usr/local/lib/python2.7/site-packages/ $DEPLOY_DIR/site-packages/ --exclude-from excluded-packages
+rsync -ax /usr/local/lib/python2.7/site-packages/ $DEPLOY_DIR/site-packages/ --exclude-from /usr/local/etc/lambda-excluded-packages
 
 # zip up deploy package
 cd $DEPLOY_DIR
