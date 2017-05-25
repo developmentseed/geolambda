@@ -5,9 +5,13 @@ RUN \
     yum install -y wget tar gcc zlib-devel gcc-c++ libgeos curl-devel zip git swig libjpeg-devel; \
     yum clean all;
 
+RUN \
+	pip install numpy wheel;
+
 ENV \
-	HOME=/build \
-	GDAL_CONFIG=$HOME/local/bin/gdal-config
+	BUILD=/build \
+	PREFIX=/build/local \
+	GDAL_CONFIG=/build/local/bin/gdal-config
 
 # versions of packages
 ENV \
@@ -15,4 +19,4 @@ ENV \
 	HDF4_VERSION=4.2.12 \
 	SZIP_VERSION=2.1 \
 	HDF5_VERSION=1.10.1 \
-	GDAL_VERSION=2.1.2
+	GDAL_VERSION=2.1.3
