@@ -34,3 +34,12 @@ services:
     entrypoint: /bin/bash
     links:
       - core
+
+  full:
+    build:
+      context: .
+      dockerfile: full/Dockerfile
+    image: 'developmentseed/geolambda:full'
+    entrypoint: /bin/bash
+    links:
+      - gdal2hdf

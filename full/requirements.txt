@@ -1,0 +1,5 @@
+rasterio==0.36.0
+rasterstats==0.10.3
+pyproj==1.9.5.1
+shapely==1.5.15
+fiona==1.7.1
