@@ -5,7 +5,7 @@ RUN \
     wget https://github.com/OSGeo/proj.4/archive/$PROJ4_VERSION.tar.gz && \
     tar -zvxf $PROJ4_VERSION.tar.gz && \
     cd proj.4-$PROJ4_VERSION && \
-    ./configure --prefix=$HOME/local && \
+    ./configure --prefix=$PREFIX && \
     make && make install && cd .. && \
     rm -rf proj.4-$PROJ4_VERSION $PROJ4_VERSION.tar.gz
 
@@ -14,7 +14,7 @@ RUN \
 	wget http://download.osgeo.org/gdal/$GDAL_VERSION/gdal-$GDAL_VERSION.tar.gz && \
 	tar -xzvf gdal-$GDAL_VERSION.tar.gz && \
 	cd gdal-$GDAL_VERSION && \
-    ./configure --prefix=$HOME/local \
+    ./configure --prefix=$PREFIX \
         --with-python=yes \
         --with-hdf4=no \
         --with-hdf5=no \
