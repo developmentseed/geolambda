@@ -16,6 +16,10 @@ The developmentseed/geolambda image in Docker Hub has several available tags:
 - **gdal2max**: GDAL2, with HDF4 and 5 support added (including szip and proj.4)
 - **full**: GDAL2 with full HDF support and common Python libraries added (rasterio, pyproj, shapely, fiona, gippy)
 
+Pull whichever one is most appropriate with the docker command:
+
+	$ docker pull developmentseed/geolambda:<tag>
+
 ### Creating new geolambda based project
 
 The geolambda image will most often be used an image used in the creation of a package suitable for deploying to an AWS Lambda function. There are two main use cases:
@@ -27,7 +31,7 @@ In either case, the files in the geolambda-seed directory in this repository can
 
 ### Deploying to Lambda
 
-The geolambda imgaes contain a lambda-package.sh file that can be called in order to collect and zip (i.e., package) all the files needed to deploy to a Lambda function (the zip file can either be uplaoded directly or added to S3).
+The geolambda imgaes contain a lambda-package.sh file that can be called in order to collect and zip (i.e., package) all the files needed to deploy to a Lambda function (the zip file can either be uploaded directly or added to S3).
 
 
 ### geolambda Development
