@@ -11,7 +11,8 @@ RUN \
 ENV \
 	BUILD=/build \
 	PREFIX=/build/local \
-	GDAL_CONFIG=/build/local/bin/gdal-config
+	GDAL_CONFIG=/build/local/bin/gdal-config \
+	LD_LIBRARY_PATH=/build/local/lib:/build/local/lib64
 
 # versions of packages
 ENV \
