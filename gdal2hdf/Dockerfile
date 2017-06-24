@@ -46,6 +46,7 @@ RUN \
 	./configure --prefix=$PREFIX \
     	--with-hdf4=$PREFIX \
     	--with-hdf5=$PREFIX \
+    	--with-python=/usr/bin/python3 \
     	#--with-geos=$PREFIX/bin/geos-config \
     	#--with-proj4=$PREFIX \
         CFLAGS="-O2 -Os" CXXFLAGS="-O2 -Os" && \

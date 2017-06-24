@@ -13,3 +13,7 @@ RUN \
 	pip-2.7 install --upgrade pip; \
 	pip2 install boto3 nose; \
     yum clean all;
+
+ENV \
+    LANG=en_US.UTF-8 \
+    LC_ALL=en_US.UTF-8
