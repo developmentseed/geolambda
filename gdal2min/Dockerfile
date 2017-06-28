@@ -15,7 +15,7 @@ RUN \
 	tar -xzvf gdal-$GDAL_VERSION.tar.gz && \
 	cd gdal-$GDAL_VERSION && \
     ./configure --prefix=$PREFIX \
-        --with-python=yes \
+        --without-python \
         --with-hdf4=no \
         --with-hdf5=no \
         --with-threads \
@@ -53,8 +53,10 @@ RUN \
         --without-mrf \
         --with-hide-internal-symbols=yes \
         CFLAGS="-O2 -Os" CXXFLAGS="-O2 -Os" && \ 
-        make && make install && cd .. && \
-        rm -rf gdal-$GDAL_VERSION*
+        make; make install; cd swig.python; \
+        python setup.py install; \
+        python3 setup.py install; \
+        cd /build; rm -rf gdal-$GDAL_VERSION*
 
 COPY gdal2min/lambda-package.sh /usr/local/bin/lambda-package.sh
 COPY gdal2min/lambda-excluded-packages /usr/local/etc/lambda-excluded-packages
