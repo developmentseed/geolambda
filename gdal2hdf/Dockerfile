@@ -44,9 +44,10 @@ RUN \
 	tar -xzvf gdal-$GDAL_VERSION.tar.gz && \
 	cd gdal-$GDAL_VERSION && \
 	./configure \
-	 	#--prefix=$PREFIX \
+	 	--prefix=$PREFIX \
     	--with-hdf4=$PREFIX \
     	--with-hdf5=$PREFIX \
+    	--without-python \
     	#--with-geos=$PREFIX/bin/geos-config \
     	#--with-proj4=$PREFIX \
         CFLAGS="-O2 -Os" CXXFLAGS="-O2 -Os"; \
