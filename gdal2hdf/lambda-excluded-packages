@@ -5,3 +5,6 @@ docutils*
 *.pyc
 setuptools*
 wheel*
+coverage*
+testfixtures*
+mock*
