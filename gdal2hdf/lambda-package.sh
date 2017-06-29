@@ -8,7 +8,6 @@ pip install .
 
 # make deployment directory and add lambda handler
 mkdir -p $DEPLOY_DIR/lib/python2.7/site-packages
-cp lambda_handler.py $DEPLOY_DIR/
 
 # copy 32-bit libs
 cp $PREFIX/lib/libproj.so* $DEPLOY_DIR/lib/
@@ -29,4 +28,4 @@ ln -s GDAL-2.2.0-py2.7-linux-x86_64.egg/osgeo $DEPLOY_DIR/lib/python2.7/site-pac
 
 # zip up deploy package
 cd $DEPLOY_DIR
-zip -ruq ../deploy.zip ./ -x excluded_packages
+zip -ruq ../lambda-deploy.zip ./
