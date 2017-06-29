@@ -25,6 +25,7 @@ cp /usr/lib64/libgeos-3.4.2.so $DEPLOY_DIR/lib/
 cp /usr/lib64/libjpeg.so.62* $DEPLOY_DIR/lib/
 #cp /usr/lib64/libpq.so.5 $DEPLOY_DIR/lib/
 rsync -ax $PREFIX/lib64/python2.7/site-packages/ $DEPLOY_DIR/lib/python2.7/site-packages/ --exclude-from $PREFIX/etc/lambda-excluded-packages
+ln -s GDAL-2.2.0-py2.7-linux-x86_64.egg/osgeo $DEPLOY_DIR/lib/python2.7/site-packages/osgeo
 
 # zip up deploy package
 cd $DEPLOY_DIR

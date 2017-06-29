@@ -1,7 +1,0 @@
-boto3*
-botocore*
-pip*
-docutils*
-*.pyc
-setuptools*
-wheel*
