@@ -1,5 +1,7 @@
 FROM developmentseed/geolambda:core
 
+WORKDIR /build
+
 # proj4
 RUN \
     wget https://github.com/OSGeo/proj.4/archive/$PROJ4_VERSION.tar.gz && \
