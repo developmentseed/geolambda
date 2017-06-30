@@ -58,5 +58,5 @@ RUN \
         python3 setup.py install; \
         cd /build; rm -rf gdal-$GDAL_VERSION*
 
-COPY gdal2min/lambda-package.sh /usr/local/bin/lambda-package.sh
+COPY gdal2min/lambda-package-base.sh /usr/local/bin/
 COPY lambda-excluded-packages /usr/local/etc/lambda-excluded-packages
