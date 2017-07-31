@@ -22,4 +22,6 @@ ENV \
 	HDF5_VERSION=1.10.1 \
 	GDAL_VERSION=2.2.0
 
+COPY bin/lambda-package.sh /usr/local/bin/
+
 WORKDIR /build
