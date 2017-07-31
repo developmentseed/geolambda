@@ -22,6 +22,16 @@ ENV \
 	HDF5_VERSION=1.10.1 \
 	GDAL_VERSION=2.2.0
 
-COPY bin/lambda-package.sh /usr/local/bin/
+COPY bin/* /usr/local/bin/
+COPY etc/* /usr/local/etc/
 
 WORKDIR /build
+
+# proj4
+RUN \
+    wget https://github.com/OSGeo/proj.4/archive/$PROJ4_VERSION.tar.gz && \
+    tar -zvxf $PROJ4_VERSION.tar.gz && \
+    cd proj.4-$PROJ4_VERSION && \
+    ./configure --prefix=$PREFIX && \
+    make && make install && cd .. && \
+    rm -rf proj.4-$PROJ4_VERSION $PROJ4_VERSION.tar.gz

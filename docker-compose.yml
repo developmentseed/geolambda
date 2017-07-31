@@ -17,20 +17,11 @@ services:
     links:
       - base
 
-  gdal2min:
+  min:
     build:
       context: .
-      dockerfile: gdal2min/Dockerfile
-    image: 'developmentseed/geolambda:gdal2min'
-    entrypoint: /bin/bash
-    links:
-      - core
-
-  gdal2hdf:
-    build:
-      context: .
-      dockerfile: gdal2hdf/Dockerfile
-    image: 'developmentseed/geolambda:gdal2hdf'
+      dockerfile: min/Dockerfile
+    image: 'developmentseed/geolambda:min'
     entrypoint: /bin/bash
     links:
       - core
@@ -42,4 +33,4 @@ services:
     image: 'developmentseed/geolambda:full'
     entrypoint: /bin/bash
     links:
-      - gdal2hdf
+      - core

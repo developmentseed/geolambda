@@ -1,14 +1,5 @@
 FROM developmentseed/geolambda:core
 
-# proj4
-RUN \
-    wget https://github.com/OSGeo/proj.4/archive/$PROJ4_VERSION.tar.gz && \
-    tar -zvxf $PROJ4_VERSION.tar.gz && \
-    cd proj.4-$PROJ4_VERSION && \
-    ./configure --prefix=$PREFIX && \
-    make && make install && cd .. && \
-    rm -rf proj.4-$PROJ4_VERSION $PROJ4_VERSION.tar.gz
-
 # GDAL2
 RUN \
 	wget http://download.osgeo.org/gdal/$GDAL_VERSION/gdal-$GDAL_VERSION.tar.gz && \
@@ -58,5 +49,5 @@ RUN \
         python3 setup.py install; \
         cd $BUILD; rm -rf gdal-$GDAL_VERSION*
 
-COPY gdal2min/lambda-package-base.sh /usr/local/bin/
+COPY min/lambda-package-base.sh /usr/local/bin/
 COPY lambda-excluded-packages /usr/local/etc/lambda-excluded-packages
