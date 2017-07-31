@@ -17,3 +17,5 @@ RUN \
 ENV \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8
+
+COPY lambda-package.sh /usr/local/bin/
