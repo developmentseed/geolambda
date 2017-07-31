@@ -56,7 +56,7 @@ RUN \
         make; make install; cd swig.python; \
         python setup.py install; \
         python3 setup.py install; \
-        cd /build; rm -rf gdal-$GDAL_VERSION*
+        cd $BUILD; rm -rf gdal-$GDAL_VERSION*
 
 COPY gdal2min/lambda-package-base.sh /usr/local/bin/
 COPY lambda-excluded-packages /usr/local/etc/lambda-excluded-packages

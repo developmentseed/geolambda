@@ -1,6 +1,6 @@
 FROM developmentseed/geolambda:gdal2hdf
 
-COPY full/requirements.txt /work/
+COPY full/requirements.txt $BUILD
 
 # install dev dependencies for testing
-RUN pip install -r /work/requirements.txt;
+RUN pip install -r $BUILD/requirements.txt;
