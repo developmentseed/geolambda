@@ -46,5 +46,3 @@ RUN \
 	python setup.py install; \
 	python3 setup.py install; \ 
 	cd $BUILD; rm -rf gdal-$GDAL_VERSION*
-
-COPY full/lambda-package-base.sh /usr/local/bin/
