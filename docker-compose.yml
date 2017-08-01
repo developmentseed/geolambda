@@ -20,7 +20,7 @@ services:
   min:
     build:
       context: .
-      dockerfile: min/Dockerfile
+      dockerfile: Dockerfile.min
     image: 'developmentseed/geolambda:min'
     entrypoint: /bin/bash
     links:
@@ -29,7 +29,7 @@ services:
   full:
     build:
       context: .
-      dockerfile: full/Dockerfile
+      dockerfile: Dockerfile.full
     image: 'developmentseed/geolambda:full'
     entrypoint: /bin/bash
     links:
