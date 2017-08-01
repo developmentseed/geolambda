@@ -12,6 +12,7 @@ services:
   core:
     build:
       context: .
+      dockerfile: Dockerfile.core
     image: 'developmentseed/geolambda:core'
     entrypoint: /bin/bash
     links:
