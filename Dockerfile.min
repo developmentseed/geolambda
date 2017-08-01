@@ -44,7 +44,7 @@ RUN \
         --without-mrf \
         --with-hide-internal-symbols=yes \
         CFLAGS="-O2 -Os" CXXFLAGS="-O2 -Os" && \ 
-        make; make install; cd swig.python; \
+        make; make install; cd swig/python; \
         python setup.py install; \
         python3 setup.py install; \
         cd $BUILD; rm -rf gdal-$GDAL_VERSION*
