@@ -1,11 +1,14 @@
-FROM developmentseed/geolambda:gdal2min
+FROM developmentseed/geolambda:full
 
-WORKDIR /work
-COPY requirements.txt /build/requirements.txt
-COPY requirements-dev.txt /build/requirements-dev.txt
+WORKDIR /build
 
-# install dev dependencies for testing
+COPY . /build
+
+# install app
 RUN \
-	pip install numpy wheel; \
     pip install -r /build/requirements.txt; \
-    pip install -r /build/requirements-dev.txt;
+    pip install -r /build/requirements-dev.txt; \
+    pip install . -v; \
+    rm -rf /build/*;
+
+WORKDIR /home/geolambda

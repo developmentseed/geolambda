@@ -10,30 +10,27 @@ services:
     env_file:
       - .env
     volumes:
-      - '.:/work'
+      - '.:/home/geolambda/work'
 
   test:
     image: 'myimage:version'
     entrypoint: bash -c 'nosetests -v -s;'
-    working_dir: /work
     env_file:
       - .env
     volumes:
-      - '.:/work'
+      - '.:/home/geolambda/work'
 
   package:
     image: 'myimage:version'
     command: lambda-package.sh
-    working_dir: /work
     volumes:
-      - '.:/work'
+      - '.:/home/geolamnda/work'
 
   testpackage:
     image: 'developmentseed/geolambda:base'
-    command: bash -c "pip install -r requirements-dev.txt; nosetests -v -s";
-    working_dir: /work
+    command: bash -c "nosetests -v -s";
+    working_dir: '/home/geolambda/work'
     env_file: .env
     volumes:
-      - './lambda:/lambda'
-      - '.:/work'
+      - './home/geolambda/work'
 
