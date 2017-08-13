@@ -5,9 +5,6 @@ RUN \
     yum install -y wget tar gcc zlib-devel gcc-c++ libgeos curl-devel zip libjpeg-devel rsync; \
     yum clean all;
 
-RUN \
-	pip install numpy wheel;
-
 ENV \
 	BUILD=/build \
 	PREFIX=/usr/local \
@@ -21,6 +18,10 @@ ENV \
 	SZIP_VERSION=2.1.1 \
 	HDF5_VERSION=1.10.1 \
 	GDAL_VERSION=2.2.0
+
+RUN \
+	pip install numpy; \
+	pip3 install numpy;
 
 COPY bin/* /usr/local/bin/
 COPY etc/* /usr/local/etc/
