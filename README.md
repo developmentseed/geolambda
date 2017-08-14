@@ -12,15 +12,14 @@ The developmentseed/geolambda image in Docker Hub has several available tags:
 
 - **base**: The base image consists of an Amazon base image with python added, along with the boto3 and nose libraries. The purpose of the main image is to replicate the base system in Lambda with the nose testing framework added so that a deployable package can be tested on an image like what is used in the Lambda container.
 - **core**: The core image contains system dependencies that are used by other other images. It also defines version numbers for packages that are installed in other images.
-- **gdal2min**: GDAL2, with a minimized set of packages/drivers is installed with Python support, along with proj.4
-- **gdal2max**: GDAL2, with HDF4 and 5 support added (including szip and proj.4)
-- **full**: GDAL2 with full HDF support and common Python libraries added (rasterio, pyproj, shapely, fiona, gippy)
+- **min**: GDAL2, with a minimized set of packages/drivers is installed with Python support, along with proj.4
+- **full**: GDAL2, with HDF4 and 5 support added (including szip and proj.4)
 
 Pull whichever one is most appropriate with the docker command:
 
 	$ docker pull developmentseed/geolambda:<tag>
 
-### Creating new geolambda based project
+### Creating a new geolambda based project
 
 The geolambda image will most often be used an image used in the creation of a package suitable for deploying to an AWS Lambda function. There are two main use cases:
 
@@ -31,7 +30,7 @@ In either case, the files in the geolambda-seed directory in this repository can
 
 ### Deploying to Lambda
 
-The geolambda imgaes contain a lambda-package.sh file that can be called in order to collect and zip (i.e., package) all the files needed to deploy to a Lambda function (the zip file can either be uploaded directly or added to S3).
+The geolambda imgaes contain two scripts for collecting and packaging all the files needed to deploy to a Lambda function (the zip file can either be uploaded directly to a Lambda function or added to S3).
 
 
 ### geolambda Development
