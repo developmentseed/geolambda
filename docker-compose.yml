@@ -35,3 +35,11 @@ services:
     entrypoint: /bin/bash
     links:
       - core
+
+#  runner:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile.runner
+#    image: 'developmentseed/geolamnda:runner'
+#    links:
+#      - base
