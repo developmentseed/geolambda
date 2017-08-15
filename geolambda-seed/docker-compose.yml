@@ -5,26 +5,26 @@ services:
   base:
     build:
       context: .
-    image: 'myimage:version'
+    image: 'geolambda:version'
     entrypoint: /bin/bash
-    env_file:
-      - .env
+    env_file: .env
     volumes:
       - '.:/home/geolambda/work'
 
   test:
-    image: 'myimage:version'
+    image: 'geolambda:version'
     entrypoint: bash -c 'nosetests -v -s;'
-    env_file:
-      - .env
+    env_file: .env
     volumes:
-      - '.:/home/geolambda/work'
+      - './lambda:/home/geolambda/lambda'
+      - './test:/home/geolambda/test'
 
   package:
-    image: 'myimage:version'
+    image: 'geolambda:version'
     command: lambda-package.sh
+    working_dir: /home/geolambda/work
     volumes:
-      - '.:/home/geolamnda/work'
+      - '.:/home/geolambda/work'
 
   testpackage:
     image: 'developmentseed/geolambda:base'
@@ -32,5 +32,6 @@ services:
     working_dir: '/home/geolambda/work'
     env_file: .env
     volumes:
-      - './home/geolambda/work'
+      - './test:/home/geolambda/test'
+      - './lambda:/home/geolambda/lambda'
 
