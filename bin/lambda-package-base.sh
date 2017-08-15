@@ -5,9 +5,6 @@ DEPLOY_DIR=lambda
 
 PYVER=${1:-2.7}
 
-# install app
-pip install .
-
 # make deployment directory and add lambda handler
 mkdir -p $DEPLOY_DIR/lib/python$PYVER/site-packages
 
