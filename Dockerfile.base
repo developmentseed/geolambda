@@ -1,6 +1,6 @@
 # Dockerfile.base
 
-FROM lambdalinux/baseimage-amzn:2016.09-000
+FROM lambdalinux/baseimage-amzn:2017.03-004
 
 RUN \
 	yum -y update; \
