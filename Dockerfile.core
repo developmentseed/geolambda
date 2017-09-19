@@ -2,7 +2,7 @@ FROM developmentseed/geolambda:base
 
 RUN \
     yum -y update; \
-    yum install -y wget tar gcc zlib-devel gcc-c++ libgeos curl-devel zip libjpeg-devel rsync; \
+    yum install -y wget tar gcc zlib-devel gcc-c++ libgeos curl-devel zip libjpeg-devel rsync git ssh; \
     yum clean all;
 
 ENV \
