@@ -20,8 +20,8 @@ ENV \
 	GDAL_VERSION=2.2.2
 
 RUN \
-	pip install numpy; \
-	pip3 install numpy;
+	pip-2.7 install numpy; \
+	pip-3.6 install numpy;
 
 COPY bin/* /usr/local/bin/
 COPY etc/* /usr/local/etc/

@@ -5,13 +5,11 @@ FROM lambdalinux/baseimage-amzn:2017.03-004
 RUN \
 	yum -y update; \
     # python 3.5
-    yum install -y python35-devel python35-pip; \
-    pip-3.5 install --upgrade pip; \
-    pip3 install boto3 nose; \
+    yum install -y python36-devel python36-pip; \
+    pip-3.6 install boto3 nose; \
 	# python 2.7
 	yum install -y python27-devel python27-pip; \
-	pip-2.7 install --upgrade pip; \
-	pip2 install boto3 nose; \
+	pip-2.7 install boto3 nose; \
     yum clean all;
 
 ENV \
