@@ -36,6 +36,24 @@ services:
     links:
       - core
 
+  hdf:
+    build:
+      context: .
+      dockerfile: Dockerfile.hdf
+    image: 'developmentseed/geolambda:hdf'
+    entrypoint: /bin/bash
+    links:
+      - core
+
+  cloud:
+    build:
+      context: .
+      dockerfile: Dockerfile.cloud
+    image: 'developmentseed/geolambda:cloud'
+    entrypoint: /bin/bash
+    links:
+      - core
+
 #  runner:
 #    build:
 #      context: .
