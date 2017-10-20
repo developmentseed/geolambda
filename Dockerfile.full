@@ -1,5 +1,14 @@
 FROM developmentseed/geolambda:core
 
+# libopenjpeg
+RUN \
+    wget https://github.com/uclouvain/openjpeg/archive/v$OPENJPEG_VERSION.tar.gz; \
+    tar xvf v$OPENJPEG_VERSION.tar.gz; \
+    cd openjpeg-$OPENJPEG_VERSION; mkdir build; cd build; \
+    cmake .. -DCMAKE_BUILT_TYPE=Release; \
+    make; make install; make clean; 
+    #cd ../..; rm -rf openjpeg-* v$OPENJPEG_VERSION.tar.gz;
+
 # szip
 RUN \
     wget https://support.hdfgroup.org/ftp/lib-external/szip/$SZIP_VERSION/src/szip-$SZIP_VERSION.tar.gz && \
@@ -44,6 +53,7 @@ RUN \
         --prefix=$PREFIX \
         --with-hdf4=$PREFIX \
         --with-hdf5=$PREFIX \
+        --with-openjpeg
         --without-python \
         #--with-geos=$PREFIX/bin/geos-config \
         #--with-proj4=$PREFIX \
