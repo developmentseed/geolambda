@@ -1,11 +1,7 @@
 FROM developmentseed/geolambda:core
 
-RUN \
-    yum install -y cmake
 
 # libopenjpeg
-ENV \
-    OPENJPEG_VERSION=2.3.0
 RUN \
     wget https://github.com/uclouvain/openjpeg/archive/v$OPENJPEG_VERSION.tar.gz; \
     tar xvf v$OPENJPEG_VERSION.tar.gz; \
