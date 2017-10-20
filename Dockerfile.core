@@ -2,7 +2,7 @@ FROM developmentseed/geolambda:base
 
 RUN \
     yum -y update; \
-    yum install -y wget tar gcc zlib-devel gcc-c++ libgeos curl-devel zip libjpeg-devel rsync git ssh; \
+    yum install -y wget tar gcc zlib-devel gcc-c++ libgeos curl-devel zip libjpeg-devel rsync git ssh cmake; \
     yum clean all;
 
 ENV \
@@ -17,6 +17,7 @@ ENV \
 	HDF4_VERSION=4.2.12 \
 	SZIP_VERSION=2.1.1 \
 	HDF5_VERSION=1.10.1 \
+	OPENJPEG_VERSION=2.3.0 \
 	GDAL_VERSION=2.2.2
 
 RUN \
