@@ -1,0 +1,64 @@
+FROM developmentseed/geolambda:core
+
+
+# libopenjpeg
+RUN \
+    wget https://github.com/uclouvain/openjpeg/archive/v$OPENJPEG_VERSION.tar.gz; \
+    tar xvf v$OPENJPEG_VERSION.tar.gz; \
+    cd openjpeg-$OPENJPEG_VERSION; mkdir build; cd build; \
+    cmake .. -DCMAKE_BUILT_TYPE=Release; \
+    make; make install; make clean; 
+    #cd ../..; rm -rf openjpeg-* v$OPENJPEG_VERSION.tar.gz;
+
+# GDAL2
+RUN \
+	#wget http://download.osgeo.org/gdal/$GDAL_VERSION/gdal-$GDAL_VERSION.tar.gz && \
+	#tar -xzvf gdal-$GDAL_VERSION.tar.gz && \
+	#cd gdal-$GDAL_VERSION && \
+    #patch -u --verbose -p4 < changeset_40330.diff \
+    git clone https://github.com/OSGeo/gdal.git; cd gdal/gdal; git checkout 2.2; \
+    ./configure --prefix=$PREFIX \
+        --with-jpeg=internal \
+        --with-openjpeg \
+        --with-geotiff=yes \
+        --without-python \
+        --with-hdf4=no \
+        --with-hdf5=no \
+        --with-threads \
+        --with-gif=no \
+        --with-pg=no \
+        --with-grass=no \
+        --with-libgrass=no \
+        --with-cfitsio=no \
+        --with-pcraster=no \
+        --with-netcdf=no \
+        --with-png=no \
+        --with-gif=no \
+        --with-ogdi=no \
+        --with-fme=no \
+        --with-jasper=no \
+        --with-ecw=no \
+        --with-kakadu=no \
+        --with-mrsid=no \
+        --with-jp2mrsid=no \
+        --with-bsb=no \
+        --with-grib=no \
+        --with-mysql=no \
+        --with-ingres=no \
+        --with-xerces=no \
+        --with-expat=no \
+        --with-odbc=no \
+        --with-curl=yes \
+        --with-sqlite3=no \
+        --with-dwgdirect=no \
+        --with-idb=no \
+        --with-sde=no \
+        --with-perl=no \
+        --with-php=no \
+        --without-mrf \
+        --with-hide-internal-symbols=yes \
+        CFLAGS="-O2 -Os" CXXFLAGS="-O2 -Os" && \ 
+        make; make install; cd swig/python; \
+        python setup.py install; \
+        python3 setup.py install; #\
+        #cd $BUILD; rm -rf gdal-$GDAL_VERSION*

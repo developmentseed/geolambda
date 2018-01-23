@@ -2,7 +2,7 @@ FROM developmentseed/geolambda:base
 
 RUN \
     yum -y update; \
-    yum install -y wget tar gcc zlib-devel gcc-c++ libgeos curl-devel zip libjpeg-devel rsync git ssh; \
+    yum install -y wget tar gcc zlib-devel gcc-c++ libgeos curl-devel zip libjpeg-devel rsync git ssh cmake; \
     yum clean all;
 
 ENV \
@@ -17,11 +17,12 @@ ENV \
 	HDF4_VERSION=4.2.12 \
 	SZIP_VERSION=2.1.1 \
 	HDF5_VERSION=1.10.1 \
-	GDAL_VERSION=2.2.0
+	OPENJPEG_VERSION=2.3.0 \
+	GDAL_VERSION=2.2.2
 
 RUN \
-	pip install numpy; \
-	pip3 install numpy;
+	pip-2.7 install numpy; \
+	pip-3.6 install numpy;
 
 COPY bin/* /usr/local/bin/
 COPY etc/* /usr/local/etc/
