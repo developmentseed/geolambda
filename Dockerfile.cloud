@@ -16,11 +16,12 @@ RUN \
 	#tar -xzvf gdal-$GDAL_VERSION.tar.gz && \
 	#cd gdal-$GDAL_VERSION && \
     #patch -u --verbose -p4 < changeset_40330.diff \
-    git clone https://github.com/OSGeo/gdal.git; cd gdal/gdal; git checkout 2.2; \
+    git clone https://github.com/OSGeo/gdal.git; cd gdal/gdal; git checkout v2.2.4; \
     ./configure --prefix=$PREFIX \
         --with-jpeg=internal \
         --with-openjpeg \
         --with-geotiff=yes \
+        --with-geos=$PREFIX/bin/geos-config \
         --without-python \
         --with-hdf4=no \
         --with-hdf5=no \

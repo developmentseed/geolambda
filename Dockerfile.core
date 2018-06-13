@@ -1,8 +1,8 @@
 FROM developmentseed/geolambda:base
 
 RUN \
-    yum -y update; \
-    yum install -y wget tar gcc zlib-devel gcc-c++ libgeos curl-devel zip libjpeg-devel rsync git ssh cmake; \
+    yum makecache fast; \
+    yum install -y wget tar gcc zlib-devel gcc-c++ curl-devel zip libjpeg-devel rsync git ssh cmake bzip2; \
     yum clean all;
 
 ENV \
@@ -14,11 +14,12 @@ ENV \
 # versions of packages
 ENV \
 	PROJ4_VERSION=4.9.2 \
+	GEOS_VERSION=3.6.2 \
 	HDF4_VERSION=4.2.12 \
 	SZIP_VERSION=2.1.1 \
 	HDF5_VERSION=1.10.1 \
 	OPENJPEG_VERSION=2.3.0 \
-	GDAL_VERSION=2.2.2
+	GDAL_VERSION=2.2.4
 
 RUN \
 	pip-2.7 install numpy; \
@@ -37,3 +38,12 @@ RUN \
     ./configure --prefix=$PREFIX && \
     make && make install && cd .. && \
     rm -rf proj.4-$PROJ4_VERSION $PROJ4_VERSION.tar.gz
+
+# GEOS
+RUN \
+	wget http://download.osgeo.org/geos/geos-$GEOS_VERSION.tar.bz2; \
+	tar xjf geos*bz2; \
+	cd geos*; \
+	./configure --enable-python --prefix=$PREFIX; \
+	make -j 10; make install; \
+	cd ..;
