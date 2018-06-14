@@ -1,4 +1,4 @@
-FROM developmentseed/geolambda:full
+FROM developmentseed/geolambda:latest
 
 # install app
 #COPY . /build

@@ -5,30 +5,30 @@ services:
   base:
     build:
       context: .
-    image: 'geolambda:version'
+    image: 'developmentseed/geolambda:latest'
     entrypoint: /bin/bash
     env_file: .env
     volumes:
       - '.:/home/geolambda/work'
 
   test:
-    image: 'geolambda:version'
-    entrypoint: bash -c 'nosetests -v -s;'
+    image: 'developmentseed/geolambda:latest'
+    entrypoint: bash -c 'pytest;'
     env_file: .env
     volumes:
       - './lambda:/home/geolambda/lambda'
       - './test:/home/geolambda/test'
 
   package:
-    image: 'geolambda:version'
+    image: 'developmentseed/geolambda:latest'
     command: lambda-package.sh
     working_dir: /home/geolambda/work
     volumes:
       - '.:/home/geolambda/work'
 
   testpackage:
-    image: 'developmentseed/geolambda:base'
-    command: bash -c "nosetests -v -s";
+    image: 'developmentseed/geolambda-base:latest'
+    command: bash -c "pytest";
     working_dir: /home/geolambda
     env_file: .env
     environment:
