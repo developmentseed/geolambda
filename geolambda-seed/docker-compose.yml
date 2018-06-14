@@ -35,7 +35,7 @@ services:
 
   testpackage27:
     image: 'developmentseed/geolambda-base:latest'
-    command: bash -c "python2 -m pytest test/";
+    command: bash -c "python -m pytest test/";
     working_dir: /home/geolambda
     env_file: .env
     environment:
