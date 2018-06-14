@@ -1,15 +1,18 @@
 # Dockerfile.base
+# This is a base Amazon Linux image with Python2 and Python3 added with pip and boto3
 
 FROM lambdalinux/baseimage-amzn:2017.03-004
 
 RUN \
 	yum -y update; \
-    # python 3.5
+    # python 3.6
     yum install -y python36-devel python36-pip; \
-    pip-3.6 install boto3 nose; \
+    pip-3.6 install boto3 pytest; \
+    pip-3.6 install --upgrade pip; \
 	# python 2.7
 	yum install -y python27-devel python27-pip; \
-	pip-2.7 install boto3 nose; \
+	pip-2.7 install boto3 pytest; \
+    pip-2.7 install --upgrade pip; \
     yum clean all;
 
 ENV \

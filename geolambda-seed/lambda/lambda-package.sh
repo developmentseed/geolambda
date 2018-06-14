@@ -1,3 +1,3 @@
 #!/bin/bash
 
-lambda-package-base.sh
+lambda-package-base.sh "$@"
