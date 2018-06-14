@@ -28,14 +28,14 @@ services:
 
   package36:
     image: mygeolambda:latest
-    command: lambda-package.sh 3.6
+    command: bash -c "lambda-package.sh 3.6"
     working_dir: /home/geolambda/work
     volumes:
       - '.:/home/geolambda/work'
 
-  testpackage:
+  testpackage27:
     image: 'developmentseed/geolambda-base:latest'
-    command: bash -c "pytest test/";
+    command: bash -c "python2 -m pytest test/";
     working_dir: /home/geolambda
     env_file: .env
     environment:
@@ -44,3 +44,13 @@ services:
       - './test:/home/geolambda/test'
       - './lambda:/home/geolambda/lambda'
 
+  testpackage36:
+    image: 'developmentseed/geolambda-base:latest'
+    command: bash -c "python3 -m pytest test/";
+    working_dir: /home/geolambda
+    env_file: .env
+    environment:
+      - LD_LIBRARY_PATH=/home/geolambda/lambda/lib
+    volumes:
+      - './test:/home/geolambda/test'
+      - './lambda:/home/geolambda/lambda'
