@@ -49,7 +49,7 @@ jobs:
             #docker tag :${CIRCLE_SHA1}"
             #docker push "${ECR_ENDPOINT}/app:${CIRCLE_SHA1}"
 
-workflow:
+workflows:
   version: 2
   build_and_deploy:
     jobs:
