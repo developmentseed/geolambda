@@ -1,2 +1,2 @@
-1.0.0rc1:
+1.0.0b1:
 - Original versioned release

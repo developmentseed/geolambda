@@ -19,7 +19,7 @@ The developmentseed/geolambda image in Docker Hub has several available tags:
 
 Pull whichever one is most appropriate with the docker command:
 
-	$ docker pull developmentseed/geolambda:<tag>
+	$ docker pull developmentseed/geolambda:<version>
 
 ### Creating a new geolambda based project
 
