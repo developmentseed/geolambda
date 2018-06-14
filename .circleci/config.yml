@@ -31,7 +31,7 @@ jobs:
           name: Save Docker image layer cache
           command: |
             mkdir -p /caches
-            docker save -o /caches/project.tar project
+            docker save -o /caches/project.tar developmentseed/geolambda
       - save_cache:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
