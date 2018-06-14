@@ -7,4 +7,5 @@ setuptools*
 wheel*
 coverage*
 testfixtures*
+pytest*
 mock*
