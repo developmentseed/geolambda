@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  build:
+  build_and_deploy:
     working_directory: /project
     docker:
       - image: docker:17.05.0-ce-git
@@ -39,10 +39,21 @@ jobs:
       - deploy:
           name: Push application Docker image
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              read -r ver<CHANGES.md
-              VERSION=${ver::-1}
-              echo VERSION: $VERSION
-              #docker tag :${CIRCLE_SHA1}"
-              #docker push "${ECR_ENDPOINT}/app:${CIRCLE_SHA1}"
-            fi
+            read -r ver<CHANGES.md
+            VERSION=${ver::-1}
+            echo VERSION: $VERSION
+            mkdir -p ~/.ssh
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+            git tag $VERSION
+            git push origin $VERSION
+            #docker tag :${CIRCLE_SHA1}"
+            #docker push "${ECR_ENDPOINT}/app:${CIRCLE_SHA1}"
+
+workflow:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build_and_deploy
+        filters:
+          branches:
+            only: master
