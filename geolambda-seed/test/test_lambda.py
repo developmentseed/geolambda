@@ -7,7 +7,8 @@ lambda_handler = imp.load_source('lambda_handler', 'lambda/lambda_handler.py')
 class TestLambda(TestCase):
 
     payload = {
-        'filename': 's3://landsat-pds/L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B3.TIF'
+        'filename': 'https://landsat-pds.s3.amazonaws.com/L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B3.TIF'
+        #'filename': 's3://landsat-pds/L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B3.TIF'
     }
 
     def test_load_lambda(self):

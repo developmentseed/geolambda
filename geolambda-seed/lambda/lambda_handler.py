@@ -3,8 +3,10 @@ import sys
 import logging
 
 # add path to included packages
+pyver = '%s.%s' % (sys.version_info[0], sys.version_info[1])
 path = os.path.dirname(os.path.realpath(__file__))
-sys.path.insert(0, os.path.join(path, 'lib/python2.7/site-packages'))
+libpath = os.path.join(path, 'lib/python%s/site-packages' % pyver)
+sys.path.insert(0, libpath)
 
 # set up logger
 logger = logging.getLogger(__file__)
