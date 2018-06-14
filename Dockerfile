@@ -1,4 +1,4 @@
-FROM developmentseed/geolambda:base
+FROM developmentseed/geolambda-base:latest
 
 # versions of packages
 ENV \
@@ -7,6 +7,7 @@ ENV \
 	HDF4_VERSION=4.2.12 \
 	SZIP_VERSION=2.1.1 \
 	HDF5_VERSION=1.10.1 \
+    NETCDF_VERSION=4.6.1 \
 	OPENJPEG_VERSION=2.3.0 \
 	GDAL_VERSION=2.3.0
 
@@ -28,20 +29,16 @@ RUN \
 	pip2 install numpy; \
 	pip3 install numpy;
 
-# Copy shell scripts and confi files over
-COPY bin/* /usr/local/bin/
-COPY etc/* /usr/local/etc/
-
 # switch to a build directory
 WORKDIR /build
 
 # proj4
 RUN \
-    wget https://github.com/OSGeo/proj.4/archive/$PROJ4_VERSION.tar.gz && \
-    tar -zvxf $PROJ4_VERSION.tar.gz && \
-    cd proj.4-$PROJ4_VERSION && \
-    ./configure --prefix=$PREFIX && \
-    make && make install && cd .. && \
+    wget https://github.com/OSGeo/proj.4/archive/$PROJ4_VERSION.tar.gz; \
+    tar -zvxf $PROJ4_VERSION.tar.gz; \
+    cd proj.4-$PROJ4_VERSION; \
+    ./configure --prefix=$PREFIX; \
+    make; make install; cd ..; \
     rm -rf proj.4-$PROJ4_VERSION $PROJ4_VERSION.tar.gz
 
 # GEOS
@@ -49,7 +46,7 @@ RUN \
 	wget http://download.osgeo.org/geos/geos-$GEOS_VERSION.tar.bz2; \
 	tar xjf geos*bz2; \
 	cd geos*; \
-	./configure --enable-python --prefix=$PREFIX; \
+	./configure --enable-python --prefix=$PREFIX CFLAGS="-O2 -Os"; \
 	make -j 10; make install; \
 	cd ..;
 
@@ -59,53 +56,65 @@ RUN \
     tar xvf v$OPENJPEG_VERSION.tar.gz; \
     cd openjpeg-$OPENJPEG_VERSION; mkdir build; cd build; \
     cmake .. -DCMAKE_BUILT_TYPE=Release; \
-    make; make install; make clean; 
-    #cd ../..; rm -rf openjpeg-* v$OPENJPEG_VERSION.tar.gz;
+    make; make install; make clean; \
+    cd ../..; rm -rf openjpeg-* v$OPENJPEG_VERSION.tar.gz;
 
 # szip (for hdf)
 RUN \
-    wget https://support.hdfgroup.org/ftp/lib-external/szip/$SZIP_VERSION/src/szip-$SZIP_VERSION.tar.gz && \
-    tar -xvf szip-$SZIP_VERSION.tar.gz && \
-    cd szip-$SZIP_VERSION && \
-    ./configure --prefix=$PREFIX && \
-    make && make install && cd .. && \
+    wget https://support.hdfgroup.org/ftp/lib-external/szip/$SZIP_VERSION/src/szip-$SZIP_VERSION.tar.gz; \
+    tar -xvf szip-$SZIP_VERSION.tar.gz; \
+    cd szip-$SZIP_VERSION; \
+    ./configure --prefix=$PREFIX; \
+    make; make install; cd ..; \
     rm -rf szip-$SZIP_VERSION*
 
 # libhdf4
 RUN \
-    yum install -y bison flex && \
-    wget https://support.hdfgroup.org/ftp/HDF/releases/HDF$HDF4_VERSION/src/hdf-$HDF4_VERSION.tar && \
-    tar -xvf hdf-$HDF4_VERSION.tar && \
-    cd hdf-$HDF4_VERSION && \
+    yum install -y bison flex; \
+    wget https://support.hdfgroup.org/ftp/HDF/releases/HDF$HDF4_VERSION/src/hdf-$HDF4_VERSION.tar; \
+    tar -xvf hdf-$HDF4_VERSION.tar; \
+    cd hdf-$HDF4_VERSION; \
     ./configure \
         --prefix=$PREFIX \
         --with-szlib=$PREFIX \
         --enable-shared \
+        --disable-netcdf \
         --disable-fortran; \
-    make && make install && cd .. && \
-    rm -rf hdf-$HDF4_VERSION* && \
+    make; make install; cd ..; \
+    rm -rf hdf-$HDF4_VERSION*; \
     yum remove -y bison flex
 
 # libhdf5
 RUN \
-    wget https://support.hdfgroup.org/ftp/HDF5/current/src/hdf5-$HDF5_VERSION.tar && \
-    tar -xvf hdf5-$HDF5_VERSION.tar && \
-    cd hdf5-$HDF5_VERSION && \
+    wget https://support.hdfgroup.org/ftp/HDF5/current/src/hdf5-$HDF5_VERSION.tar; \
+    tar -xvf hdf5-$HDF5_VERSION.tar; \
+    cd hdf5-$HDF5_VERSION; \
     ./configure \
         --prefix=$PREFIX \
         --with-szlib=$PREFIX; \
-    make && make install && cd .. && \
+    make; make install; cd ..; \
     rm -rf hdf5-$HDF5_VERSION*
+
+# NetCDF
+RUN \
+    wget https://github.com/Unidata/netcdf-c/archive/v$NETCDF_VERSION.tar.gz; \
+    tar -xvf v$NETCDF_VERSION.tar.gz; \
+    cd netcdf-c-$NETCDF_VERSION; \
+    ./configure \
+        --prefix=$PREFIX; \
+    make; make install; cd ..; \
+    rm -rf netcdf-c-${NETCDF_VERSION} v$NETCDF_VERSION.tar.gz;
 
 # GDAL
 RUN \
-    wget http://download.osgeo.org/gdal/$GDAL_VERSION/gdal-$GDAL_VERSION.tar.gz && \
-    tar -xzvf gdal-$GDAL_VERSION.tar.gz && \
-    cd gdal-$GDAL_VERSION && \
+    wget http://download.osgeo.org/gdal/$GDAL_VERSION/gdal-$GDAL_VERSION.tar.gz; \
+    tar -xzvf gdal-$GDAL_VERSION.tar.gz; \
+    cd gdal-$GDAL_VERSION; \
     ./configure \
         --prefix=$PREFIX \
         --with-hdf4=$PREFIX \
         --with-hdf5=$PREFIX \
+        --with-netcdf=$PREFIX \
         --with-openjpeg \
 		--with-curl=yes \
         --without-python \
@@ -116,4 +125,12 @@ RUN \
     make; make install; cd swig/python; \
     python setup.py install; \
     python3 setup.py install; \ 
+    mv $PREFIX/lib64/python2.7/site-packages/GDAL*/osgeo $PREFIX/lib64/python2.7/site-packages/osgeo; \
+    mv $PREFIX/lib64/python3.6/site-packages/GDAL*/osgeo $PREFIX/lib64/python3.6/site-packages/osgeo; \
     cd $BUILD; rm -rf gdal-$GDAL_VERSION*
+
+# Copy shell scripts and confi files over
+COPY bin/* /usr/local/bin/
+COPY etc/* /usr/local/etc/
+
+WORKDIR /home/geolambda
