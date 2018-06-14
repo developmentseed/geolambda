@@ -26,7 +26,7 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
-            docker-compose build --cache-from=project
+            docker-compose build #--cache-from=project
       - run:
           name: Save Docker image layer cache
           command: |
