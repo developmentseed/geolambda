@@ -39,9 +39,7 @@ jobs:
       - deploy:
           name: Push application Docker image
           command: |
-            read -r ver<CHANGES.md
-            VERSION=${ver::-1}
-            echo VERSION: $VERSION
+            VERSION=`awk '{if (NR==1) {print substr($0, 0, length($0)-1)}}' CHANGES.md`
             mkdir -p ~/.ssh
             ssh-keyscan github.com >> ~/.ssh/known_hosts
             git tag $VERSION
