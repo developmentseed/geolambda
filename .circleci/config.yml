@@ -47,7 +47,10 @@ jobs:
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker tag developmentseed/geolambda:latest developmentseed/geolambda:$VERSION
             docker tag developmentseed/geolambda-base:latest developmentseed/geolambda-base:$VERSION
-            docker push
+            docker push developmentseed/geolambda:latest
+            docker push developmentseed/geolambda:$VERSION
+            docker push developmentseed/geolambda-base:latest
+            docker push developmentseed/geolambda-base:$VERSION
 
 workflows:
   version: 2
