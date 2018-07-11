@@ -2,14 +2,14 @@ FROM developmentseed/geolambda-base:latest
 
 # versions of packages
 ENV \
-	PROJ4_VERSION=4.9.2 \
+	PROJ4_VERSION=5.1.0 \
 	GEOS_VERSION=3.6.2 \
 	HDF4_VERSION=4.2.12 \
 	SZIP_VERSION=2.1.1 \
 	HDF5_VERSION=1.10.1 \
     NETCDF_VERSION=4.6.1 \
 	OPENJPEG_VERSION=2.3.0 \
-	GDAL_VERSION=2.3.0
+	GDAL_VERSION=2.3.1
 
 # Paths to things
 ENV \
@@ -21,7 +21,7 @@ ENV \
 # install system libraries
 RUN \
     yum makecache fast; \
-    yum install -y wget tar gcc zlib-devel gcc-c++ curl-devel zip libjpeg-devel rsync git ssh cmake bzip2; \
+    yum install -y wget tar gcc zlib-devel gcc-c++ curl-devel zip libjpeg-devel rsync git ssh cmake bzip2 automake; \
     yum clean all;
 
 # install numpy
@@ -37,6 +37,7 @@ RUN \
     wget https://github.com/OSGeo/proj.4/archive/$PROJ4_VERSION.tar.gz; \
     tar -zvxf $PROJ4_VERSION.tar.gz; \
     cd proj.4-$PROJ4_VERSION; \
+    automake; \
     ./configure --prefix=$PREFIX; \
     make; make install; cd ..; \
     rm -rf proj.4-$PROJ4_VERSION $PROJ4_VERSION.tar.gz
