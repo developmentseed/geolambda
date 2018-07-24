@@ -2,13 +2,14 @@ FROM developmentseed/geolambda-base:latest
 
 # versions of packages
 ENV \
-	PROJ4_VERSION=5.1.0 \
+	PROJ_VERSION=5.1.0 \
 	GEOS_VERSION=3.6.2 \
 	HDF4_VERSION=4.2.12 \
 	SZIP_VERSION=2.1.1 \
 	HDF5_VERSION=1.10.1 \
     NETCDF_VERSION=4.6.1 \
 	OPENJPEG_VERSION=2.3.0 \
+    PKGCONFIG_VERSION=0.29.2 \
 	GDAL_VERSION=2.3.1
 
 # Paths to things
@@ -21,7 +22,8 @@ ENV \
 # install system libraries
 RUN \
     yum makecache fast; \
-    yum install -y wget tar gcc zlib-devel gcc-c++ curl-devel zip libjpeg-devel rsync git ssh cmake bzip2 automake; \
+    yum install -y wget tar gcc zlib-devel gcc-c++ curl-devel zip libjpeg-devel rsync git ssh cmake bzip2 automake \
+        glib2-devel;   # required for pkg-config \
     yum clean all;
 
 # install numpy
@@ -32,15 +34,23 @@ RUN \
 # switch to a build directory
 WORKDIR /build
 
-# proj4
+# pkg-config - version > 2.5 required for GDAL 2.3+
 RUN \
-    wget https://github.com/OSGeo/proj.4/archive/$PROJ4_VERSION.tar.gz; \
-    tar -zvxf $PROJ4_VERSION.tar.gz; \
-    cd proj.4-$PROJ4_VERSION; \
-    automake; \
+    wget https://pkg-config.freedesktop.org/releases/pkg-config-$PKGCONFIG_VERSION.tar.gz; \
+    tar xvf pkg-config-$PKGCONFIG_VERSION.tar.gz; \
+    cd pkg-config-$PKGCONFIG_VERSION; \
+    ./configure --prefix=$PREFIX CFLAGS="-O2 -Os"; \
+    make; make install; make clean; \
+    cd ../; rm -rf pkg-config-*;
+
+# proj
+RUN \
+    wget http://download.osgeo.org/proj/proj-$PROJ_VERSION.tar.gz; \
+    tar -zvxf $PROJ_VERSION.tar.gz; \
+    cd proj-$PROJ_VERSION; \
     ./configure --prefix=$PREFIX; \
     make; make install; cd ..; \
-    rm -rf proj.4-$PROJ4_VERSION $PROJ4_VERSION.tar.gz
+    rm -rf proj-$PROJ_VERSION proj-$PROJ_VERSION.tar.gz
 
 # GEOS
 RUN \
@@ -49,14 +59,15 @@ RUN \
 	cd geos*; \
 	./configure --enable-python --prefix=$PREFIX CFLAGS="-O2 -Os"; \
 	make -j 10; make install; \
-	cd ..;
+	cd ..; \
+    rm -rf geos*;
 
 # libopenjpeg
 RUN \
     wget https://github.com/uclouvain/openjpeg/archive/v$OPENJPEG_VERSION.tar.gz; \
     tar xvf v$OPENJPEG_VERSION.tar.gz; \
     cd openjpeg-$OPENJPEG_VERSION; mkdir build; cd build; \
-    cmake .. -DCMAKE_BUILT_TYPE=Release; \
+    cmake .. -DCMAKE_BUILT_TYPE=Release -DMAKE_INSTALL_PREFIX=$PREFIX; \
     make; make install; make clean; \
     cd ../..; rm -rf openjpeg-* v$OPENJPEG_VERSION.tar.gz;
 
@@ -121,16 +132,16 @@ RUN \
         --without-python \
         --with-geos=$PREFIX/bin/geos-config \
 		--with-hide-internal-symbols=yes \
-        #--with-proj4=$PREFIX \
         CFLAGS="-O2 -Os" CXXFLAGS="-O2 -Os"; \
-    make; make install; cd swig/python; \
+    make; make install; \
+    cd swig/python; \
     python setup.py install; \
     python3 setup.py install; \ 
     mv $PREFIX/lib64/python2.7/site-packages/GDAL*/osgeo $PREFIX/lib64/python2.7/site-packages/osgeo; \
     mv $PREFIX/lib64/python3.6/site-packages/GDAL*/osgeo $PREFIX/lib64/python3.6/site-packages/osgeo; \
     cd $BUILD; rm -rf gdal-$GDAL_VERSION*
 
-# Copy shell scripts and confi files over
+# Copy shell scripts and config files over
 COPY bin/* /usr/local/bin/
 COPY etc/* /usr/local/etc/
 
