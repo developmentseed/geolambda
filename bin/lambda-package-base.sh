@@ -21,6 +21,7 @@ cp $PREFIX/lib/libmfhdf.so.0 $DEPLOY_DIR/lib/
 cp $PREFIX/lib/libgeos_c.so.1 $DEPLOY_DIR/lib/
 cp $PREFIX/lib/libgeos-3.6.2.so $DEPLOY_DIR/lib/
 cp $PREFIX/lib/libnetcdf.so.13 $DEPLOY_DIR/lib/
+cp $PREFIX/lib/libopenjp2.so.7 $DEPLOY_DIR/lib/
 rsync -ax $PREFIX/lib/python$PYVER/site-packages/ $DEPLOY_DIR/lib/python$PYVER/site-packages/ \
     --exclude-from $PREFIX/etc/lambda-excluded-packages
 
