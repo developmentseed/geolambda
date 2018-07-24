@@ -46,7 +46,7 @@ RUN \
 # proj
 RUN \
     wget http://download.osgeo.org/proj/proj-$PROJ_VERSION.tar.gz; \
-    tar -zvxf $PROJ_VERSION.tar.gz; \
+    tar -zvxf proj-$PROJ_VERSION.tar.gz; \
     cd proj-$PROJ_VERSION; \
     ./configure --prefix=$PREFIX; \
     make; make install; cd ..; \
