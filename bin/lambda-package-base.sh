@@ -2,10 +2,9 @@
 
 # directory used for deployment
 export DEPLOY_DIR=lambda
-
 export PYVER=${1:-2.7}
 
-echo PYVER: $PYVER
+echo Creating deploy package for Python $PYVER
 
 # make deployment directory and add lambda handler
 mkdir -p $DEPLOY_DIR/lib/python$PYVER/site-packages
