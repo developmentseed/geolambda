@@ -8,4 +8,6 @@ FROM developmentseed/geolambda:latest
 #    pip install . -v; \
 #    rm -rf /build/*;
 
+COPY lambda/lambda-package.sh /usr/local/bin/
+
 WORKDIR /home/geolambda
