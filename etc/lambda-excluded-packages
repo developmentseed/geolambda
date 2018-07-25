@@ -10,3 +10,5 @@ testfixtures*
 pytest*
 mock*
 GDAL-*
+*.egg-info
+*.dist-info
