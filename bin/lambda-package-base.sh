@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # directory used for deployment
-DEPLOY_DIR=lambda
+export DEPLOY_DIR=lambda
 
-PYVER=${1:-2.7}
+export PYVER=${1:-2.7}
 
 echo PYVER: $PYVER
 
