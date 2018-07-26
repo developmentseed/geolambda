@@ -21,9 +21,31 @@ The geolambda image will most often be used an image used in the creation of a p
 
 In either case, the files in the geolambda-seed directory in this repository can be used as a template to create your new Lambda function.
 
+### Building your project
+
+After editing the geolambda-seed template project, you first build a Docker image for your project with:
+
+$ docker-compose build
+
+And you can test it by running an interactive container:
+
+$ docker-compose run base
+
 ### Deploying to Lambda
 
-The geolambda imgaes contain two scripts for collecting and packaging all the files needed to deploy to a Lambda function (the zip file can either be uploaded directly to a Lambda function or added to S3).
+The geolambda imgaes contain scripts for collecting and packaging all the files needed to deploy to a Lambda function (the zip file can either be uploaded directly to a Lambda function or added to S3), and can be run with docker-compose commands, depending on if it's Python 2.7 or 3.6 that is needed:
+
+$ docker-compose run package27
+
+$ docker-compose run package36
+
+The geolambda-seed project contains simple tests for the Lambda handler and will test it out on a base Docker container that represents the Lambda environment.
+
+$ docker-compose run testpackage27
+
+$ docker-compose run testpackage36
+
+This will add all the needed library files and Python dependencies for your project (as defined in requirements.txt) into the lambda/ directory and create a zip package for deployment. To add in additional files (such as system library files you installed in your Dockerfile), you can add commands to the lambda/lambda-package.sh file.
 
 
 ### geolambda Development
