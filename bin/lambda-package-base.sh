@@ -21,14 +21,19 @@ cp $PREFIX/lib/libgeos_c.so.1 $DEPLOY_DIR/lib/
 cp $PREFIX/lib/libgeos-3.6.2.so $DEPLOY_DIR/lib/
 cp $PREFIX/lib/libnetcdf.so.13 $DEPLOY_DIR/lib/
 cp $PREFIX/lib/libopenjp2.so.7 $DEPLOY_DIR/lib/
-rsync -ax $PREFIX/lib/python$PYVER/site-packages/ $DEPLOY_DIR/lib/python$PYVER/site-packages/ \
+rsync -ax $PREFIX/lib/python$PYVER/site-packages/ $DEPLOY_DIR/ \
     --exclude-from $PREFIX/etc/lambda-excluded-packages
 
 # copy 64-bit libs
 cp /usr/lib64/libjpeg.so.62 $DEPLOY_DIR/lib/
 #cp /usr/lib64/libpq.so.5 $DEPLOY_DIR/lib/
-rsync -ax $PREFIX/lib64/python$PYVER/site-packages/ $DEPLOY_DIR/lib/python$PYVER/site-packages/ \
+#rsync -ax $PREFIX/lib64/python$PYVER/site-packages/ $DEPLOY_DIR/lib/python$PYVER/site-packages/ \
+rsync -ax $PREFIX/lib64/python$PYVER/site-packages/ $DEPLOY_DIR/ \
     --exclude-from $PREFIX/etc/lambda-excluded-packages
+
+# copy GDAL_DATA files over
+mkdir -p $DEPLOY_DIR/share
+rsync -ax $PREFIX/share/gdal share/
 
 # zip up deploy package
 cd $DEPLOY_DIR
