@@ -2,12 +2,6 @@ import os
 import sys
 import logging
 
-# add path to included packages
-pyver = '%s.%s' % (sys.version_info[0], sys.version_info[1])
-path = os.path.dirname(os.path.realpath(__file__))
-libpath = os.path.join(path, 'lib/python%s/site-packages' % pyver)
-sys.path.insert(0, libpath)
-
 # set up logger
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
@@ -18,7 +12,7 @@ logger.setLevel(logging.DEBUG)
 from osgeo import gdal
 
 
-def handler(event, context):
+def lambda_handler(event, context):
     """ Lambda handler """
     logger.debug(event)
 
