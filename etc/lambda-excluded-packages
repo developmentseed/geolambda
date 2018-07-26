@@ -7,7 +7,6 @@ setuptools*
 wheel*
 coverage*
 testfixtures*
-pytest*
 mock*
 GDAL-*
 *.egg-info
