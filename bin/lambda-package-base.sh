@@ -33,7 +33,7 @@ rsync -ax $PREFIX/lib64/python$PYVER/site-packages/ $DEPLOY_DIR/ \
 
 # copy GDAL_DATA files over
 mkdir -p $DEPLOY_DIR/share
-rsync -ax $PREFIX/share/gdal share/
+rsync -ax $PREFIX/share/gdal $DEPLOY_DIR/share/
 
 # zip up deploy package
 cd $DEPLOY_DIR
