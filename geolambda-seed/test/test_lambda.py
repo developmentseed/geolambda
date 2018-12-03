@@ -1,7 +1,7 @@
 from unittest import TestCase
 import imp
 
-lambda_handler = imp.load_source('lambda_handler', 'lambda/lambda_handler.py')
+lambda_handler = imp.load_source('lambda_handler', 'lambda/lambda_function.py')
 
 
 class TestLambda(TestCase):
@@ -13,9 +13,9 @@ class TestLambda(TestCase):
 
     def test_load_lambda(self):
         """ Test the lambda handler is loaded """
-        self.assertTrue(hasattr(lambda_handler, 'handler'))
+        self.assertTrue(hasattr(lambda_handler, 'lambda_handler'))
 
     def test_run_lambda(self):
         """ Run the lambda handler with test payload """
-        result = lambda_handler.handler(self.payload, None)
+        result = lambda_handler.lambda_handler(self.payload, None)
         self.assertEqual(len(result), 4)
