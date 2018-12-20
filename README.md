@@ -12,6 +12,11 @@ The developmentseed/geolambda image in Docker Hub is tagged by version. The late
 
 	$ docker pull developmentseed/geolambda:<version>
 
+| geolambda | GDAL  |
+| -------- | ----  |
+| 1.0.0    | 2.3.1 |
+| 1.0.1    | 2.3.3 |
+
 ### Creating a new geolambda based project
 
 The geolambda image will most often be used an image used in the creation of a package suitable for deploying to an AWS Lambda function. There are two main use cases:
