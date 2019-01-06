@@ -1,16 +1,19 @@
-FROM developmentseed/geolambda-base:latest
+from developmentseed/geolambda-base:latest
+#FROM lambci/lambda:python3.6
+
+USER root
 
 # versions of packages
 ENV \
-	PROJ_VERSION=5.1.0 \
-	GEOS_VERSION=3.6.2 \
-	HDF4_VERSION=4.2.12 \
+	PROJ_VERSION=5.2.0 \
+	GEOS_VERSION=3.7.1 \
+	HDF4_VERSION=4.2.14 \
 	SZIP_VERSION=2.1.1 \
-	HDF5_VERSION=1.10.1 \
-    NETCDF_VERSION=4.6.1 \
+	HDF5_VERSION=1.10.4 \
+    NETCDF_VERSION=4.6.2 \
 	OPENJPEG_VERSION=2.3.0 \
     PKGCONFIG_VERSION=0.29.2 \
-	GDAL_VERSION=2.3.1
+	GDAL_VERSION=2.3.3
 
 # Paths to things
 ENV \
@@ -28,8 +31,7 @@ RUN \
 
 # install numpy
 RUN \
-	pip2 install numpy; \
-	pip3 install numpy;
+	pip install numpy;
 
 # switch to a build directory
 WORKDIR /build
@@ -117,6 +119,8 @@ RUN \
     make; make install; cd ..; \
     rm -rf netcdf-c-${NETCDF_VERSION} v$NETCDF_VERSION.tar.gz;
 
+#RUN yum install -y python-devel
+
 # GDAL
 RUN \
     wget http://download.osgeo.org/gdal/$GDAL_VERSION/gdal-$GDAL_VERSION.tar.gz; \
@@ -134,12 +138,12 @@ RUN \
 		--with-hide-internal-symbols=yes \
         CFLAGS="-O2 -Os" CXXFLAGS="-O2 -Os"; \
     make; make install; \
-    cd swig/python; \
-    python setup.py install; \
-    python3 setup.py install; \ 
-    mv $PREFIX/lib64/python2.7/site-packages/GDAL*/osgeo $PREFIX/lib64/python2.7/site-packages/osgeo; \
-    mv $PREFIX/lib64/python3.6/site-packages/GDAL*/osgeo $PREFIX/lib64/python3.6/site-packages/osgeo; \
-    cd $BUILD; rm -rf gdal-$GDAL_VERSION*
+    cd swig/python; 
+    #python setup.py install; \
+    #python3 setup.py install; \ 
+    #mv $PREFIX/lib64/python2.7/site-packages/GDAL*/osgeo $PREFIX/lib64/python2.7/site-packages/osgeo; \
+    #mv $PREFIX/lib64/python3.6/site-packages/GDAL*/osgeo $PREFIX/lib64/python3.6/site-packages/osgeo; \
+    #cd $BUILD; rm -rf gdal-$GDAL_VERSION*
 
 # Copy shell scripts and config files over
 COPY bin/* /usr/local/bin/
