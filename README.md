@@ -56,3 +56,11 @@ This will add all the needed library files and Python dependencies for your proj
 ### geolambda Development
 
 Contributions to the geolambda project are encouraged. The goal is to provide a turnkey method for developing and deploying geospatial Python based projects to Amazon Web Services. The 'master' branch in this repository contains the current state as deployed to the developmentseed/geolambda image on Dockerhub. The 'develop' branch is the development version and is not deployed to Dockerhub. To use the develop branch the images must be locally built first.
+
+Make geolambda layer public
+
+```
+aws lambda add-layer-version-permission --layer-name geolambda \
+--statement-id public --version-number 1 --principal '*' \
+--action lambda:GetLayerVersion
+```
