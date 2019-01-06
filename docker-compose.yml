@@ -17,6 +17,60 @@ services:
     links:
       - base
 
+  base:
+    build:
+      context: .
+    image: 'mygeolambda:latest'
+    entrypoint: /bin/bash
+    env_file: .env
+    volumes:
+      - '.:/home/geolambda/work'
+
+  test:
+    image: 'mygeolambda:latest'
+    entrypoint: bash -c 'pytest test/'
+    env_file: .env
+    volumes:
+      - './lambda:/home/geolambda/lambda'
+      - './test:/home/geolambda/test'
+
+  package27:
+    image: 'mygeolambda:latest'
+    command: lambda-package.sh
+    working_dir: /home/geolambda/work
+    volumes:
+      - '.:/home/geolambda/work'
+
+  package36:
+    image: mygeolambda:latest
+    command: bash -c "lambda-package.sh 3.6"
+    working_dir: /home/geolambda/work
+    volumes:
+      - '.:/home/geolambda/work'
+
+  testpackage27:
+    image: 'developmentseed/geolambda-base:latest'
+    command: bash -c "python -m pytest test/";
+    working_dir: /home/geolambda
+    env_file: .env
+    environment:
+      - LD_LIBRARY_PATH=/home/geolambda/lambda/lib
+    volumes:
+      - './test:/home/geolambda/test'
+      - './lambda:/home/geolambda/lambda'
+
+  testpackage36:
+    image: 'developmentseed/geolambda-base:latest'
+    command: bash -c "python3 -m pytest test/";
+    working_dir: /home/geolambda
+    env_file: .env
+    environment:
+      - LD_LIBRARY_PATH=/home/geolambda/lambda/lib
+    volumes:
+      - './test:/home/geolambda/test'
+      - './lambda:/home/geolambda/lambda'
+
+
 #  runner:
 #    build:
 #      context: .
