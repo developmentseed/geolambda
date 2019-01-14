@@ -1,7 +1,15 @@
 from developmentseed/geolambda-base:latest
 #FROM lambci/lambda:python3.6
 
-USER root
+#USER root
+
+# install system libraries
+RUN \
+    yum makecache fast; \
+    yum install -y wget tar gcc zlib-devel gcc-c++ curl-devel zip libjpeg-devel rsync git ssh cmake bzip2 automake \
+        glib2-devel;   # required for pkg-config \
+    yum clean all; \
+    yum autoremove
 
 # versions of packages
 ENV \
@@ -13,7 +21,9 @@ ENV \
     NETCDF_VERSION=4.6.2 \
 	OPENJPEG_VERSION=2.3.0 \
     PKGCONFIG_VERSION=0.29.2 \
-	GDAL_VERSION=2.3.3
+    WEBP_VERSION=1.0.0 \
+    ZSTD_VERSION=1.3.4 \
+	GDAL_VERSION=2.4.0
 
 # Paths to things
 ENV \
@@ -21,13 +31,6 @@ ENV \
 	PREFIX=/usr/local \
 	GDAL_CONFIG=/usr/local/bin/gdal-config \
 	LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
-
-# install system libraries
-RUN \
-    yum makecache fast; \
-    yum install -y wget tar gcc zlib-devel gcc-c++ curl-devel zip libjpeg-devel rsync git ssh cmake bzip2 automake \
-        glib2-devel;   # required for pkg-config \
-    yum clean all;
 
 # install numpy
 RUN \
@@ -119,7 +122,24 @@ RUN \
     make; make install; cd ..; \
     rm -rf netcdf-c-${NETCDF_VERSION} v$NETCDF_VERSION.tar.gz;
 
-#RUN yum install -y python-devel
+# WEBP
+RUN \
+    wget -q https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-${WEBP_VERSION}.tar.gz; \
+    tar xzf libwebp-${WEBP_VERSION}.tar.gz; \
+    cd libwebp-${WEBP_VERSION}; \
+    CFLAGS="-O2 -Wl,-S" ./configure --prefix=$PREFIX; \
+    make -j4 --silent; make install --silent && make clean --silent; \
+    rm -rf libwebp-${WEBP_VERSION} libwebp-${WEBP_VERSION}.tar.gz
+
+# ZSTD
+RUN \
+  wget -q https://github.com/facebook/zstd/archive/v${ZSTD_VERSION}.tar.gz; \
+  tar -zvxf v${ZSTD_VERSION}.tar.gz; \
+  cd zstd-${ZSTD_VERSION}; \
+  make -j4 PREFIX=$PREFIX ZSTD_LEGACY_SUPPORT=0 CFLAGS=-O1 --silent; \
+  make install PREFIX=$PREFIX ZSTD_LEGACY_SUPPORT=0 CFLAGS=-O1 --silent; \
+  make clean --silent; \
+  rm -rf v${ZSTD_VERSION}.tar.gz zstd-${ZSTD_VERSION}
 
 # GDAL
 RUN \
@@ -131,6 +151,8 @@ RUN \
         --with-hdf4=$PREFIX \
         --with-hdf5=$PREFIX \
         --with-netcdf=$PREFIX \
+        --with-web=$PREFIX \
+        --with-zstd=$PREFIX \
         --with-openjpeg \
 		--with-curl=yes \
         --without-python \
