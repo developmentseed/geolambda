@@ -1,5 +1,5 @@
-from developmentseed/geolambda-base:latest
-#FROM lambci/lambda:python3.6
+#from developmentseed/geolambda-base:latest
+FROM lambci/lambda:build-provided
 
 #USER root
 
@@ -160,11 +160,11 @@ RUN \
 		--with-hide-internal-symbols=yes \
         CFLAGS="-O2 -Os" CXXFLAGS="-O2 -Os"; \
     make; make install; \
-    cd swig/python; \
-    python setup.py install; \
-    python3 setup.py install; \ 
-    mv $PREFIX/lib64/python2.7/site-packages/GDAL*/osgeo $PREFIX/lib64/python2.7/site-packages/osgeo; \
-    mv $PREFIX/lib64/python3.6/site-packages/GDAL*/osgeo $PREFIX/lib64/python3.6/site-packages/osgeo; \
+    #cd swig/python; \
+    #python setup.py install; \
+    #python3 setup.py install; \ 
+    #mv $PREFIX/lib64/python2.7/site-packages/GDAL*/osgeo $PREFIX/lib64/python2.7/site-packages/osgeo; \
+    #mv $PREFIX/lib64/python3.6/site-packages/GDAL*/osgeo $PREFIX/lib64/python3.6/site-packages/osgeo; \
     cd $BUILD; rm -rf gdal-$GDAL_VERSION*
 
 #RUN \

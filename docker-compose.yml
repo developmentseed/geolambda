@@ -5,17 +5,8 @@ services:
   base:
     build:
       context: .
-      dockerfile: Dockerfile.base
-    image: 'developmentseed/geolambda-base:latest'
+    image: 'developmentseed/geolambda:latest'
     entrypoint: /bin/bash
-
-  geolambda:
-    build:
-      context: .
-    image: developmentseed/geolambda:latest
-    entrypoint: /bin/bash
-    links:
-      - base
 
   test:
     image: developmentseed/geolambda:latest
@@ -25,30 +16,12 @@ services:
       - './lambda:/home/geolambda/lambda'
       - './test:/home/geolambda/test'
 
-  package27:
-    image: developmentseed/geolambda:latest
-    command: lambda-package.sh
-    working_dir: /home/geolambda/work
-    volumes:
-      - '.:/home/geolambda/work'
-
   package:
     image: developmentseed/geolambda:latest
     command: bash -c "lambda-package.sh 3.6"
     working_dir: /home/geolambda/work
     volumes:
       - '.:/home/geolambda/work'
-
-  testpackage27:
-    image: developmentseed/geolambda-base:latest
-    command: bash -c "python -m pytest test/";
-    working_dir: /home/geolambda
-    env_file: .env
-    environment:
-      - LD_LIBRARY_PATH=/home/geolambda/lambda/lib
-    volumes:
-      - './test:/home/geolambda/test'
-      - './lambda:/home/geolambda/lambda'
 
   testpackage:
     image: developmentseed/geolambda-base:latest

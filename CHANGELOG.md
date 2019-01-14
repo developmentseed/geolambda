@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+- Removed Python codes to make geolambda system libraries only
+- Make compatible with Lambda Layers
+- Updated GDAL version
+
 
 ## [v1.0.0] - 2018-07-27
 
