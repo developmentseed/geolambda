@@ -8,14 +8,14 @@ Unless interested in modifying the geolambda images themselves, most users will 
 
 ### Available image tags
 
-The developmentseed/geolambda image in Docker Hub is tagged by version. The latest version, 1.0.0 contains GDAL 2.3.1, compiled with libopenjpeg 2.3, hdf4, hdf5, netcdf, libcurl, and both Python 2.7 and 3.6 support.
+The developmentseed/geolambda image in Docker Hub is tagged by version.
 
 	$ docker pull developmentseed/geolambda:<version>
 
 | geolambda | GDAL  |
 | -------- | ----  |
 | 1.0.0    | 2.3.1 |
-| 1.0.1    | 2.3.3 |
+| 1.1.0    | 2.4.0 |
 
 ### Creating a new geolambda based project
 

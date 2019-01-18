@@ -1,13 +1,13 @@
 #from developmentseed/geolambda-base:latest
 FROM lambci/lambda:build-provided
 
-#USER root
-
 # install system libraries
 RUN \
     yum makecache fast; \
-    yum install -y wget tar gcc zlib-devel gcc-c++ curl-devel zip libjpeg-devel rsync git ssh cmake bzip2 automake \
-        glib2-devel;   # required for pkg-config \
+    yum install -y \
+        wget tar gcc  gcc-c++ zip rsync git ssh cmake bzip2 automake \
+        zlib-devel curl-devel libjpeg-devel \
+        pkg-config glib2-devel; \
     yum clean all; \
     yum autoremove
 
@@ -32,21 +32,8 @@ ENV \
 	GDAL_CONFIG=/usr/local/bin/gdal-config \
 	LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
 
-# install numpy
-RUN \
-	pip install numpy;
-
 # switch to a build directory
 WORKDIR /build
-
-# pkg-config - version > 2.5 required for GDAL 2.3+
-RUN \
-    wget https://pkg-config.freedesktop.org/releases/pkg-config-$PKGCONFIG_VERSION.tar.gz; \
-    tar xvf pkg-config-$PKGCONFIG_VERSION.tar.gz; \
-    cd pkg-config-$PKGCONFIG_VERSION; \
-    ./configure --prefix=$PREFIX CFLAGS="-O2 -Os"; \
-    make; make install; make clean; \
-    cd ../; rm -rf pkg-config-*;
 
 # proj
 RUN \
