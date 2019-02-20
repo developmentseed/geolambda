@@ -149,11 +149,7 @@ RUN \
     make; make install; \
     cd $BUILD; rm -rf gdal-$GDAL_VERSION*
 
-#RUN \
-#    pip3 install pyproj
-
 # Copy shell scripts and config files over
 COPY bin/* /usr/local/bin/
-COPY etc/* /usr/local/etc/
 
 WORKDIR /home/geolambda
