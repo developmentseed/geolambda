@@ -39,18 +39,15 @@ jobs:
       - deploy:
           name: Push application Docker image
           command: |
-            VERSION=`awk '{if (NR==1) {print substr($0, 0, length($0)-1)}}' CHANGES.md`
+            VERSION=1.1.0
             mkdir -p ~/.ssh
             ssh-keyscan github.com >> ~/.ssh/known_hosts
             git tag $VERSION
             git push origin $VERSION
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker tag developmentseed/geolambda:latest developmentseed/geolambda:$VERSION
-            docker tag developmentseed/geolambda-base:latest developmentseed/geolambda-base:$VERSION
             docker push developmentseed/geolambda:latest
             docker push developmentseed/geolambda:$VERSION
-            docker push developmentseed/geolambda-base:latest
-            docker push developmentseed/geolambda-base:$VERSION
 
 workflows:
   version: 2
