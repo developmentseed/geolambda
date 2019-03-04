@@ -15,6 +15,7 @@ RUN \
 # versions of packages
 ENV \
 	PROJ_VERSION=5.2.0 \
+    GEOTIFF_VERSION=1.4.3 \
 	GEOS_VERSION=3.7.1 \
 	HDF4_VERSION=4.2.14 \
 	SZIP_VERSION=2.1.1 \
@@ -138,6 +139,15 @@ RUN \
     make; make install; make clean; \
     cd ../..; rm -rf openjpeg-* v$OPENJPEG_VERSION.tar.gz;
 
+RUN \
+    wget https://download.osgeo.org/geotiff/libgeotiff/libgeotiff-$GEOTIFF_VERSION.tar.gz; \
+    tar -xzvf libgeotiff-$GEOTIFF_VERSION.tar.gz; \
+    cd libgeotiff-$GEOTIFF_VERSION; \
+    ./configure \
+        --prefix=${PREFIX} --with-proj=${PREFIX} ;\
+    make; make install; make install DESTDIR=; cd ..; \
+    rm -rf libgeotiff-$GEOTIFF_VERSION.tar.gz libgeotiff-$GEOTIFF_VERSION;
+
 # GDAL
 RUN \
     wget http://download.osgeo.org/gdal/$GDAL_VERSION/gdal-$GDAL_VERSION.tar.gz; \
@@ -148,6 +158,7 @@ RUN \
         --disable-static \
         --prefix=$PREFIX \
         --with-openjpeg \
+        --with-geotiff=${PREFIX} \
         --with-hdf4=$PREFIX \
         --with-hdf5=$PREFIX \
         --with-netcdf=$PREFIX \

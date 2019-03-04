@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Versions:
 - PROJ_VERSION=5.2.0
+- GEOTIFF_VERSION=1.4.3
 - GEOS_VERSION=3.7.1
 - HDF4_VERSION=4.2.14
 - SZIP_VERSION=2.1.1
