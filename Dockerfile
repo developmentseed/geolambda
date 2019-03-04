@@ -7,7 +7,8 @@ RUN \
     yum install -y \
         wget tar gcc  gcc-c++ zip rsync git ssh cmake bzip2 automake \
         zlib-devel curl-devel libjpeg-devel \
-        pkg-config glib2-devel; \
+        glib2-devel; \
+    yum install -y bash-completion --enablerepo=epel; \
     yum clean all; \
     yum autoremove
 
@@ -35,6 +36,15 @@ ENV \
 # switch to a build directory
 WORKDIR /build
 
+# pkg-config - version > 2.5 required for GDAL 2.3+
+RUN \
+    wget https://pkg-config.freedesktop.org/releases/pkg-config-$PKGCONFIG_VERSION.tar.gz; \
+    tar xvf pkg-config-$PKGCONFIG_VERSION.tar.gz; \
+    cd pkg-config-$PKGCONFIG_VERSION; \
+    ./configure --prefix=$PREFIX CFLAGS="-O2 -Os"; \
+    make; make install; make clean; \
+    cd ../; rm -rf pkg-config-*;
+
 # proj
 RUN \
     wget http://download.osgeo.org/proj/proj-$PROJ_VERSION.tar.gz; \
@@ -53,15 +63,6 @@ RUN \
 	make -j 10; make install; \
 	cd ..; \
     rm -rf geos*;
-
-# libopenjpeg
-RUN \
-    wget https://github.com/uclouvain/openjpeg/archive/v$OPENJPEG_VERSION.tar.gz; \
-    tar xvf v$OPENJPEG_VERSION.tar.gz; \
-    cd openjpeg-$OPENJPEG_VERSION; mkdir build; cd build; \
-    cmake .. -DCMAKE_BUILT_TYPE=Release -DMAKE_INSTALL_PREFIX=$PREFIX; \
-    make; make install; make clean; \
-    cd ../..; rm -rf openjpeg-* v$OPENJPEG_VERSION.tar.gz;
 
 # szip (for hdf)
 RUN \
@@ -128,19 +129,31 @@ RUN \
   make clean --silent; \
   rm -rf v${ZSTD_VERSION}.tar.gz zstd-${ZSTD_VERSION}
 
+# libopenjpeg
+RUN \
+    wget https://github.com/uclouvain/openjpeg/archive/v$OPENJPEG_VERSION.tar.gz; \
+    tar xvf v$OPENJPEG_VERSION.tar.gz; \
+    cd openjpeg-$OPENJPEG_VERSION; mkdir build; cd build; \
+    cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX; \
+    make; make install; make clean; \
+    cd ../..; rm -rf openjpeg-* v$OPENJPEG_VERSION.tar.gz;
+
 # GDAL
 RUN \
     wget http://download.osgeo.org/gdal/$GDAL_VERSION/gdal-$GDAL_VERSION.tar.gz; \
     tar -xzvf gdal-$GDAL_VERSION.tar.gz; \
     cd gdal-$GDAL_VERSION; \
     ./configure \
+        --disable-debug \
+        --disable-static \
         --prefix=$PREFIX \
+        --with-openjpeg \
         --with-hdf4=$PREFIX \
         --with-hdf5=$PREFIX \
         --with-netcdf=$PREFIX \
         --with-web=$PREFIX \
         --with-zstd=$PREFIX \
-        --with-openjpeg \
+        --with-threads=yes \
 		--with-curl=yes \
         --without-python \
         --with-geos=$PREFIX/bin/geos-config \
