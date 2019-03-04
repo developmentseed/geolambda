@@ -27,47 +27,41 @@ The developmentseed/geolambda image in Docker Hub is tagged by version.
 | 1.0.0    | 2.3.1 |
 | 1.1.0    | 2.4.0 |
 
+Or just include it in your own Dockerfile as the base image.
+
+```
+FROM developmentseed/geolambda:<version>
+```
+
+The GeoLambda image does not have an entrypoint defined, so provide one when you run it. This example will mount the current directory to /work and run the container interactively.
+
+```
+$ docker run --rm -v $PWD:/work -it developmentseed/geolambda:latest /bin/bash
+```
+
 ### Creating a new Lambda Layer
 
-The geolambda image will most often be used an image used in the creation of a package suitable for deploying to an AWS Lambda function. There are two main use cases:
+The Dockerfile here can be used as a template for your own Lambda layer. Simply edit it to remove or add additional libraries, then build it with your own name:
 
-- No additional libraries are required, and the client application is a simpler handler function that draws upon libraries and packages that are already included in the geolambda image. In this case the only files really needed are the docker-compose.yml file and the handler.py function.
-- Additional libraries, either installed via PyPi or Git, and custom modules are needed to run the Lambda function. In this case a new Dockerfile is needed to create a new image that will be used (along with docker-compose.yml and the handler.py function)
+```
+$ docker build . -t mygeolambda:latest
+```
 
-In either case, the files in the geolambda-seed directory in this repository can be used as a template to create your new Lambda function.
+Then, package up the resulting files by using the [provided script](bin/package.sh). 
 
-### Building your project
-
-After editing the geolambda-seed template project, you first build a Docker image for your project with:
-
-$ docker-compose build
-
-And you can test it by running an interactive container:
-
-$ docker-compose run base
-
-### Deploying to Lambda
-
-The geolambda imgaes contain scripts for collecting and packaging all the files needed to deploy to a Lambda function (the zip file can either be uploaded directly to a Lambda function or added to S3), and can be run with docker-compose commands, depending on if it's Python 2.7 or 3.6 that is needed:
-
-$ docker-compose run package27
-
-$ docker-compose run package36
-
-The geolambda-seed project contains simple tests for the Lambda handler and will test it out on a base Docker container that represents the Lambda environment.
-
-$ docker-compose run testpackage27
-
-$ docker-compose run testpackage36
-
-This will add all the needed library files and Python dependencies for your project (as defined in requirements.txt) into the lambda/ directory and create a zip package for deployment. To add in additional files (such as system library files you installed in your Dockerfile), you can add commands to the lambda/lambda-package.sh file.
+```
+$ docker run -t 
 
 
-### geolambda Development
 
-Contributions to the geolambda project are encouraged. The goal is to provide a turnkey method for developing and deploying geospatial Python based projects to Amazon Web Services. The 'master' branch in this repository contains the current state as deployed to the developmentseed/geolambda image on Dockerhub. The 'develop' branch is the development version and is not deployed to Dockerhub.
+### Development
 
-Make geolambda layer public
+Contributions to the geolambda project are encouraged. The goal is to provide a turnkey method for developing and deploying geospatial Python based projects to Amazon Web Services. The 'master' branch in this repository contains the current state as deployed to the `developmentseed/geolambda:latest` image on Dockerhub, along with a tag of the version. The 'develop' branch is the development version and is not deployed to Dockerhub.
+
+When making a merge to the `master` branch be sure to increment the `VERSION` in the CircleCI config.yml file. Circle will push the new version as a tag to GitHub and build and push the image to Docker Hub. If a GitHub tag already exists with that version the process will fail.
+
+
+#### Make layer public
 
 ```
 aws lambda add-layer-version-permission --layer-name geolambda \
