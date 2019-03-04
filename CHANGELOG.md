@@ -1,7 +1,3 @@
-1.0.0:
-
-
-
 # Changelog
 All notable changes to this project will be documented in this file.
 
@@ -10,14 +6,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Removed
 - Removed Python codes to make geolambda system libraries only
-- Make compatible with Lambda Layers
-- Updated GDAL version
 
+### Added
+- Make compatible with Lambda Layers
+
+### Changed
+
+Versions:
+- PROJ_VERSION=5.2.0
+- GEOS_VERSION=3.7.1
+- HDF4_VERSION=4.2.14
+- SZIP_VERSION=2.1.1
+- HDF5_VERSION=1.10.4
+- NETCDF_VERSION=4.6.2
+- OPENJPEG_VERSION=2.3.0
+- PKGCONFIG_VERSION=0.29.2
+- WEBP_VERSION=1.0.0
+- ZSTD_VERSION=1.3.4
+- GDAL_VERSION=2.4.0
 
 ## [v1.0.0] - 2018-07-27
 
-- Original versioned release
+Versions:
 - PROJ_VERSION=5.1.0
 - GEOS_VERSION=3.6.2
 - HDF4_VERSION=4.2.12
