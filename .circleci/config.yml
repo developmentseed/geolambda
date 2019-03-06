@@ -26,7 +26,8 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
-            docker-compose build #--cache-from=project
+            VERSION=$(cat VERSION)
+            docker build . -t developmentseed/geolambda:${VERSION} #--cache-from=project
       - run:
           name: Save Docker image layer cache
           command: |
@@ -39,15 +40,15 @@ jobs:
       - deploy:
           name: Push application Docker image
           command: |
-            VERSION=1.1.0
+            VERSION=$(cat VERSION)
             mkdir -p ~/.ssh
             ssh-keyscan github.com >> ~/.ssh/known_hosts
-            git tag $VERSION
-            git push origin $VERSION
+            git tag ${VERSION}
+            git push origin ${VERSION}
             docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker tag developmentseed/geolambda:latest developmentseed/geolambda:$VERSION
+            docker tag developmentseed/geolambda:latest developmentseed/geolambda:${VERSION}
             docker push developmentseed/geolambda:latest
-            docker push developmentseed/geolambda:$VERSION
+            docker push developmentseed/geolambda:${VERSION}
 
 workflows:
   version: 2
