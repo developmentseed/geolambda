@@ -1,5 +1,6 @@
-#from developmentseed/geolambda-base:latest
 FROM lambci/lambda:build-provided
+
+LABEL maintainer="Matthew Hanson <matt.a.hanson@gmail.com>"
 
 # install system libraries
 RUN \
