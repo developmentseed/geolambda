@@ -14,18 +14,18 @@ RUN \
 
 # versions of packages
 ENV \
-	PROJ_VERSION=5.2.0 \
+    GEOS_VERSION=3.7.1 \
     GEOTIFF_VERSION=1.4.3 \
-	GEOS_VERSION=3.7.1 \
-	HDF4_VERSION=4.2.14 \
-	SZIP_VERSION=2.1.1 \
-	HDF5_VERSION=1.10.4 \
+	GDAL_VERSION=2.4.0 \
+    HDF4_VERSION=4.2.14 \
+	HDF5_VERSION=1.10.5 \
     NETCDF_VERSION=4.6.2 \
 	OPENJPEG_VERSION=2.3.0 \
     PKGCONFIG_VERSION=0.29.2 \
+    PROJ_VERSION=5.2.0 \
+    SZIP_VERSION=2.1.1 \
     WEBP_VERSION=1.0.0 \
-    ZSTD_VERSION=1.3.4 \
-	GDAL_VERSION=2.4.0
+    ZSTD_VERSION=1.3.4
 
 # Paths to things
 ENV \
@@ -117,7 +117,7 @@ RUN \
     tar xzf libwebp-${WEBP_VERSION}.tar.gz; \
     cd libwebp-${WEBP_VERSION}; \
     CFLAGS="-O2 -Wl,-S" ./configure --prefix=$PREFIX; \
-    make -j4 --silent; make install --silent && make clean --silent; \
+    make -j4 --silent; make install --silent && make clean --silent; cd ..; \
     rm -rf libwebp-${WEBP_VERSION} libwebp-${WEBP_VERSION}.tar.gz
 
 # ZSTD
@@ -127,7 +127,7 @@ RUN \
   cd zstd-${ZSTD_VERSION}; \
   make -j4 PREFIX=$PREFIX ZSTD_LEGACY_SUPPORT=0 CFLAGS=-O1 --silent; \
   make install PREFIX=$PREFIX ZSTD_LEGACY_SUPPORT=0 CFLAGS=-O1 --silent; \
-  make clean --silent; \
+  make clean --silent; cd ..; \
   rm -rf v${ZSTD_VERSION}.tar.gz zstd-${ZSTD_VERSION}
 
 # libopenjpeg
