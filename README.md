@@ -41,21 +41,6 @@ The GeoLambda image does not have an entrypoint defined, so a command must be pr
 
 	$ docker run --rm -v $PWD:/work -it developmentseed/geolambda:latest /bin/bash
 
-
-## Creating a new Lambda Layer
-
-
-
-```
-$ docker build . -t mygeolambda:latest
-```
-
-Then, package up the resulting files by using the [provided script](bin/package.sh). 
-
-```
-$ docker run -t mygeolambda:latest
-```
-
 ## Development
 
 Contributions to the geolambda project are encouraged. The goal is to provide a turnkey method for developing and deploying geospatial Python based projects to Amazon Web Services. The 'master' branch in this repository contains the current state as deployed to the `developmentseed/geolambda:latest` image on Dockerhub, along with a tag of the version. The 'develop' branch is the development version and is not deployed to Dockerhub.
@@ -64,7 +49,7 @@ When making a merge to the `master` branch be sure to increment the `VERSION` in
 
 ### Create a new version
 
-Use the Dockerfile here as a template for your own version of GeoLambda. Simply edit it to remove or add additional libraries, then build and tag with your own name. The steps below are used to create a new official version of GeoLambda, replace "developmentseed/geolambda" with your own name.
+Use the Dockerfile here as a template for your own version of GeoLambda. Simply edit it to remove or add additional libraries, then build and tag with your own name. The steps below are used to create a new official version of GeoLambda, replace `developmentseed/geolambda` with your own name.
 
 To create a new version of GeoLambda follow these steps. 
 
@@ -82,11 +67,14 @@ $ docker build . -t developmentseed/geolambda:${VERSION}
 $ docker push developmentseed/geolambda:${VERSION}
 ```
 
-- Create deployment package:
+- Create deployment package using the built-in [packaging script](bin/package.sh)
 
 ```
-$ docker run --entrypoint package.sh --rm -v $PWD:/home/geolambda -it developmentseed/geolambda:${VERSION}
+$ docker run --rm -v $PWD:/home/geolambda --entrypoint package.sh \
+	-it developmentseed/geolambda:${VERSION}
 ```
+
+This will create a lambda/ directory containing the native libraries and related files, along with a `lambda-deploy.zip` file that can be deployed as a Lambda layer.
 
 - Push as Lambda layer
 
