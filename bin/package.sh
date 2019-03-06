@@ -20,6 +20,7 @@ cp $PREFIX/lib/libgeos_c.so.1 $DEPLOY_DIR/lib/
 cp $PREFIX/lib/libgeos-3.7.1.so $DEPLOY_DIR/lib/
 cp $PREFIX/lib/libnetcdf.so.13 $DEPLOY_DIR/lib/
 cp $PREFIX/lib/libopenjp2.so.7 $DEPLOY_DIR/lib/
+cp $PREFIX/lib/libwebp.so.7 $DEPLOY_DIR/lib/
 
 # copy 64-bit libs
 cp /usr/lib64/libjpeg.so.62 $DEPLOY_DIR/lib/
