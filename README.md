@@ -1,22 +1,21 @@
 # GeoLambda: geospatial AWS Lambda Layer
 
-The GeoLambda project provides public Docker images and AWS Lambda Layers containing common geospatial native libraries. GeoLambda contains the libraries PROJ.5, GEOS, GeoTIFF, HDF4/5, SZIP, NetCDF, OpenJPEG, WEBP, ZSTD, and GDAL. For some applications you may wish to minimize the size of the libraries by excluding unused libraries, or you may wish to add other libraries. In this case this repository can be used as a template to create your own Docker image or Lambda Layer.
+The GeoLambda project provides public Docker images and AWS Lambda Layers containing common geospatial native libraries. GeoLambda contains the libraries PROJ.5, GEOS, GeoTIFF, HDF4/5, SZIP, NetCDF, OpenJPEG, WEBP, ZSTD, and GDAL. For some applications you may wish to minimize the size of the libraries by excluding unused libraries, or you may wish to add other libraries. In this case this repository can be used as a template to create your own Docker image or Lambda Layer following the instructions in this README.
+
+This repository also contains examples and pre-built images for specific runtimes.
+
+- [Python](python/README.md)
 
 ## Usage
 
-While GeoLambda was initially intended for AWS Lambda they are also useful as base geospatial Docker images.
+While GeoLambda was initially intended for AWS Lambda they are also useful as base geospatial Docker images. The version of GDAL included for different versions of GeoLambda is shown here:
 
-### Lambda Layer
+| geolambda | GDAL  |
+| -------- | ----  |
+| 1.0.0    | 2.3.1 |
+| 1.1.0    | 2.4.0 |
 
-To use one of the public GeoLambda layers you will need the ARN for the layer in same region as your Lambda function. Currently, GeoLambda layers are available in `us-east-1`, `us-west-2`, and `eu-central-1`. If you want to use it in another region please file an issue or you can also create your own layer using this repository.
-
-#### v1.1.0
-
-| Region | ARN |
-| ------ | --- |
-| us-east-1 | |
-| us-west-2 | |
-| eu-central-1 | |
+To get the version numbers of all installed packages see the [CHANGELOG](CHANGELOG.md) or the Dockerfile for the specific version.
 
 ### Docker images
 
@@ -26,11 +25,6 @@ The developmentseed/geolambda image in Docker Hub is tagged by version.
 
 	$ docker pull developmentseed/geolambda:<version>
 
-| geolambda | GDAL  |
-| -------- | ----  |
-| 1.0.0    | 2.3.1 |
-| 1.1.0    | 2.4.0 |
-
 Or just include it in your own Dockerfile as the base image.
 
 ```
@@ -39,7 +33,20 @@ FROM developmentseed/geolambda:${VERSION}
 
 The GeoLambda image does not have an entrypoint defined, so a command must be provided when you run it. This example will mount the current directory to /work and run the container interactively.
 
-	$ docker run --rm -v $PWD:/work -it developmentseed/geolambda:latest /bin/bash
+	$ docker run --rm -v $PWD:/home/geolambda -it developmentseed/geolambda:latest /bin/bash
+
+### Lambda Layer
+
+If you just wish to use the publicly avialable Lambda layer you will need the ARN for the layer in same region as your Lambda function. Currently, GeoLambda layers are available in `us-east-1`, `us-west-2`, and `eu-central-1`. If you want to use it in another region please file an issue or you can also create your own layer using this repository (see instructions below on 'Create a new version').
+
+#### v1.1.0
+
+| Region | ARN |
+| ------ | --- |
+| us-east-1 | |
+| us-west-2 | |
+| eu-central-1 | |
+
 
 ## Development
 

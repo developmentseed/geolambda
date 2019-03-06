@@ -4,13 +4,15 @@ The Python GeoLambda image is meant to be used as a template for your own Python
 
 ## Usage
 
-The Dockerfile can be used to create a new Docker image based on any version of GeoLambda with any version of Python by providing the versions as build arguments to `docker run`:
+These instructions show how to use the files in this directory to create your own Python based geospatial Lambda function and get it deployed.
+
+### Create docker image
+
+First a Docker image will need to be created based on GeoLambda that includes the dependencies needed. Use the [Dockerfile](Dockerfile) can be used to create a new Docker image based on any version of GeoLambda with any version of Python by providing the versions as build arguments to `docker run`. This will install the specified version of Python along with any Python packages provided in [requirements.txt](requirements.txt).
 
     $ docker build . --build-arg VERSION=1.1.0 --build-arg PYVER=3.6.1 -t <myimage>:latest
 
-If not provided, VERSION (the version of GeoLambda to use) will default to 1.1.0 and PYVER (Python version) will default to 3.6.1.
-
-This will install the specified version of Python along with any Python packages provided in [requirements.txt](requirements.txt).
+If not provided, `VERSION` (the version of GeoLambda to use) will default to `latest` and `PYVER` (Python version) will default to `3.6.1`.
 
 ### Create handler
 
@@ -48,9 +50,14 @@ To run the image interactively:
 
     $ docker run -v ${PWD}:/home/geolambda --rm -it developmentseed/geolambda:${VERSION}-python36
 
+This image includes the dependencies specified in the default [requirements.txt](requirements.txt) file.
+
+
 ## Development
 
-To create a new official version of the Python GeoLambda for publication follow these steps *after* following the [steps for publishing a new base GeoLambda](../README.md) from this directory:
+To create a new official version of a Python GeoLambda Docker image for publication to Docker Hub follow these steps *after* following the [steps for publishing a new base GeoLambda](../README.md)
+
+From this directory:
 
 ```
 $ VERSION=${cat ../VERSION}
