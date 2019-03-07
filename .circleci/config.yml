@@ -26,15 +26,6 @@ jobs:
           command: |
             VERSION=$(cat VERSION)
             docker build . -t developmentseed/geolambda:${VERSION}
-      - run:
-          name: Save Docker image layer cache
-          command: |
-            mkdir -p /caches
-            docker save -o /caches/project.tar developmentseed/geolambda
-      - save_cache:
-          key: v1-{{ .Branch }}-{{ epoch }}
-          paths:
-            - /caches/project.tar
       - deploy:
           name: Publish Docker images
           command: |
