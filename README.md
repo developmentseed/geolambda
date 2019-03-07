@@ -1,6 +1,6 @@
 # GeoLambda: geospatial AWS Lambda Layer
 
-Note: this is a new beta version (v1.1.0b1) of GeoLambda
+Note: this is a pre-release version (v1.1.0rc1) of GeoLambda
 
 The GeoLambda project provides public Docker images and AWS Lambda Layers containing common geospatial native libraries. GeoLambda contains the libraries PROJ.5, GEOS, GeoTIFF, HDF4/5, SZIP, NetCDF, OpenJPEG, WEBP, ZSTD, and GDAL. For some applications you may wish to minimize the size of the libraries by excluding unused libraries, or you may wish to add other libraries. In this case this repository can be used as a template to create your own Docker image or Lambda Layer following the instructions in this README.
 
