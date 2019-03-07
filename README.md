@@ -1,5 +1,7 @@
 # GeoLambda: geospatial AWS Lambda Layer
 
+Note: this is a new beta version (v1.1.0b1) of GeoLambda
+
 The GeoLambda project provides public Docker images and AWS Lambda Layers containing common geospatial native libraries. GeoLambda contains the libraries PROJ.5, GEOS, GeoTIFF, HDF4/5, SZIP, NetCDF, OpenJPEG, WEBP, ZSTD, and GDAL. For some applications you may wish to minimize the size of the libraries by excluding unused libraries, or you may wish to add other libraries. In this case this repository can be used as a template to create your own Docker image or Lambda Layer following the instructions in this README.
 
 This repository also contains examples and pre-built images for specific runtimes.
@@ -13,7 +15,7 @@ While GeoLambda was initially intended for AWS Lambda they are also useful as ba
 | geolambda | GDAL  |
 | -------- | ----  |
 | 1.0.0    | 2.3.1 |
-| 1.1.0    | 2.4.0 |
+| 1.1.0b1  | 2.4.0 |
 
 To get the version numbers of all installed packages see the [CHANGELOG](CHANGELOG.md) or the Dockerfile for the specific version.
 
@@ -39,7 +41,7 @@ The GeoLambda image does not have an entrypoint defined, so a command must be pr
 
 If you just wish to use the publicly avialable Lambda layer you will need the ARN for the layer in same region as your Lambda function. Currently, GeoLambda layers are available in `us-east-1`, `us-west-2`, and `eu-central-1`. If you want to use it in another region please file an issue or you can also create your own layer using this repository (see instructions below on 'Create a new version').
 
-#### v1.1.0
+#### v1.1.0b1
 
 | Region | ARN |
 | ------ | --- |
@@ -60,21 +62,24 @@ Use the Dockerfile here as a template for your own version of GeoLambda. Simply 
 
 To create a new version of GeoLambda follow these steps. 
 
-- update the version in the `VERSION` file
-- build the image:
+1. update the version in the `VERSION` file
+
+The version in the VERSION file will be used to tag the Docker images and create a GitHub tag.
+
+2. build the image:
   
 ```
 $ VERSION=$(cat VERSION)
 $ docker build . -t developmentseed/geolambda:${VERSION}
 ```
 
-- Push the image to Docker Hub:
+3. Push the image to Docker Hub:
 
 ```
 $ docker push developmentseed/geolambda:${VERSION}
 ```
 
-- Create deployment package using the built-in [packaging script](bin/package.sh)
+4. Create deployment package using the built-in [packaging script](bin/package.sh)
 
 ```
 $ docker run --rm -v $PWD:/home/geolambda --entrypoint package.sh \
@@ -83,7 +88,7 @@ $ docker run --rm -v $PWD:/home/geolambda --entrypoint package.sh \
 
 This will create a lambda/ directory containing the native libraries and related files, along with a `lambda-deploy.zip` file that can be deployed as a Lambda layer.
 
-- Push as Lambda layer (if layer already exists a new version will be created)
+5. Push as Lambda layer (if layer already exists a new version will be created)
 
 ```
 $ aws lambda publish-layer-version \
@@ -93,7 +98,7 @@ $ aws lambda publish-layer-version \
 	--zip-file fileb://lambda-deploy.zip
 ```
 
-- Make layer public (needs to be done each time a new version is published)
+6. Make layer public (needs to be done each time a new version is published)
 
 ```
 $ aws lambda add-layer-version-permission --layer-name geolambda \
