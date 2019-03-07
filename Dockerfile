@@ -15,12 +15,14 @@ RUN \
 
 # versions of packages
 ENV \
+    CURL_VERSION=7.51.0 \
     GEOS_VERSION=3.7.1 \
     GEOTIFF_VERSION=1.4.3 \
 	GDAL_VERSION=2.4.0 \
     HDF4_VERSION=4.2.14 \
 	HDF5_VERSION=1.10.5 \
     NETCDF_VERSION=4.6.2 \
+    NGHTTP2_VERSION=1.35.1 \
 	OPENJPEG_VERSION=2.3.0 \
     PKGCONFIG_VERSION=0.29.2 \
     PROJ_VERSION=5.2.0 \
@@ -31,6 +33,7 @@ ENV \
 # Paths to things
 ENV \
 	BUILD=/build \
+    NPROC=4 \
 	PREFIX=/usr/local \
 	GDAL_CONFIG=/usr/local/bin/gdal-config \
 	LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
@@ -44,7 +47,7 @@ RUN \
     tar xvf pkg-config-$PKGCONFIG_VERSION.tar.gz; \
     cd pkg-config-$PKGCONFIG_VERSION; \
     ./configure --prefix=$PREFIX CFLAGS="-O2 -Os"; \
-    make; make install; make clean; \
+    make -j ${NPROC} install; \
     cd ../; rm -rf pkg-config-*;
 
 # proj
@@ -53,8 +56,21 @@ RUN \
     tar -zvxf proj-$PROJ_VERSION.tar.gz; \
     cd proj-$PROJ_VERSION; \
     ./configure --prefix=$PREFIX; \
-    make; make install; cd ..; \
+    make -j ${NPROC} install; cd ..; \
     rm -rf proj-$PROJ_VERSION proj-$PROJ_VERSION.tar.gz
+
+# nghttp2
+RUN \
+  curl -sfL https://github.com/nghttp2/nghttp2/releases/download/v${NGHTTP2_VERSION}/nghttp2-${NGHTTP2_VERSION}.tar.gz | tar zxf - -C nghttp2 --strip-components=1; cd nghttp2; \
+  ./configure --enable-lib-only --prefix=${PREFIX}; \
+  make -j ${NPROC} install; \
+  cd ..; rm -rf nghttp2;
+
+RUN \
+  curl -sfL https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz | tar zxf - -C curl --strip-components=1; cd curl; \
+  ./configure --prefix=${PREFIX} --disable-manual --disable-cookies --with-nghttp2=${PREFIX} \
+  make -j $(NPROC) install; \
+  cd ..; rm -rf curl;
 
 # GEOS
 RUN \
@@ -62,9 +78,8 @@ RUN \
 	tar xjf geos*bz2; \
 	cd geos*; \
 	./configure --enable-python --prefix=$PREFIX CFLAGS="-O2 -Os"; \
-	make -j 10; make install; \
-	cd ..; \
-    rm -rf geos*;
+	make -j ${NPROC} install; \
+	cd ..; rm -rf geos*;
 
 # szip (for hdf)
 RUN \
@@ -72,7 +87,7 @@ RUN \
     tar -xvf szip-$SZIP_VERSION.tar.gz; \
     cd szip-$SZIP_VERSION; \
     ./configure --prefix=$PREFIX; \
-    make; make install; cd ..; \
+    make -j ${NPROC} install; cd ..; \
     rm -rf szip-$SZIP_VERSION*
 
 # libhdf4
@@ -87,8 +102,8 @@ RUN \
         --enable-shared \
         --disable-netcdf \
         --disable-fortran; \
-    make; make install; cd ..; \
-    rm -rf hdf-$HDF4_VERSION*; \
+    make -j ${NPROC} install; \
+    cd ..; rm -rf hdf-$HDF4_VERSION*; \
     yum remove -y bison flex
 
 # libhdf5
@@ -99,8 +114,8 @@ RUN \
     ./configure \
         --prefix=$PREFIX \
         --with-szlib=$PREFIX; \
-    make; make install; cd ..; \
-    rm -rf hdf5-$HDF5_VERSION*
+    make -j ${NPROC} install; \
+    cd ..; rm -rf hdf5-$HDF5_VERSION*
 
 # NetCDF
 RUN \
@@ -109,8 +124,8 @@ RUN \
     cd netcdf-c-$NETCDF_VERSION; \
     ./configure \
         --prefix=$PREFIX; \
-    make; make install; cd ..; \
-    rm -rf netcdf-c-${NETCDF_VERSION} v$NETCDF_VERSION.tar.gz;
+    make -j ${NPROC} install; \
+    cd ..; rm -rf netcdf-c-${NETCDF_VERSION} v$NETCDF_VERSION.tar.gz;
 
 # WEBP
 RUN \
@@ -118,18 +133,16 @@ RUN \
     tar xzf libwebp-${WEBP_VERSION}.tar.gz; \
     cd libwebp-${WEBP_VERSION}; \
     CFLAGS="-O2 -Wl,-S" ./configure --prefix=$PREFIX; \
-    make -j4 --silent; make install --silent && make clean --silent; cd ..; \
-    rm -rf libwebp-${WEBP_VERSION} libwebp-${WEBP_VERSION}.tar.gz
+    make -j ${NPROC} install; \
+    cd ..; rm -rf libwebp-${WEBP_VERSION} libwebp-${WEBP_VERSION}.tar.gz
 
 # ZSTD
 RUN \
   wget -q https://github.com/facebook/zstd/archive/v${ZSTD_VERSION}.tar.gz; \
   tar -zvxf v${ZSTD_VERSION}.tar.gz; \
   cd zstd-${ZSTD_VERSION}; \
-  make -j4 PREFIX=$PREFIX ZSTD_LEGACY_SUPPORT=0 CFLAGS=-O1 --silent; \
-  make install PREFIX=$PREFIX ZSTD_LEGACY_SUPPORT=0 CFLAGS=-O1 --silent; \
-  make clean --silent; cd ..; \
-  rm -rf v${ZSTD_VERSION}.tar.gz zstd-${ZSTD_VERSION}
+  make -j ${NPROC} install PREFIX=$PREFIX ZSTD_LEGACY_SUPPORT=0 CFLAGS=-O1 --silent; \
+  cd ..; rm -rf v${ZSTD_VERSION}.tar.gz zstd-${ZSTD_VERSION}
 
 # libopenjpeg
 RUN \
@@ -137,7 +150,7 @@ RUN \
     tar xvf v$OPENJPEG_VERSION.tar.gz; \
     cd openjpeg-$OPENJPEG_VERSION; mkdir build; cd build; \
     cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX; \
-    make; make install; make clean; \
+    make -j ${NPROC} install; \
     cd ../..; rm -rf openjpeg-* v$OPENJPEG_VERSION.tar.gz;
 
 RUN \
@@ -146,7 +159,7 @@ RUN \
     cd libgeotiff-$GEOTIFF_VERSION; \
     ./configure \
         --prefix=${PREFIX} --with-proj=${PREFIX} ;\
-    make; make install; make install DESTDIR=; cd ..; \
+    make -j ${NPROC} install; cd ..; \
     rm -rf libgeotiff-$GEOTIFF_VERSION.tar.gz libgeotiff-$GEOTIFF_VERSION;
 
 # GDAL
@@ -157,21 +170,21 @@ RUN \
     ./configure \
         --disable-debug \
         --disable-static \
-        --prefix=$PREFIX \
+        --prefix=${PREFIX} \
         --with-openjpeg \
         --with-geotiff=${PREFIX} \
-        --with-hdf4=$PREFIX \
-        --with-hdf5=$PREFIX \
-        --with-netcdf=$PREFIX \
-        --with-web=$PREFIX \
-        --with-zstd=$PREFIX \
+        --with-hdf4=${PREFIX} \
+        --with-hdf5=${PREFIX} \
+        --with-netcdf=${PREFIX} \
+        --with-web=${PREFIX} \
+        --with-zstd=${PREFIX} \
         --with-threads=yes \
-		--with-curl=yes \
+		--with-curl=${PREFIX}/bin/curl-config \
         --without-python \
         --with-geos=$PREFIX/bin/geos-config \
 		--with-hide-internal-symbols=yes \
         CFLAGS="-O2 -Os" CXXFLAGS="-O2 -Os"; \
-    make; make install; \
+    make -j ${NPROC} install; \
     cd $BUILD; rm -rf gdal-$GDAL_VERSION*
 
 # Copy shell scripts and config files over
