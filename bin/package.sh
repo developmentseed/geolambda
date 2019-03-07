@@ -28,6 +28,8 @@ cp $PREFIX/lib/libzstd.so.1 $DEPLOY_DIR/lib/
 cp /usr/lib64/libjpeg.so.62 $DEPLOY_DIR/lib/
 #cp /usr/lib64/libpq.so.5 $DEPLOY_DIR/lib/
 
+strip $DEPLOY_DIR/lib/* || true
+
 # copy GDAL_DATA files over
 mkdir -p $DEPLOY_DIR/share
 rsync -ax $PREFIX/share/gdal $DEPLOY_DIR/share/
