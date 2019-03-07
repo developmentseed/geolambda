@@ -37,7 +37,7 @@ jobs:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
             - /caches/project.tar
-      - publish:
+      - deploy:
           name: Publish Docker images
           command: |
             VERSION=$(cat VERSION)
@@ -65,7 +65,6 @@ jobs:
                 --statement-id public --version-number 1 --principal '*'
             done
                 
-
 
 workflows:
   version: 2
