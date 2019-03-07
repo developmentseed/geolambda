@@ -83,13 +83,17 @@ $ docker run --rm -v $PWD:/home/geolambda --entrypoint package.sh \
 
 This will create a lambda/ directory containing the native libraries and related files, along with a `lambda-deploy.zip` file that can be deployed as a Lambda layer.
 
-- Push as Lambda layer
+- Push as Lambda layer (if layer already exists a new version will be created)
 
 ```
-$ 
+$ aws lambda publish-layer-version \
+	--layer-name geolambda \
+	--license-info "MIT" \
+	--description "Native geospatial libaries for all runtimes" \
+	--zip-file fileb://lambda-deploy.zip
 ```
 
-- Make layer public (if this is a newly created layer)
+- Make layer public (needs to be done each time a new version is published)
 
 ```
 $ aws lambda add-layer-version-permission --layer-name geolambda \

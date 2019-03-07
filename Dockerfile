@@ -6,9 +6,8 @@ LABEL maintainer="Matthew Hanson <matt.a.hanson@gmail.com>"
 RUN \
     yum makecache fast; \
     yum install -y \
-        wget tar gcc  gcc-c++ zip rsync git ssh cmake bzip2 automake \
-        zlib-devel curl-devel libjpeg-devel \
-        glib2-devel; \
+        wget tar gcc gcc-c++ zip rsync git ssh cmake bzip2 automake \
+        zlib-devel curl-devel libjpeg-devel glib2-devel; \
     yum install -y bash-completion --enablerepo=epel; \
     yum clean all; \
     yum autoremove
@@ -66,6 +65,7 @@ RUN \
   make -j ${NPROC} install; \
   cd ..; rm -rf nghttp2;
 
+# curl
 RUN \
   curl -sfL https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz | tar zxf - -C curl --strip-components=1; cd curl; \
   ./configure --prefix=${PREFIX} --disable-manual --disable-cookies --with-nghttp2=${PREFIX} \
