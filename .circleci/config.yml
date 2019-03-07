@@ -56,11 +56,11 @@ jobs:
             for region in [us-east-1, us-west-2, eu-central-1]
             do
               aws lambda publish-layer-version --region ${region}
-                --layer-name geolambda-beta --license-info "MIT" \
+                --layer-name geolambda-test --license-info "MIT" \
                 --description "Native geospatial libaries for all runtimes" \
                 --zip-file fileb://lambda-deploy.zip
               aws lambda add-layer-version-permission --region ${region} \
-                --layer-name geolambda-beta --action lambda:GetLayerVersion \
+                --layer-name geolambda-test --action lambda:GetLayerVersion \
                 --statement-id public --version-number 1 --principal '*'
             done
                 
