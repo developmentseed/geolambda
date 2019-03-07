@@ -1,33 +1,33 @@
 version: 2
 
+references:
+  restore_repo: &restore_repo
+    restore_cache:
+      keys:
+        - v1-repo-{{ .Branch }}-{{ .Revision }}
+        - v1-repo-{{ .Branch }}
+        - v1-repo
+  save_repo: &save_repo
+    save_cache:
+      key: v1-repo-{{ .Branch }}-{{ .Revision }}
+      paths:
+        - ~/project
+
 jobs:
   build_and_deploy:
-    working_directory: /project
     docker:
       - image: docker:17.05.0-ce-git
+    machine:
+      docker_layer_caching: true
     steps:
+      - *restore_repo
       - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --no-cache py-pip=9.0.0-r1
-            pip install awscli==1.11.76
-      - setup_remote_docker
-      - restore_cache:
-          keys:
-            - v1-{{ .Branch }}
-          paths:
-            - /caches/project.tar
-      - run:
-          name: Load Docker image layer cache
-          command: |
-            set +o pipefail
-            docker load -i /caches/project.tar | true
+      - *save_repo
       - run:
           name: Build application Docker image
           command: |
             VERSION=$(cat VERSION)
-            docker build . -t developmentseed/geolambda:${VERSION} #--cache-from=project
+            docker build . -t developmentseed/geolambda:${VERSION}
       - run:
           name: Save Docker image layer cache
           command: |
@@ -52,6 +52,7 @@ jobs:
       - deploy:
           name: Deploy public Lambda layers
           command: |
+            pip install awscli
             VERSION=$(cat VERSION)
             docker run --rm -v $PWD:/home/geolambda --entrypoint package.sh -it developmentseed/geolambda:${VERSION}
             for region in [us-east-1, us-west-2, eu-central-1]
