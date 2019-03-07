@@ -11,7 +11,7 @@ jobs:
           name: Install dependencies
           command: |
             apk add --no-cache py-pip=9.0.0-r1
-            pip install docker-compose==1.12.0 awscli==1.11.76
+            pip install awscli==1.11.76
       - setup_remote_docker
       - restore_cache:
           keys:
@@ -37,8 +37,8 @@ jobs:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
             - /caches/project.tar
-      - deploy:
-          name: Push application Docker image
+      - publish:
+          name: Publish Docker images
           command: |
             VERSION=$(cat VERSION)
             mkdir -p ~/.ssh
@@ -49,6 +49,23 @@ jobs:
             docker tag developmentseed/geolambda:latest developmentseed/geolambda:${VERSION}
             docker push developmentseed/geolambda:latest
             docker push developmentseed/geolambda:${VERSION}
+      - deploy:
+          name: Deploy public Lambda layers
+          command: |
+            VERSION=$(cat VERSION)
+            docker run --rm -v $PWD:/home/geolambda --entrypoint package.sh -it developmentseed/geolambda:${VERSION}
+            for region in [us-east-1, us-west-2, eu-central-1]
+            do
+              aws lambda publish-layer-version --region ${region}
+                --layer-name geolambda-beta --license-info "MIT" \
+                --description "Native geospatial libaries for all runtimes" \
+                --zip-file fileb://lambda-deploy.zip
+              aws lambda add-layer-version-permission --region ${region} \
+                --layer-name geolambda-beta --action lambda:GetLayerVersion \
+                --statement-id public --version-number 1 --principal '*'
+            done
+                
+
 
 workflows:
   version: 2
@@ -57,4 +74,4 @@ workflows:
       - build_and_deploy:
           filters:
             branches:
-              only: master
+              only: develop
