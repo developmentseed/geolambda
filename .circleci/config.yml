@@ -15,8 +15,6 @@ references:
 
 jobs:
   build_and_deploy:
-    docker:
-      - image: docker:17.05.0-ce-git
     machine:
       docker_layer_caching: true
     steps:
