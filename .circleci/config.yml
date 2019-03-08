@@ -21,10 +21,11 @@ jobs:
       - *restore_repo
       - checkout
       - *save_repo
-      - run: Install dependencies
-        command: |
-          pip install awscli
-          sudo apt-get install jq
+      - run:
+          name: Install dependencies
+          command: |
+            pip install awscli
+            sudo apt-get install jq
       - run:
           name: Build application Docker image
           command: |
