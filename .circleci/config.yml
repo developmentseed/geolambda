@@ -63,4 +63,4 @@ workflows:
       - build_and_deploy:
           filters:
             branches:
-              only: develop
+              only: master
