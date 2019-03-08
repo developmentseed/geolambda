@@ -1,56 +1,60 @@
 version: 2
 
+references:
+  restore_repo: &restore_repo
+    restore_cache:
+      keys:
+        - v1-repo-{{ .Branch }}-{{ .Revision }}
+        - v1-repo-{{ .Branch }}
+        - v1-repo
+  save_repo: &save_repo
+    save_cache:
+      key: v1-repo-{{ .Branch }}-{{ .Revision }}
+      paths:
+        - ~/project
+
 jobs:
   build_and_deploy:
-    working_directory: /project
-    docker:
-      - image: docker:17.05.0-ce-git
+    machine:
+      docker_layer_caching: true
     steps:
+      - *restore_repo
       - checkout
+      - *save_repo
       - run:
           name: Install dependencies
           command: |
-            apk add --no-cache py-pip=9.0.0-r1
-            pip install docker-compose==1.12.0 awscli==1.11.76
-      - setup_remote_docker
-      - restore_cache:
-          keys:
-            - v1-{{ .Branch }}
-          paths:
-            - /caches/project.tar
-      - run:
-          name: Load Docker image layer cache
-          command: |
-            set +o pipefail
-            docker load -i /caches/project.tar | true
+            pip install awscli
+            sudo apt-get install jq
       - run:
           name: Build application Docker image
           command: |
-            docker-compose build #--cache-from=project
-      - run:
-          name: Save Docker image layer cache
-          command: |
-            mkdir -p /caches
-            docker save -o /caches/project.tar developmentseed/geolambda
-      - save_cache:
-          key: v1-{{ .Branch }}-{{ epoch }}
-          paths:
-            - /caches/project.tar
-      - deploy:
-          name: Push application Docker image
-          command: |
-            VERSION=`awk '{if (NR==1) {print substr($0, 0, length($0)-1)}}' CHANGES.md`
+            VERSION=$(cat VERSION)
+            docker build . -t developmentseed/geolambda:${VERSION}
+            # publish docker images
             mkdir -p ~/.ssh
             ssh-keyscan github.com >> ~/.ssh/known_hosts
-            git tag $VERSION
-            git push origin $VERSION
+            git tag -d ${VERSION}
+            git tag ${VERSION}
+            git push origin ${VERSION}
             docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker tag developmentseed/geolambda:latest developmentseed/geolambda:$VERSION
-            docker tag developmentseed/geolambda-base:latest developmentseed/geolambda-base:$VERSION
+            docker tag developmentseed/geolambda:${VERSION} developmentseed/geolambda:latest
             docker push developmentseed/geolambda:latest
-            docker push developmentseed/geolambda:$VERSION
-            docker push developmentseed/geolambda-base:latest
-            docker push developmentseed/geolambda-base:$VERSION
+            docker push developmentseed/geolambda:${VERSION}
+            # deploy public Lambda layers
+            pip install awscli
+            docker run --rm -v $PWD:/home/geolambda --entrypoint package.sh -it developmentseed/geolambda:${VERSION}
+            for region in us-east-1 us-west-2 eu-central-1
+            do
+              LVERSION="$(aws lambda publish-layer-version --region ${region} \
+                --layer-name geolambda-dev --license-info 'MIT' \
+                --description 'Native geospatial libaries for all runtimes' \
+                --zip-file fileb://lambda-deploy.zip | jq '.Version')"
+              aws lambda add-layer-version-permission --region ${region} \
+                --layer-name geolambda-dev --action lambda:GetLayerVersion \
+                --statement-id public --version-number ${LVERSION} --principal '*'
+            done
+
 
 workflows:
   version: 2
