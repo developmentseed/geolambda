@@ -29,8 +29,9 @@ jobs:
             # publish docker images
             mkdir -p ~/.ssh
             ssh-keyscan github.com >> ~/.ssh/known_hosts
+            git tag -d ${VERSION}
             git tag ${VERSION}
-            git push -f --tags #origin ${VERSION}
+            git push origin ${VERSION}
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker tag developmentseed/geolambda:latest developmentseed/geolambda:${VERSION}
             docker push developmentseed/geolambda:latest
