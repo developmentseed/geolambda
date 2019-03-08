@@ -33,7 +33,7 @@ jobs:
             git tag ${VERSION}
             git push origin ${VERSION}
             docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker tag developmentseed/geolambda:latest developmentseed/geolambda:${VERSION}
+            docker tag developmentseed/geolambda:${VERSION} developmentseed/geolambda:latest
             docker push developmentseed/geolambda:latest
             docker push developmentseed/geolambda:${VERSION}
             # deploy public Lambda layers
