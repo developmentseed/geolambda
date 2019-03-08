@@ -41,7 +41,7 @@ jobs:
             docker run --rm -v $PWD:/home/geolambda --entrypoint package.sh -it developmentseed/geolambda:${VERSION}
             for region in [us-east-1, us-west-2, eu-central-1]
             do
-              aws lambda publish-layer-version --region ${region}
+              aws lambda publish-layer-version --region ${region} \
                 --layer-name geolambda-test --license-info "MIT" \
                 --description "Native geospatial libaries for all runtimes" \
                 --zip-file fileb://lambda-deploy.zip
