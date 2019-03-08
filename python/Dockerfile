@@ -17,7 +17,8 @@ RUN \
     pyenv global ${PYVER}; \
     pip install --upgrade pip
 
-COPY requirements.txt ./
+COPY requirements*.txt ./
 
 RUN \
+    pip isntall -r requirements-pre.txt; \
     pip install -r requirements.txt
