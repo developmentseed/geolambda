@@ -5,9 +5,7 @@ LABEL maintainer="Matthew Hanson <matt.a.hanson@gmail.com>"
 # install system libraries
 RUN \
     yum makecache fast; \
-    yum install -y \
-        wget tar gcc gcc-c++ zip rsync git ssh cmake bzip2 automake \
-        zlib-devel curl-devel libjpeg-devel glib2-devel; \
+    yum install -y wget libpng-devel; \
     yum install -y bash-completion --enablerepo=epel; \
     yum clean all; \
     yum autoremove
@@ -42,60 +40,62 @@ WORKDIR /build
 
 # pkg-config - version > 2.5 required for GDAL 2.3+
 RUN \
-    wget https://pkg-config.freedesktop.org/releases/pkg-config-$PKGCONFIG_VERSION.tar.gz; \
-    tar xvf pkg-config-$PKGCONFIG_VERSION.tar.gz; \
-    cd pkg-config-$PKGCONFIG_VERSION; \
+    mkdir pkg-config; \
+    wget -qO- https://pkg-config.freedesktop.org/releases/pkg-config-$PKGCONFIG_VERSION.tar.gz \
+        | tar xvz -C pkg-config --strip-components=1; cd pkg-config; \
     ./configure --prefix=$PREFIX CFLAGS="-O2 -Os"; \
     make -j ${NPROC} install; \
-    cd ../; rm -rf pkg-config-*;
+    cd ../; rm -rf pkg-config
 
 # proj
 RUN \
-    wget http://download.osgeo.org/proj/proj-$PROJ_VERSION.tar.gz; \
-    tar -zvxf proj-$PROJ_VERSION.tar.gz; \
-    cd proj-$PROJ_VERSION; \
+    mkdir proj; \
+    wget -qO- http://download.osgeo.org/proj/proj-$PROJ_VERSION.tar.gz | tar xvz -C proj --strip-components=1; cd proj; \
     ./configure --prefix=$PREFIX; \
-    make -j ${NPROC} install; cd ..; \
-    rm -rf proj-$PROJ_VERSION proj-$PROJ_VERSION.tar.gz
+    make -j ${NPROC} install; \
+    cd ..; rm -rf proj
 
 # nghttp2
 RUN \
-  curl -sfL https://github.com/nghttp2/nghttp2/releases/download/v${NGHTTP2_VERSION}/nghttp2-${NGHTTP2_VERSION}.tar.gz | tar zxf - -C nghttp2 --strip-components=1; cd nghttp2; \
-  ./configure --enable-lib-only --prefix=${PREFIX}; \
-  make -j ${NPROC} install; \
-  cd ..; rm -rf nghttp2;
+    mkdir nghttp2; \
+    wget -qO- https://github.com/nghttp2/nghttp2/releases/download/v${NGHTTP2_VERSION}/nghttp2-${NGHTTP2_VERSION}.tar.gz \
+        | tar xvz -C nghttp2 --strip-components=1; cd nghttp2; \
+    ./configure --enable-lib-only --prefix=${PREFIX}; \
+    make -j ${NPROC} install; \
+    cd ..; rm -rf nghttp2
 
 # curl
 RUN \
-  curl -sfL https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz | tar zxf - -C curl --strip-components=1; cd curl; \
-  ./configure --prefix=${PREFIX} --disable-manual --disable-cookies --with-nghttp2=${PREFIX} \
-  make -j $(NPROC) install; \
-  cd ..; rm -rf curl;
+    mkdir curl; \
+    wget -qO- https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz \
+        | tar xvz -C curl --strip-components=1; cd curl; \
+    ./configure --prefix=${PREFIX} --disable-manual --disable-cookies --with-nghttp2=${PREFIX}; \
+    make -j ${NPROC} install; \
+    cd ..; rm -rf curl
 
 # GEOS
 RUN \
-	wget http://download.osgeo.org/geos/geos-$GEOS_VERSION.tar.bz2; \
-	tar xjf geos*bz2; \
-	cd geos*; \
+    mkdir geos; \
+	wget -qO- http://download.osgeo.org/geos/geos-$GEOS_VERSION.tar.bz2 \
+        | tar xvj -C geos --strip-components=1; cd geos; \
 	./configure --enable-python --prefix=$PREFIX CFLAGS="-O2 -Os"; \
 	make -j ${NPROC} install; \
-	cd ..; rm -rf geos*;
+	cd ..; rm -rf geos
 
 # szip (for hdf)
 RUN \
-    wget https://support.hdfgroup.org/ftp/lib-external/szip/$SZIP_VERSION/src/szip-$SZIP_VERSION.tar.gz; \
-    tar -xvf szip-$SZIP_VERSION.tar.gz; \
-    cd szip-$SZIP_VERSION; \
+    mkdir szip; \
+    wget -qO- https://support.hdfgroup.org/ftp/lib-external/szip/$SZIP_VERSION/src/szip-$SZIP_VERSION.tar.gz \
+        | tar xvz -C szip --strip-components=1; cd szip; \
     ./configure --prefix=$PREFIX; \
-    make -j ${NPROC} install; cd ..; \
-    rm -rf szip-$SZIP_VERSION*
+    make -j ${NPROC} install; \
+    cd ..; rm -rf szip
 
 # libhdf4
 RUN \
-    yum install -y bison flex; \
-    wget https://support.hdfgroup.org/ftp/HDF/releases/HDF$HDF4_VERSION/src/hdf-$HDF4_VERSION.tar; \
-    tar -xvf hdf-$HDF4_VERSION.tar; \
-    cd hdf-$HDF4_VERSION; \
+    mkdir hdf4; \
+    wget -qO- https://support.hdfgroup.org/ftp/HDF/releases/HDF$HDF4_VERSION/src/hdf-$HDF4_VERSION.tar \
+        | tar xv -C hdf4 --strip-components=1; cd hdf4; \
     ./configure \
         --prefix=$PREFIX \
         --with-szlib=$PREFIX \
@@ -103,70 +103,69 @@ RUN \
         --disable-netcdf \
         --disable-fortran; \
     make -j ${NPROC} install; \
-    cd ..; rm -rf hdf-$HDF4_VERSION*; \
-    yum remove -y bison flex
+    cd ..; rm -rf hdf4
 
 # libhdf5
 RUN \
-    wget https://support.hdfgroup.org/ftp/HDF5/current/src/hdf5-$HDF5_VERSION.tar; \
-    tar -xvf hdf5-$HDF5_VERSION.tar; \
-    cd hdf5-$HDF5_VERSION; \
+    mkdir hdf5; \
+    wget -qO- https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-${HDF5_VERSION%.*}/hdf5-${HDF5_VERSION}/src/hdf5-$HDF5_VERSION.tar.gz \
+        | tar xvz -C hdf5 --strip-components=1; cd hdf5; \
     ./configure \
         --prefix=$PREFIX \
         --with-szlib=$PREFIX; \
     make -j ${NPROC} install; \
-    cd ..; rm -rf hdf5-$HDF5_VERSION*
+    cd ..; rm -rf hdf5
 
 # NetCDF
 RUN \
-    wget https://github.com/Unidata/netcdf-c/archive/v$NETCDF_VERSION.tar.gz; \
-    tar -xvf v$NETCDF_VERSION.tar.gz; \
-    cd netcdf-c-$NETCDF_VERSION; \
-    ./configure \
-        --prefix=$PREFIX; \
+    mkdir netcdf; \
+    wget -qO- https://github.com/Unidata/netcdf-c/archive/v$NETCDF_VERSION.tar.gz \
+        | tar xvz -C netcdf --strip-components=1; cd netcdf; \
+    ./configure --prefix=$PREFIX --enable-hdf4; \
     make -j ${NPROC} install; \
-    cd ..; rm -rf netcdf-c-${NETCDF_VERSION} v$NETCDF_VERSION.tar.gz;
+    cd ..; rm -rf netcdf
 
 # WEBP
 RUN \
-    wget -q https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-${WEBP_VERSION}.tar.gz; \
-    tar xzf libwebp-${WEBP_VERSION}.tar.gz; \
-    cd libwebp-${WEBP_VERSION}; \
-    CFLAGS="-O2 -Wl,-S" ./configure --prefix=$PREFIX; \
+    mkdir webp; \
+    wget -qO- https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-${WEBP_VERSION}.tar.gz \
+        | tar xvz -C webp --strip-components=1; cd webp; \
+    CFLAGS="-O2 -Wl,-S" PKG_CONFIG_PATH="/usr/lib64/pkgconfig" ./configure --prefix=$PREFIX; \
     make -j ${NPROC} install; \
-    cd ..; rm -rf libwebp-${WEBP_VERSION} libwebp-${WEBP_VERSION}.tar.gz
+    cd ..; rm -rf webp
 
 # ZSTD
 RUN \
-  wget -q https://github.com/facebook/zstd/archive/v${ZSTD_VERSION}.tar.gz; \
-  tar -zvxf v${ZSTD_VERSION}.tar.gz; \
-  cd zstd-${ZSTD_VERSION}; \
-  make -j ${NPROC} install PREFIX=$PREFIX ZSTD_LEGACY_SUPPORT=0 CFLAGS=-O1 --silent; \
-  cd ..; rm -rf v${ZSTD_VERSION}.tar.gz zstd-${ZSTD_VERSION}
+    mkdir zstd; \
+    wget -qO- https://github.com/facebook/zstd/archive/v${ZSTD_VERSION}.tar.gz \
+        | tar -xvz -C zstd --strip-components=1; cd zstd; \
+    make -j ${NPROC} install PREFIX=$PREFIX ZSTD_LEGACY_SUPPORT=0 CFLAGS=-O1 --silent; \
+    cd ..; rm -rf zstd
 
-# libopenjpeg
+# openjpeg
 RUN \
-    wget https://github.com/uclouvain/openjpeg/archive/v$OPENJPEG_VERSION.tar.gz; \
-    tar xvf v$OPENJPEG_VERSION.tar.gz; \
-    cd openjpeg-$OPENJPEG_VERSION; mkdir build; cd build; \
+    mkdir openjpeg; \
+    wget -qO- https://github.com/uclouvain/openjpeg/archive/v$OPENJPEG_VERSION.tar.gz \
+        | tar xvz -C openjpeg --strip-components=1; cd openjpeg; mkdir build; cd build; \
     cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX; \
     make -j ${NPROC} install; \
-    cd ../..; rm -rf openjpeg-* v$OPENJPEG_VERSION.tar.gz;
+    cd ../..; rm -rf openjpeg
 
+# geotiff
 RUN \
-    wget https://download.osgeo.org/geotiff/libgeotiff/libgeotiff-$GEOTIFF_VERSION.tar.gz; \
-    tar -xzvf libgeotiff-$GEOTIFF_VERSION.tar.gz; \
-    cd libgeotiff-$GEOTIFF_VERSION; \
-    ./configure \
-        --prefix=${PREFIX} --with-proj=${PREFIX} ;\
-    make -j ${NPROC} install; cd ..; \
-    rm -rf libgeotiff-$GEOTIFF_VERSION.tar.gz libgeotiff-$GEOTIFF_VERSION;
+    mkdir geotiff; \
+    wget -qO- https://download.osgeo.org/geotiff/libgeotiff/libgeotiff-$GEOTIFF_VERSION.tar.gz \
+        | tar xvz -C geotiff --strip-components=1; cd geotiff; \
+    ./configure --prefix=${PREFIX} \
+        --with-proj=${PREFIX} --with-jpeg=yes --with-zip=yes;\
+    make -j ${NPROC} install; \
+    cd ${BUILD}; rm -rf geotiff
 
 # GDAL
 RUN \
-    wget http://download.osgeo.org/gdal/$GDAL_VERSION/gdal-$GDAL_VERSION.tar.gz; \
-    tar -xzvf gdal-$GDAL_VERSION.tar.gz; \
-    cd gdal-$GDAL_VERSION; \
+    mkdir gdal; \
+    wget -qO- http://download.osgeo.org/gdal/$GDAL_VERSION/gdal-$GDAL_VERSION.tar.gz \
+        | tar xvz -C gdal --strip-components=1; cd gdal; \
     ./configure \
         --disable-debug \
         --disable-static \
@@ -185,7 +184,7 @@ RUN \
 		--with-hide-internal-symbols=yes \
         CFLAGS="-O2 -Os" CXXFLAGS="-O2 -Os"; \
     make -j ${NPROC} install; \
-    cd $BUILD; rm -rf gdal-$GDAL_VERSION*
+    cd ${BUILD}; rm -rf gdal
 
 # Copy shell scripts and config files over
 COPY bin/* /usr/local/bin/
