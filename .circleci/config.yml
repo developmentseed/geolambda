@@ -21,6 +21,10 @@ jobs:
       - *restore_repo
       - checkout
       - *save_repo
+      - run: Install dependencies
+        command: |
+          pip install awscli
+          sudo apt-get install jq
       - run:
           name: Build application Docker image
           command: |
@@ -41,13 +45,13 @@ jobs:
             docker run --rm -v $PWD:/home/geolambda --entrypoint package.sh -it developmentseed/geolambda:${VERSION}
             for region in us-east-1 us-west-2 eu-central-1
             do
-              aws lambda publish-layer-version --region ${region} \
-                --layer-name geolambda-dev --license-info "MIT" \
-                --description "Native geospatial libaries for all runtimes" \
-                --zip-file fileb://lambda-deploy.zip
+              LVERSION='$(aws lambda publish-layer-version --region ${region} \
+                --layer-name geolambda-dev --license-info 'MIT' \
+                --description 'Native geospatial libaries for all runtimes' \
+                --zip-file fileb://lambda-deploy.zip | jq '.Version')"
               aws lambda add-layer-version-permission --region ${region} \
                 --layer-name geolambda-dev --action lambda:GetLayerVersion \
-                --statement-id public --version-number 1 --principal '*'
+                --statement-id public --version-number ${LVERSION} --principal '*'
             done
 
 
