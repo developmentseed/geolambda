@@ -3,19 +3,24 @@
 # directory used for deployment
 export DEPLOY_DIR=lambda
 
-echo Creating deploy package
+# Get Python version
+PYVERSION=$(cat /root/.pyenv/version)
+MAJOR=${PYVERSION%%.*}
+MINOR=${PYVERSION#*.}
+PYVER=${PYVERSION%%.*}${MINOR%%.*}
+PYPATH=/root/.pyenv/versions/$PYVERSION/lib/python3.6/site-packages/
 
-EXCLUDE="boto3* botocore* pip* docutils* *.pyc setuptools* wheel* coverage* testfixtures* mock* *.egg-info *.dist-info"
+echo Creating deploy package for Python $PYVERSION
+
+EXCLUDE="boto3* botocore* pip* docutils* *.pyc setuptools* wheel* coverage* testfixtures* mock* *.egg-info *.dist-info __pycache__ easy_install.py"
 
 EXCLUDES=()
 for E in ${EXCLUDE}
 do
-    echo ${E}
     EXCLUDES+=("--exclude ${E} ")
 done
 
-rsync -ax $PREFIX/lib/python$PYVER/site-packages/ $DEPLOY_DIR/ ${EXCLUDES[@]}
-rsync -ax $PREFIX/lib64/python$PYVER/site-packages/ $DEPLOY_DIR/ ${EXCLUDES[@]}
+rsync -ax $PYPATH/ $DEPLOY_DIR/ ${EXCLUDES[@]}
 
 # zip up deploy package
 cd $DEPLOY_DIR
