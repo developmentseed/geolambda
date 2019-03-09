@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Improve documentation
 - More libraries (CURL with http2, webp, zstd)
 - GeoTIFF now compiled from scratch rather than GGDAL builtin
+- Published public lambda layers - see README for ARNs
 
 ### Changed
 - Major refactor, GeoLambda base now runtime agnostic contains system libraries only

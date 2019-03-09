@@ -3,7 +3,7 @@ FROM developmentseed/geolambda:${VERSION}
 
 LABEL maintainer="Matthew Hanson <matt.a.hanson@gmail.com>"
 
-ARG PYVER=3.6.1
+ARG PYVERSION=3.6.1
 
 # install Python
 ENV \
@@ -11,13 +11,15 @@ ENV \
     PATH=/root/.pyenv/shims:/root/.pyenv/bin:$PATH
 
 RUN \
-    echo PYVER ${PYVER}; \
     curl https://pyenv.run | bash; \
-    pyenv install ${PYVER}; \
-    pyenv global ${PYVER}; \
+    pyenv install ${PYVERSION}; \
+    pyenv global ${PYVERSION}; \
     pip install --upgrade pip
 
-COPY requirements.txt ./
+COPY requirements*.txt ./
 
 RUN \
+    pip install -r requirements-pre.txt; \
     pip install -r requirements.txt
+
+COPY bin/* /usr/local/bin/

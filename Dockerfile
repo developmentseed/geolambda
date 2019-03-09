@@ -175,7 +175,7 @@ RUN \
         --with-hdf4=${PREFIX} \
         --with-hdf5=${PREFIX} \
         --with-netcdf=${PREFIX} \
-        --with-web=${PREFIX} \
+        --with-webp=${PREFIX} \
         --with-zstd=${PREFIX} \
         --with-threads=yes \
 		--with-curl=${PREFIX}/bin/curl-config \
