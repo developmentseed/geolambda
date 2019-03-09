@@ -11,9 +11,6 @@ ENV \
     PATH=/root/.pyenv/shims:/root/.pyenv/bin:$PATH
 
 RUN \
-    PYMINVER=${PYVER} \
-    export PYVER=${PYVER%%.*}${PYMINVER#*.} \
-    echo PYVER ${PYVER}; \
     curl https://pyenv.run | bash; \
     pyenv install ${PYVERSION}; \
     pyenv global ${PYVERSION}; \
