@@ -64,7 +64,7 @@ This image includes the dependencies specified in the default [requirements.txt]
 
 ## Development
 
-To create a new official version of a Python GeoLambda Docker image for publication to Docker Hub follow these steps *after* following the [steps for publishing a new base GeoLambda](../README.md)
+To create a new official version of a Python GeoLambda Docker image for publication to Docker Hub follow these steps *after* following the [steps for publishing a new base GeoLambda](../README.md). These steps are performed automatically in [CircleCI](../.circleci/config.yml)
 
 From this directory:
 
