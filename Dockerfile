@@ -1,6 +1,7 @@
 FROM lambci/lambda:build-provided
 
-LABEL maintainer="Matthew Hanson <matt.a.hanson@gmail.com>"
+LABEL maintainer="Development Seed <info@developmentseed.org>"
+LABEL authors="Matthew Hanson  <matt.a.hanson@gmail.com>"
 
 # install system libraries
 RUN \
