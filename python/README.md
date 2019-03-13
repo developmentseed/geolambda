@@ -69,7 +69,7 @@ To create a new official version of a Python GeoLambda Docker image for publicat
 From this directory:
 
 ```
-$ VERSION=${cat ../VERSION}
+$ VERSION=$(cat ../VERSION)
 $ docker build . --build-arg VERSION=${VERSION} -t developmentseed/geolambda:${VERSION}-python36
 ```
 
