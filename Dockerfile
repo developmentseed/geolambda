@@ -1,6 +1,7 @@
 FROM lambci/lambda:build-provided
 
-LABEL maintainer="Matthew Hanson <matt.a.hanson@gmail.com>"
+LABEL maintainer="Development Seed <info@developmentseed.org>"
+LABEL authors="Matthew Hanson  <matt.a.hanson@gmail.com>"
 
 # install system libraries
 RUN \
@@ -12,7 +13,7 @@ RUN \
 
 # versions of packages
 ENV \
-    CURL_VERSION=7.51.0 \
+    CURL_VERSION=7.59.0 \
     GEOS_VERSION=3.7.1 \
     GEOTIFF_VERSION=1.4.3 \
 	GDAL_VERSION=2.4.0 \
@@ -33,7 +34,8 @@ ENV \
     NPROC=4 \
 	PREFIX=/usr/local \
 	GDAL_CONFIG=/usr/local/bin/gdal-config \
-	LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
+	LD_LIBRARY_PATH=/usr/local/lib \
+    GDAL_DATA=/usr/local/share/gdal
 
 # switch to a build directory
 WORKDIR /build
@@ -180,12 +182,14 @@ RUN \
         --with-threads=yes \
 		--with-curl=${PREFIX}/bin/curl-config \
         --without-python \
+        --without-libtool \
         --with-geos=$PREFIX/bin/geos-config \
 		--with-hide-internal-symbols=yes \
-        CFLAGS="-O2 -Os" CXXFLAGS="-O2 -Os"; \
+        CFLAGS="-O2 -Os" CXXFLAGS="-O2 -Os" \
+        LDFLAGS="-Wl,-rpath,'\$\$ORIGIN'"; \
     make -j ${NPROC} install; \
     cd ${BUILD}; rm -rf gdal
-
+# 
 # Copy shell scripts and config files over
 COPY bin/* /usr/local/bin/
 

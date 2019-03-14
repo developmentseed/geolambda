@@ -1,4 +1,5 @@
 import os
+import subprocess
 import sys
 import logging
 
@@ -18,6 +19,16 @@ test_filename = 'https://landsat-pds.s3.amazonaws.com/c1/L8/086/240/LC08_L1GT_08
 def lambda_handler(event, context=None):
     """ Lambda handler """
     logger.debug(event)
+
+    # this try block is for testing and info only,
+    # it prints out info on the the libgdal binary and paths to linked libraries
+    #try:
+    #    output = subprocess.check_output('readelf -d /opt/lib/libgdal.so'.split(' '))
+    #    logger.info(output.decode())
+    #    output = subprocess.check_output('ldd /opt/lib/libgdal.so'.split(' '))
+    #    logger.info(output.decode())
+    #except Exception as e:
+    #    pass
 
     # process event payload and do something like this
     fname = event.get('filename', test_filename)

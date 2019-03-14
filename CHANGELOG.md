@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [v1.1.0rc1] - 2018-03-07
+## [v1.1.0] - 2018-03-12
 
 ### Added
 - Make compatible with Lambda Layers
@@ -52,5 +52,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - GDAL_VERSION=2.3.1
 
 [Unreleased]: https://github.com/sat-utils/sat-stac/compare/master...develop
-[v1.1.0rc1]: https://github.com/developmentseed/geolambda/compare/1.0.0...1.1.0rc1
+[v1.1.0]: https://github.com/developmentseed/geolambda/compare/1.0.0...1.1.0
 [v1.0.0]: https://github.com/developmentseed/geolambda/tree/1.0.0

@@ -1,7 +1,8 @@
 ARG VERSION=latest
 FROM developmentseed/geolambda:${VERSION}
 
-LABEL maintainer="Matthew Hanson <matt.a.hanson@gmail.com>"
+LABEL maintainer="Development Seed <info@developmentseed.org>"
+LABEL authors="Matthew Hanson  <matt.a.hanson@gmail.com>"
 
 ARG PYVERSION=3.6.1
 

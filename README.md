@@ -1,7 +1,5 @@
 # GeoLambda: geospatial AWS Lambda Layer
 
-Note: this is a pre-release version (v1.1.0rc1) of GeoLambda
-
 The GeoLambda project provides public Docker images and AWS Lambda Layers containing common geospatial native libraries. GeoLambda contains the libraries PROJ.5, GEOS, GeoTIFF, HDF4/5, SZIP, NetCDF, OpenJPEG, WEBP, ZSTD, and GDAL. For some applications you may wish to minimize the size of the libraries by excluding unused libraries, or you may wish to add other libraries. In this case this repository can be used as a template to create your own Docker image or Lambda Layer following the instructions in this README.
 
 This repository also contains examples and pre-built images for specific runtimes.
@@ -15,7 +13,7 @@ While GeoLambda was initially intended for AWS Lambda they are also useful as ba
 | geolambda | GDAL  |
 | -------- | ----  |
 | 1.0.0    | 2.3.1 |
-| 1.1.0rc1  | 2.4.0 |
+| 1.1.0  | 2.4.0 |
 
 To get the version numbers of all installed packages see the [CHANGELOG](CHANGELOG.md) or the Dockerfile for the specific version.
 
@@ -39,15 +37,15 @@ The GeoLambda image does not have an entrypoint defined, so a command must be pr
 
 ### Lambda Layer
 
-If you just wish to use the publicly avialable Lambda layer you will need the ARN for the layer in same region as your Lambda function. Currently, GeoLambda layers are available in `us-east-1`, `us-west-2`, and `eu-central-1`. If you want to use it in another region please file an issue or you can also create your own layer using this repository (see instructions below on 'Create a new version').
+If you just wish to use the publicly available Lambda layer you will need the ARN for the layer in same region as your Lambda function. Currently, GeoLambda layers are available in `us-east-1`, `us-west-2`, and `eu-central-1`. If you want to use it in another region please file an issue or you can also create your own layer using this repository (see instructions below on 'Create a new version').
 
-#### v1.1.0rc1
+#### v1.1.0rc2
 
 | Region | ARN |
 | ------ | --- |
-| us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda-dev:1 |
-| us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda-dev:1 |
-| eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda-dev:1 |
+| us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda-dev:2 |
+| us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda-dev:2 |
+| eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda-dev:2 |
 
 
 ## Development
@@ -82,8 +80,8 @@ $ docker push developmentseed/geolambda:${VERSION}
 4. Create deployment package using the built-in [packaging script](bin/package.sh)
 
 ```
-$ docker run --rm -v $PWD:/home/geolambda --entrypoint package.sh \
-	-it developmentseed/geolambda:${VERSION}
+$ docker run --rm -v $PWD:/home/geolambda \
+	-it developmentseed/geolambda:${VERSION} package.sh
 ```
 
 This will create a lambda/ directory containing the native libraries and related files, along with a `lambda-deploy.zip` file that can be deployed as a Lambda layer.
