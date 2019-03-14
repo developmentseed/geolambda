@@ -43,9 +43,9 @@ If you just wish to use the publicly available Lambda layer you will need the AR
 
 | Region | ARN |
 | ------ | --- |
-| us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda-dev:2 |
-| us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda-dev:2 |
-| eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda-dev:2 |
+| us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda-dev:3 |
+| us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda-dev:3 |
+| eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda-dev:3 |
 
 
 ## Development
