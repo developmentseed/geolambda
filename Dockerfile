@@ -13,7 +13,7 @@ RUN \
 
 # versions of packages
 ENV \
-    CURL_VERSION=7.51.0 \
+    CURL_VERSION=7.59.0 \
     GEOS_VERSION=3.7.1 \
     GEOTIFF_VERSION=1.4.3 \
 	GDAL_VERSION=2.4.0 \
@@ -183,7 +183,7 @@ RUN \
         --without-python \
         --with-geos=$PREFIX/bin/geos-config \
 		--with-hide-internal-symbols=yes \
-        CFLAGS="-O2 -Os" CXXFLAGS="-O2 -Os"; \
+        CFLAGS="-O2 -Os" CXXFLAGS="-O2 -Os -Wl,-rpath=$ORIGIN"; \
     make -j ${NPROC} install; \
     cd ${BUILD}; rm -rf gdal
 
