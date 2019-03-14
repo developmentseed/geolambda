@@ -23,7 +23,6 @@ ENV \
     NGHTTP2_VERSION=1.35.1 \
 	OPENJPEG_VERSION=2.3.0 \
     LIBJPEG_TURBO_VERSION=2.0.1 \
-    LIBPNG_VERSION=1.6.36 \
     PKGCONFIG_VERSION=0.29.2 \
     PROJ_VERSION=5.2.0 \
     SZIP_VERSION=2.1.1 \
@@ -155,15 +154,6 @@ RUN \
     make -j ${NPROC} install; \
     cd ../..; rm -rf openjpeg
 
-# png
-RUN \
-    mkdir png; \
-    wget -qO- http://prdownloads.sourceforge.net/libpng/libpng-$LIBPNG_VERSION.tar.gz \
-        | tar xvz -C png --strip-components=1; cd png; \
-    CFLAGS="-O2 -Wl,-S" ./configure --prefix=$PREFIX; \
-    make -j $(NPROC) install; \
-    cd ..; rm -rf png
-
 # jpeg_turbo
 RUN \
     mkdir jpeg; \
@@ -200,7 +190,6 @@ RUN \
         --with-webp=${PREFIX} \
         --with-zstd=${PREFIX} \
         --with-jpeg=${PREFIX} \
-        --with-png=${PREFIX} \
         --with-threads=yes \
 		--with-curl=${PREFIX}/bin/curl-config \
         --without-python \
