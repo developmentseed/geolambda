@@ -34,7 +34,7 @@ ENV \
     NPROC=4 \
 	PREFIX=/usr/local \
 	GDAL_CONFIG=/usr/local/bin/gdal-config \
-	LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64 \
+	LD_LIBRARY_PATH=/usr/local/lib \
     GDAL_DATA=/usr/local/share/gdal
 
 # switch to a build directory
@@ -182,12 +182,14 @@ RUN \
         --with-threads=yes \
 		--with-curl=${PREFIX}/bin/curl-config \
         --without-python \
+        --without-libtool \
         --with-geos=$PREFIX/bin/geos-config \
 		--with-hide-internal-symbols=yes \
-        CFLAGS="-O2 -Os" CXXFLAGS="-O2 -Os -Wl,-rpath=$ORIGIN"; \
+        CFLAGS="-O2 -Os" CXXFLAGS="-O2 -Os" \
+        LDFLAGS="-Wl,-rpath,'\$\$ORIGIN'"; \
     make -j ${NPROC} install; \
     cd ${BUILD}; rm -rf gdal
-
+# 
 # Copy shell scripts and config files over
 COPY bin/* /usr/local/bin/
 
