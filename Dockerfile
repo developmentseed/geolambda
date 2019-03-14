@@ -6,7 +6,7 @@ LABEL authors="Matthew Hanson  <matt.a.hanson@gmail.com>"
 # install system libraries
 RUN \
     yum makecache fast; \
-    yum install -y wget libpng-devel; \
+    yum install -y wget libpng-devel nasm; \
     yum install -y bash-completion --enablerepo=epel; \
     yum clean all; \
     yum autoremove
@@ -22,11 +22,12 @@ ENV \
     NETCDF_VERSION=4.6.2 \
     NGHTTP2_VERSION=1.35.1 \
 	OPENJPEG_VERSION=2.3.0 \
+    LIBJPEG_TURBO_VERSION=2.0.1 \
     PKGCONFIG_VERSION=0.29.2 \
     PROJ_VERSION=5.2.0 \
     SZIP_VERSION=2.1.1 \
-    WEBP_VERSION=1.0.0 \
-    ZSTD_VERSION=1.3.4
+    WEBP_VERSION=1.0.1 \
+    ZSTD_VERSION=1.3.8
 
 # Paths to things
 ENV \
@@ -34,7 +35,7 @@ ENV \
     NPROC=4 \
 	PREFIX=/usr/local \
 	GDAL_CONFIG=/usr/local/bin/gdal-config \
-	LD_LIBRARY_PATH=/usr/local/lib \
+	LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64 \
     GDAL_DATA=/usr/local/share/gdal
 
 # switch to a build directory
@@ -153,13 +154,22 @@ RUN \
     make -j ${NPROC} install; \
     cd ../..; rm -rf openjpeg
 
+# jpeg_turbo
+RUN \
+    mkdir jpeg; \
+    wget -qO- https://github.com/libjpeg-turbo/libjpeg-turbo/archive/${LIBJPEG_TURBO_VERSION}.tar.gz \
+        | tar xvz -C jpeg --strip-components=1; cd jpeg; \
+    cmake -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=$PREFIX .; \
+    make -j $(nproc) install; \
+    cd ..; rm -rf jpeg
+
 # geotiff
 RUN \
     mkdir geotiff; \
     wget -qO- https://download.osgeo.org/geotiff/libgeotiff/libgeotiff-$GEOTIFF_VERSION.tar.gz \
         | tar xvz -C geotiff --strip-components=1; cd geotiff; \
     ./configure --prefix=${PREFIX} \
-        --with-proj=${PREFIX} --with-jpeg=yes --with-zip=yes;\
+        --with-proj=${PREFIX} --with-jpeg=${PREFIX} --with-zip=yes;\
     make -j ${NPROC} install; \
     cd ${BUILD}; rm -rf geotiff
 
@@ -179,6 +189,7 @@ RUN \
         --with-netcdf=${PREFIX} \
         --with-webp=${PREFIX} \
         --with-zstd=${PREFIX} \
+        --with-jpeg=${PREFIX} \
         --with-threads=yes \
 		--with-curl=${PREFIX}/bin/curl-config \
         --without-python \

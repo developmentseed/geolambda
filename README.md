@@ -39,13 +39,13 @@ The GeoLambda image does not have an entrypoint defined, so a command must be pr
 
 If you just wish to use the publicly available Lambda layer you will need the ARN for the layer in same region as your Lambda function. Currently, GeoLambda layers are available in `us-east-1`, `us-west-2`, and `eu-central-1`. If you want to use it in another region please file an issue or you can also create your own layer using this repository (see instructions below on 'Create a new version').
 
-#### v1.1.0rc2
+#### v1.1.0rc3
 
 | Region | ARN |
 | ------ | --- |
-| us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda-dev:2 |
-| us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda-dev:2 |
-| eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda-dev:2 |
+| us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda-dev:3 |
+| us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda-dev:3 |
+| eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda-dev:3 |
 
 
 ## Development

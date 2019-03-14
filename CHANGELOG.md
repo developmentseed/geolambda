@@ -6,13 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [v1.1.0] - 2018-03-12
+## [v1.1.0] - 2018-03-14
 
 ### Added
 - Make compatible with Lambda Layers
 - Python example
 - Improve documentation
-- More libraries (CURL with http2, webp, zstd)
+- More libraries (CURL with http2, webp, zstd, libjpegturbo)
 - GeoTIFF now compiled from scratch rather than GGDAL builtin
 - Published public lambda layers - see README for ARNs
 
@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Removed Python codes to make geolambda system libraries only
 
 ### Versions:
-- CURL_VERSION=7.51.0
+- CURL_VERSION=7.59.0
 - GEOS_VERSION=3.7.1
 - GEOTIFF_VERSION=1.4.3
 - GDAL_VERSION=2.4.0
@@ -32,11 +32,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - NETCDF_VERSION=4.6.2
 - NGHTTP2_VERSION=1.35.1
 - OPENJPEG_VERSION=2.3.0
+- LIBJPEG_TURBO_VERSION=2.0.1
 - PKGCONFIG_VERSION=0.29.2
 - PROJ_VERSION=5.2.0
 - SZIP_VERSION=2.1.1
-- WEBP_VERSION=1.0.0
-- ZSTD_VERSION=1.3.4
+- WEBP_VERSION=1.0.1
+- ZSTD_VERSION=1.3.8
 
 ## [v1.0.0] - 2018-07-27
 
