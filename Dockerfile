@@ -34,7 +34,8 @@ ENV \
     NPROC=4 \
 	PREFIX=/usr/local \
 	GDAL_CONFIG=/usr/local/bin/gdal-config \
-	LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
+	LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64 \
+    GDAL_DATA=/usr/local/share/gdal
 
 # switch to a build directory
 WORKDIR /build
