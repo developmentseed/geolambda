@@ -18,7 +18,8 @@ An example Lambda handler is located at [lambda/lambda_function.py](lambda/lambd
 
 Now, use the [Dockerfile](Dockerfile) can be used to create a new Docker image based on any version of GeoLambda with any version of Python by providing the versions as build arguments to `docker run`. This will install the specified version of Python along with any Python packages provided in [requirements.txt](requirements.txt).
 
-    $ docker build . --build-arg VERSION=1.1.0 --build-arg PYVERSION=3.6.1 -t <myimage>:latest
+    $ VERSION=1.1.0
+    $ docker build . --build-arg VERSION=${VERSION} --build-arg PYVERSION=3.6.1 -t <myimage>:latest
 
 If not provided, `VERSION` (the version of GeoLambda to use) will default to `latest` and `PYVERSION` (Python version) will default to `3.6.1`.
 
