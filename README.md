@@ -88,8 +88,8 @@ $ docker push developmentseed/geolambda:${VERSION}
 4. Create deployment package using the built-in [packaging script](bin/package.sh)
 
 ```
-$ docker run --rm -v $PWD:/home/geolambda --entrypoint package.sh \
-	-it developmentseed/geolambda:${VERSION}
+$ docker run --rm -v $PWD:/home/geolambda \
+	-it developmentseed/geolambda:${VERSION} package.sh
 ```
 
 This will create a lambda/ directory containing the native libraries and related files, along with a `lambda-deploy.zip` file that can be deployed as a Lambda layer.
