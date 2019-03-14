@@ -158,7 +158,7 @@ RUN \
 RUN \
     mkdir jpeg; \
     wget -qO- https://github.com/libjpeg-turbo/libjpeg-turbo/archive/${LIBJPEG_TURBO_VERSION}.tar.gz \
-        | tar xvz -C jpeg --strip-components=1; jpeg; \
+        | tar xvz -C jpeg --strip-components=1; cd jpeg; \
     cmake -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=$PREFIX .; \
     make -j $(nproc) install; \
     cd ..; rm -rf jpeg
