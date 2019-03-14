@@ -6,7 +6,7 @@ LABEL authors="Matthew Hanson  <matt.a.hanson@gmail.com>"
 # install system libraries
 RUN \
     yum makecache fast; \
-    yum install -y wget libpng-devel; \
+    yum install -y wget libpng-devel nasm; \
     yum install -y bash-completion --enablerepo=epel; \
     yum clean all; \
     yum autoremove
@@ -22,11 +22,13 @@ ENV \
     NETCDF_VERSION=4.6.2 \
     NGHTTP2_VERSION=1.35.1 \
 	OPENJPEG_VERSION=2.3.0 \
+    LIBJPEG_TURBO_VERSION=2.0.1 \
+    LIBPNG_VERSION=1.6.36 \
     PKGCONFIG_VERSION=0.29.2 \
     PROJ_VERSION=5.2.0 \
     SZIP_VERSION=2.1.1 \
-    WEBP_VERSION=1.0.0 \
-    ZSTD_VERSION=1.3.4
+    WEBP_VERSION=1.0.1 \
+    ZSTD_VERSION=1.3.8
 
 # Paths to things
 ENV \
@@ -153,6 +155,24 @@ RUN \
     make -j ${NPROC} install; \
     cd ../..; rm -rf openjpeg
 
+# png
+RUN \
+    mkdir png; \
+    wget -qO- http://prdownloads.sourceforge.net/libpng/libpng-$LIBPNG_VERSION.tar.gz \
+        | tar xvz -C png --strip-components=1; cd png; \
+    CFLAGS="-O2 -Wl,-S" ./configure --prefix=$PREFIX; \
+    make -j $(NPROC) install; \
+    cd ..; rm -rf png
+
+# jpeg_turbo
+RUN \
+    mkdir jpeg; \
+    wget -qO- https://github.com/libjpeg-turbo/libjpeg-turbo/archive/${LIBJPEG_TURBO_VERSION}.tar.gz \
+        | tar xvz -C jpeg --strip-components=1; jpeg; \
+    cmake -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=$PREFIX .; \
+    make -j $(nproc) install; \
+    cd ..; rm -rf jpeg
+
 # geotiff
 RUN \
     mkdir geotiff; \
@@ -179,6 +199,8 @@ RUN \
         --with-netcdf=${PREFIX} \
         --with-webp=${PREFIX} \
         --with-zstd=${PREFIX} \
+        --with-jpeg=${PREFIX} \
+        --with-png=${PREFIX} \
         --with-threads=yes \
 		--with-curl=${PREFIX}/bin/curl-config \
         --without-python \
