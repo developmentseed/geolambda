@@ -35,7 +35,7 @@ ENV \
     NPROC=4 \
 	PREFIX=/usr/local \
 	GDAL_CONFIG=/usr/local/bin/gdal-config \
-	LD_LIBRARY_PATH=/usr/local/lib \
+	LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64 \
     GDAL_DATA=/usr/local/share/gdal
 
 # switch to a build directory
@@ -169,7 +169,7 @@ RUN \
     wget -qO- https://download.osgeo.org/geotiff/libgeotiff/libgeotiff-$GEOTIFF_VERSION.tar.gz \
         | tar xvz -C geotiff --strip-components=1; cd geotiff; \
     ./configure --prefix=${PREFIX} \
-        --with-proj=${PREFIX} --with-jpeg=yes --with-zip=yes;\
+        --with-proj=${PREFIX} --with-jpeg=${PREFIX} --with-zip=yes;\
     make -j ${NPROC} install; \
     cd ${BUILD}; rm -rf geotiff
 
