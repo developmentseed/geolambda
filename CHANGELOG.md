@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [v1.1.0] - 2018-03-14
+## [v1.1.0] - 2018-03-22
 
 ### Added
 - Make compatible with Lambda Layers
@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - CURL_VERSION=7.59.0
 - GEOS_VERSION=3.7.1
 - GEOTIFF_VERSION=1.4.3
-- GDAL_VERSION=2.4.0
+- GDAL_VERSION=2.4.1
 - HDF4_VERSION=4.2.14
 - HDF5_VERSION=1.10.5
 - NETCDF_VERSION=4.6.2
