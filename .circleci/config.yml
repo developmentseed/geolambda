@@ -34,7 +34,7 @@ jobs:
             # publish docker images
             mkdir -p ~/.ssh
             ssh-keyscan github.com >> ~/.ssh/known_hosts
-            #git tag -d ${VERSION}
+            git tag -d ${VERSION}
             git tag ${VERSION}
             git push origin ${VERSION}
             docker login -u $DOCKER_USER -p $DOCKER_PASS
@@ -51,11 +51,11 @@ jobs:
             for region in us-east-1 us-west-2 eu-central-1
             do
               LVERSION="$(aws lambda publish-layer-version --region ${region} \
-                --layer-name geolambda-dev --license-info 'MIT' \
+                --layer-name geolambda --license-info 'MIT' \
                 --description 'Native geospatial libaries for all runtimes' \
                 --zip-file fileb://lambda-deploy.zip | jq '.Version')"
               aws lambda add-layer-version-permission --region ${region} \
-                --layer-name geolambda-dev --action lambda:GetLayerVersion \
+                --layer-name geolambda --action lambda:GetLayerVersion \
                 --statement-id public --version-number ${LVERSION} --principal '*'
             done
 
