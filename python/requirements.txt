@@ -1,2 +1,2 @@
-GDAL==2.4.0
-rasterio==1.0.21 --no-binary rasterio
+GDAL==2.4.1
+rasterio==1.0.22 --no-binary rasterio
