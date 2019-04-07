@@ -20,10 +20,10 @@ Now, use the [Dockerfile](Dockerfile) can be used to create a new Docker image b
 
 ```
 $ VERSION=1.1.0
-$ docker build . --build-arg VERSION=${VERSION} --build-arg PYVERSION=3.6.5 -t <myimage>:latest
+$ docker build . --build-arg VERSION=${VERSION} --build-arg PYVERSION=3.6.8 -t <myimage>:latest
 ```
 
-If not provided, `VERSION` (the version of GeoLambda to use) will default to `latest` and `PYVERSION` (Python version) will default to `3.6.5`.
+If not provided, `VERSION` (the version of GeoLambda to use) will default to `latest` and `PYVERSION` (Python version) will default to `3.6.8`.
 
 **4. Set up development environment and lambda layer zip file**
 
