@@ -27,7 +27,7 @@ cp -r $DEPLOY_DIR ./python
 rm ./python/lambda_function.py
 
 # zip up deploy package
-zip -ruq geolambda-python$PYVERSION.zip ./python
+zip -ruq lambda-layer-deploy.zip ./python
 
 # cleanup
 rm -rf ./python

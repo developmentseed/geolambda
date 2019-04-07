@@ -1,2 +1,4 @@
 .env
 lambda-deploy.zip
+lambda-layer-deploy.zip
+.DS_Store
