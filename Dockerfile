@@ -26,7 +26,7 @@ ENV \
     PKGCONFIG_VERSION=0.29.2 \
     PROJ_VERSION=5.2.0 \
     SZIP_VERSION=2.1.1 \
-    WEBP_VERSION=1.0.1 \
+    WEBP_VERSION=1.0.2 \
     ZSTD_VERSION=1.3.8
 
 # Paths to things
