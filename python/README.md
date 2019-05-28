@@ -19,11 +19,11 @@ An example Lambda handler is located at [lambda/lambda_function.py](lambda/lambd
 Now, use the [Dockerfile](Dockerfile) can be used to create a new Docker image based on any version of GeoLambda with any version of Python by providing the versions as build arguments to `docker run`. This will install the specified version of Python along with any Python packages provided in [requirements.txt](requirements.txt).
 
 ```
-$ VERSION=1.1.0
-$ docker build . --build-arg VERSION=${VERSION} --build-arg PYVERSION=3.6.8 -t <myimage>:latest
+$ VERSION=1.2.0
+$ docker build . --build-arg VERSION=${VERSION} --build-arg PYVERSION=3.7.3 -t <myimage>:latest
 ```
 
-If not provided, `VERSION` (the version of GeoLambda to use) will default to `latest` and `PYVERSION` (Python version) will default to `3.6.8`.
+If not provided, `VERSION` (the version of GeoLambda to use) will default to `latest` and `PYVERSION` (Python version) will default to `3.7.3`.
 
 **4. Set up development environment and lambda layer zip file**
 
@@ -55,7 +55,7 @@ You can use the [LambCI Docker images](https://github.com/lambci/docker-lambda) 
 ```
 # current dir: geolambda/python
 
-$ docker run --rm -v ${PWD}/lambda:/var/task -v ${PWD}/../lambda:/opt lambci/lambda:python3.6 lambda_function.lambda_handler '{}'
+$ docker run --rm -v ${PWD}/lambda:/var/task -v ${PWD}/../lambda:/opt lambci/lambda:python3.7 lambda_function.lambda_handler '{}'
 ```
 
 The last argument is a JSON string that will be passed as the event payload to the handler function.
@@ -66,7 +66,7 @@ Deploy the Lambda layer by using AWS CLI.
 
 ```
 $ aws lambda publish-layer-version \
-	--layer-name geolambda-python36 \
+	--layer-name geolambda-python37 \
 	--description "Python bindings for GDAL" \
 	--zip-file fileb://lambda-layer-deploy.zip
 ```
@@ -75,11 +75,11 @@ $ aws lambda publish-layer-version \
 
 Builds of this default Python image are also available on Docker Hub as tags in the `developmentseed/geolambda` repository.
 
-    $ docker pull developmentseed/geolambda:${VERSION}-python36
+    $ docker pull developmentseed/geolambda:${VERSION}-python37
 
 To run the image interactively:
 
-    $ docker run -v ${PWD}:/home/geolambda --rm -it developmentseed/geolambda:${VERSION}-python36
+    $ docker run -v ${PWD}:/home/geolambda --rm -it developmentseed/geolambda:${VERSION}-python37
 
 This image includes the dependencies specified in the default [requirements.txt](requirements.txt) file.
 
@@ -92,7 +92,7 @@ From this directory:
 
 ```
 $ VERSION=$(cat ../VERSION)
-$ docker build . --build-arg VERSION=${VERSION} -t developmentseed/geolambda:${VERSION}-python36
+$ docker build . --build-arg VERSION=${VERSION} -t developmentseed/geolambda:${VERSION}-python37
 ```
 
 Provide `--build-arg PYVERSION=X.Y.Z` to build other Python versions and change the tag to be `${VERSION}-pythonX.Y`

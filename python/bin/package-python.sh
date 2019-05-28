@@ -7,8 +7,8 @@ export DEPLOY_DIR=lambda
 PYVERSION=$(cat /root/.pyenv/version)
 MAJOR=${PYVERSION%%.*}
 MINOR=${PYVERSION#*.}
-PYVER=${PYVERSION%%.*}${MINOR%%.*}
-PYPATH=/root/.pyenv/versions/$PYVERSION/lib/python3.6/site-packages/
+PYVER=${PYVERSION%%.*}.${MINOR%%.*}
+PYPATH=/root/.pyenv/versions/$PYVERSION/lib/python${PYVER}/site-packages/
 
 echo Creating deploy package for Python $PYVERSION
 
