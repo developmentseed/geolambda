@@ -1,0 +1,55 @@
+---
+workspace:
+  base: /drone
+  path: src
+
+
+# Because of drone not building current version of pull request otherwise
+# Suggested by https://github.com/drone/drone/issues/2390#issuecomment-377302134
+clone:
+  git:
+    image: plugins/git:next
+    pull: true
+
+
+pipeline:
+  build:
+    image: docker
+    environment:
+      # Do not use quotes for variable value
+      # because it does not work
+      - DOCKER_BUILD_OPTS=--squash
+      - DOCKER_REPO=meteogroup/python3.7-geolambda
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+        -  docker build -f Dockerfile.latest -t "$DOCKER_REPO:latest" $DOCKER_BUILD_OPTS .
+        -  docker build -f Dockerfile.1.0.0 -t "$DOCKER_REPO:1.0.0" $DOCKER_BUILD_OPTS .
+
+  run_tests:
+    image: meteogroup/python3.7-geolambda 
+    commands:
+      - gdalinfo ./tests/data/wavewatch_blacksea_6min_st2_gfs_fields_20190808_1200.nc
+
+  publish_images:
+    image: docker
+    environment:
+      - IMAGE_LIST="meteogroup/python3.7-geolambda:latest meteogroup/python3.7-geolambda:1.0.0"
+    secrets:
+      - DOCKER_USERNAME
+      - DOCKER_PASSWORD
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - |
+        for image_url in $IMAGE_LIST
+        do
+          echo -e "\n\n##########  Publish $image_url  ##########"
+          docker push "$image_url"
+        done
+    when:
+      branch: master
+      event: push
+
+
