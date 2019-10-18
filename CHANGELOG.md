@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Version changes
+- CURL_VERSION=7.64.1
+- NETCDF_VERSION=4.6.3
+- NGHTTP2_VERSION=1.37.0
+- OPENJPEG_VERSION=2.3.1
+- LIBJPEG_TURBO_VERSION=2.0.2
+- WEBP_VERSION=1.0.2
+
 ## [v1.1.0] - 2018-03-22
 
 ### Added
