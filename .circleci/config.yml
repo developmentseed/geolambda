@@ -60,12 +60,11 @@ jobs:
                 --layer-name geolambda-dev --action lambda:GetLayerVersion \
                 --statement-id public --version-number ${LVERSION} --principal '*'
               LVERSION="$(aws lambda publish-layer-version --region ${region} \
-                --layer-name geolambda-dev-python --license-info 'MIT' \
+                --layer-name geolambda-python-dev --license-info 'MIT' \
                 --description 'Geospatial Python libraries' \
-                --zip-file fileb://lambda-deploy.zip | jq '.Version')
-                --compatible-runtimes python3.7"
+                --zip-file fileb://lambda-deploy.zip | jq '.Version')"
               aws lambda add-layer-version-permission --region ${region} \
-                --layer-name geolambda-dev-python --action lambda:GetLayerVersion \
+                --layer-name geolambda-python-dev --action lambda:GetLayerVersion \
                 --statement-id public --version-number ${LVERSION} --principal '*'
             done
             # deploy Python Lambda layers
