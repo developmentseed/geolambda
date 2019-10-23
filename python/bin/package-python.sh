@@ -8,7 +8,7 @@ PYVERSION=$(cat /root/.pyenv/version)
 MAJOR=${PYVERSION%%.*}
 MINOR=${PYVERSION#*.}
 PYVER=${PYVERSION%%.*}${MINOR%%.*}
-PYPATH=/root/.pyenv/versions/$PYVERSION/lib/python3.6/site-packages/
+PYPATH=/root/.pyenv/versions/$PYVERSION/lib/python${MAJOR}.${MINOR}/site-packages/
 
 echo Creating deploy package for Python $PYVERSION
 
