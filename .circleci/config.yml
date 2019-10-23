@@ -29,35 +29,46 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
-            VERSION=$(cat VERSION)
-            docker build . -t developmentseed/geolambda:${VERSION}
-            # publish docker images
+            # update known hosts
             mkdir -p ~/.ssh
             ssh-keyscan github.com >> ~/.ssh/known_hosts
-            #git tag -d ${VERSION}
+            # build and publish geolambda
+            VERSION=$(cat VERSION)
+            docker build . -t developmentseed/geolambda:${VERSION}
+            docker run --rm -v ${PWD}:/home/geolambda --entrypoint package.sh -it developmentseed/geolambda:${VERSION}
             git tag ${VERSION}
             git push origin ${VERSION}
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker tag developmentseed/geolambda:${VERSION} developmentseed/geolambda:latest
             docker push developmentseed/geolambda:latest
             docker push developmentseed/geolambda:${VERSION}
+            # build and publish geolambda-python docker image
             cd python
             docker build --build-arg VERSION=${VERSION} . -t developmentseed/geolambda:${VERSION}-python
+            docker run --rm -v ${PWD}:/home/geolambda --entrypoint package-python.sh -it developmentseed/geolambda:${VERSION}-python
             docker push developmentseed/geolambda:${VERSION}-python
             cd ..
             # deploy public Lambda layers
             pip install awscli
-            docker run --rm -v $PWD:/home/geolambda --entrypoint package.sh -it developmentseed/geolambda:${VERSION}
             for region in us-east-1 us-west-2 eu-central-1
             do
               LVERSION="$(aws lambda publish-layer-version --region ${region} \
-                --layer-name geolambda --license-info 'MIT' \
+                --layer-name geolambda-test --license-info 'MIT' \
                 --description 'Native geospatial libaries for all runtimes' \
                 --zip-file fileb://lambda-deploy.zip | jq '.Version')"
               aws lambda add-layer-version-permission --region ${region} \
-                --layer-name geolambda --action lambda:GetLayerVersion \
+                --layer-name geolambda-test --action lambda:GetLayerVersion \
+                --statement-id public --version-number ${LVERSION} --principal '*'
+              LVERSION="$(aws lambda publish-layer-version --region ${region} \
+                --layer-name geolambda-test-python --license-info 'MIT' \
+                --description 'Geospatial Python libraries' \
+                --zip-file fileb://lambda-deploy.zip | jq '.Version')
+                --compatible-runtimes python3.7"
+              aws lambda add-layer-version-permission --region ${region} \
+                --layer-name geolambda-test-python --action lambda:GetLayerVersion \
                 --statement-id public --version-number ${LVERSION} --principal '*'
             done
+            # deploy Python Lambda layers
 
 
 workflows:
