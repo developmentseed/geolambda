@@ -7,8 +7,8 @@ export DEPLOY_DIR=lambda
 PYVERSION=$(cat /root/.pyenv/version)
 MAJOR=${PYVERSION%%.*}
 MINOR=${PYVERSION#*.}
-PYVER=${PYVERSION%%.*}${MINOR%%.*}
-PYPATH=/root/.pyenv/versions/$PYVERSION/lib/python${MAJOR}.${MINOR}/site-packages/
+PYVER=${PYVERSION%%.*}.${MINOR%%.*}
+PYPATH=/root/.pyenv/versions/$PYVERSION/lib/python${PYVER}/site-packages/
 
 echo Creating deploy package for Python $PYVERSION
 
@@ -27,7 +27,7 @@ cp -r $DEPLOY_DIR ./python
 rm ./python/lambda_function.py
 
 # zip up deploy package
-zip -ruq lambda-layer-deploy.zip ./python
+zip -ruq lambda-deploy.zip ./python
 
 # cleanup
 rm -rf ./python
