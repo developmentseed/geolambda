@@ -11,9 +11,10 @@ This repository also contains examples and pre-built images for specific runtime
 While GeoLambda was initially intended for AWS Lambda they are also useful as base geospatial Docker images. The version of GDAL included for different versions of GeoLambda is shown here:
 
 | geolambda | GDAL  |
-| -------- | ----  |
-| 1.0.0    | 2.3.1 |
-| 1.1.0  | 2.4.1 |
+| --------- | ----  |
+| 1.0.0     | 2.3.1 |
+| 1.1.0     | 2.4.1 |
+| 1.2.0     | 2.4.2 |
 
 To get the version numbers of all installed packages see the [CHANGELOG](CHANGELOG.md) or the Dockerfile for the specific version.
 
@@ -39,6 +40,22 @@ The GeoLambda image does not have an entrypoint defined, so a command must be pr
 
 If you just wish to use the publicly available Lambda layer you will need the ARN for the layer in same region as your Lambda function. Currently, GeoLambda layers are available in `us-east-1`, `us-west-2`, and `eu-central-1`. If you want to use it in another region please file an issue or you can also create your own layer using this repository (see instructions below on 'Create a new version').
 
+#### v1.2.0rc1
+
+| Region | ARN |
+| ------ | --- |
+| us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda-dev:5 |
+| us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda-dev:5 |
+| eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda-dev:5 |
+
+#### v1.2.0rc1-python
+
+| Region | ARN |
+| ------ | --- |
+| us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda-dev-python:1 |
+| us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda-dev-python:1 |
+| eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda-dev-python:1 |
+
 #### v1.1.0
 
 | Region | ARN |
@@ -46,14 +63,6 @@ If you just wish to use the publicly available Lambda layer you will need the AR
 | us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda:1 |
 | us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda:1 |
 | eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda:1 |
-
-#### v1.1.0rc3
-
-| Region | ARN |
-| ------ | --- |
-| us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda-dev:3 |
-| us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda-dev:3 |
-| eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda-dev:3 |
 
 
 ## Development

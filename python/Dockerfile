@@ -1,10 +1,10 @@
-ARG VERSION=latest
+ARG VERSION=1.2.0
 FROM developmentseed/geolambda:${VERSION}
 
 LABEL maintainer="Development Seed <info@developmentseed.org>"
 LABEL authors="Matthew Hanson  <matt.a.hanson@gmail.com>"
 
-ARG PYVERSION=3.6.1
+ARG PYVERSION=3.7.4
 
 # install Python
 ENV \
@@ -13,7 +13,9 @@ ENV \
 
 RUN \
     curl https://pyenv.run | bash; \
-    pyenv install ${PYVERSION}; \
+    CONFIGURE_OPTS="--with-openssl=${PREFIX}/openssl" \
+        LD_RUN_PATH="${PREFIX}/openssl/lib" \
+        pyenv install ${PYVERSION}; \
     pyenv global ${PYVERSION}; \
     pip install --upgrade pip
 

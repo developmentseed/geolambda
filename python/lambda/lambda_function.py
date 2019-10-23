@@ -12,6 +12,11 @@ logger.setLevel(logging.DEBUG)
 # imports used for the example code below
 from osgeo import gdal
 
+# not used in code below, but imported to test loading of libraries
+import rasterio
+import pyproj
+import shapely
+
 
 test_filename = 'https://landsat-pds.s3.amazonaws.com/c1/L8/086/240/LC08_L1GT_086240_20180827_20180827_01_RT/LC08_L1GT_086240_20180827_20180827_01_RT_B1.TIF'
 

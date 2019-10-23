@@ -13,29 +13,29 @@ RUN \
 
 # versions of packages
 ENV \
-    CURL_VERSION=7.59.0 \
-    GEOS_VERSION=3.7.1 \
-    GEOTIFF_VERSION=1.4.3 \
-	GDAL_VERSION=2.4.1 \
-    HDF4_VERSION=4.2.14 \
-	HDF5_VERSION=1.10.5 \
-    NETCDF_VERSION=4.6.2 \
-    NGHTTP2_VERSION=1.35.1 \
-	OPENJPEG_VERSION=2.3.0 \
-    LIBJPEG_TURBO_VERSION=2.0.1 \
-    PKGCONFIG_VERSION=0.29.2 \
+    GDAL_VERSION=2.4.2 \
     PROJ_VERSION=5.2.0 \
+    GEOS_VERSION=3.8.0 \
+    GEOTIFF_VERSION=1.4.3 \
+    HDF4_VERSION=4.2.14 \
+    HDF5_VERSION=1.10.5 \
+    NETCDF_VERSION=4.7.1 \
+    NGHTTP2_VERSION=1.39.2 \
+    OPENJPEG_VERSION=2.3.1 \
+    CURL_VERSION=7.66.0 \
+    LIBJPEG_TURBO_VERSION=2.0.3 \
+    PKGCONFIG_VERSION=0.29.2 \
     SZIP_VERSION=2.1.1 \
-    WEBP_VERSION=1.0.1 \
-    ZSTD_VERSION=1.3.8
+    WEBP_VERSION=1.0.3 \
+    ZSTD_VERSION=1.4.3
 
 # Paths to things
 ENV \
-	BUILD=/build \
+    BUILD=/build \
     NPROC=4 \
-	PREFIX=/usr/local \
-	GDAL_CONFIG=/usr/local/bin/gdal-config \
-	LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64 \
+    PREFIX=/usr/local \
+    GDAL_CONFIG=/usr/local/bin/gdal-config \
+    LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64 \
     GDAL_DATA=/usr/local/share/gdal
 
 # switch to a build directory
@@ -79,11 +79,11 @@ RUN \
 # GEOS
 RUN \
     mkdir geos; \
-	wget -qO- http://download.osgeo.org/geos/geos-$GEOS_VERSION.tar.bz2 \
+    wget -qO- http://download.osgeo.org/geos/geos-$GEOS_VERSION.tar.bz2 \
         | tar xvj -C geos --strip-components=1; cd geos; \
-	./configure --enable-python --prefix=$PREFIX CFLAGS="-O2 -Os"; \
-	make -j ${NPROC} install; \
-	cd ..; rm -rf geos
+    ./configure --enable-python --prefix=$PREFIX CFLAGS="-O2 -Os"; \
+    make -j ${NPROC} install; \
+    cd ..; rm -rf geos
 
 # szip (for hdf)
 RUN \
@@ -191,16 +191,26 @@ RUN \
         --with-zstd=${PREFIX} \
         --with-jpeg=${PREFIX} \
         --with-threads=yes \
-		--with-curl=${PREFIX}/bin/curl-config \
+        --with-curl=${PREFIX}/bin/curl-config \
         --without-python \
         --without-libtool \
         --with-geos=$PREFIX/bin/geos-config \
-		--with-hide-internal-symbols=yes \
+        --with-hide-internal-symbols=yes \
         CFLAGS="-O2 -Os" CXXFLAGS="-O2 -Os" \
         LDFLAGS="-Wl,-rpath,'\$\$ORIGIN'"; \
     make -j ${NPROC} install; \
     cd ${BUILD}; rm -rf gdal
-# 
+
+# Open SSL is needed for building Python so it's included here for ease
+RUN \
+    OPENSSL_VERSION=1.0.2; \
+    mkdir openssl; \
+    wget -qO- https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
+        | tar xvz -C openssl --strip-components=1; cd openssl; \
+    ./config shared --prefix=${PREFIX}/openssl --openssldir=${PREFIX}/openssl; \
+    make depend; make install; cd ..; rm -rf openssl
+
+
 # Copy shell scripts and config files over
 COPY bin/* /usr/local/bin/
 

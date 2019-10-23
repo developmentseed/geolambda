@@ -1,2 +1,4 @@
-GDAL==2.4.0
-rasterio==1.0.21 --no-binary rasterio
+GDAL==2.4.2
+rasterio==1.1.0 --no-binary rasterio
+shapely==1.6.4.post2
+pyproj==2.4.0
