@@ -10,11 +10,11 @@ This repository also contains examples and pre-built images for specific runtime
 
 While GeoLambda was initially intended for AWS Lambda they are also useful as base geospatial Docker images. The version of GDAL included for different versions of GeoLambda is shown here:
 
-| geolambda | GDAL  |
-| --------- | ----  |
-| 1.0.0     | 2.3.1 |
-| 1.1.0     | 2.4.1 |
-| 1.2.0     | 2.4.2 |
+| geolambda | GDAL  | Notes |
+| --------- | ----  | |
+| 1.0.0     | 2.3.1 | |
+| 1.1.0     | 2.4.1 | |
+| 1.2.0     | 2.4.2 | Separate Python (3.7.4) image and Lambda Layer added |
 
 To get the version numbers of all installed packages see the [CHANGELOG](CHANGELOG.md) or the Dockerfile for the specific version.
 
@@ -49,6 +49,8 @@ If you just wish to use the publicly available Lambda layer you will need the AR
 | eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda:2 |
 
 #### v1.2.0-python
+
+See the [GeoLambda Python README](python/README.md). The Python Lambda Layer includes the libraries `numpy`, `rasterio`, `GDAL`, `pyproj`, and `shapely`.
 
 | Region | ARN |
 | ------ | --- |
