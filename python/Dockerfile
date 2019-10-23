@@ -9,21 +9,12 @@ ARG PYVERSION=3.7.4
 # install Python
 ENV \
     PYENV_ROOT=/root/.pyenv \
-    PATH=/root/.pyenv/shims:/root/.pyenv/bin:$PATH \
-    OPENSSL_VERSION=1.0.2
-
-RUN \
-    mkdir openssl; \
-    wget -qO- https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
-        | tar xvz -C openssl --strip-components=1; cd openssl; \
-    ./config shared --prefix=$PREFIX/openssl --openssldir=/usr/local/openssl; \
-    make depend; make install; \
-    cd ..; rm -rf openssl
+    PATH=/root/.pyenv/shims:/root/.pyenv/bin:$PATH
 
 RUN \
     curl https://pyenv.run | bash; \
-    CONFIGURE_OPTS="--with-openssl=/usr/local/openssl" \
-        LD_RUN_PATH="/usr/local/openssl/lib" \
+    CONFIGURE_OPTS="--with-openssl=${PREFIX}/openssl" \
+        LD_RUN_PATH="${PREFIX}/openssl/lib" \
         pyenv install ${PYVERSION}; \
     pyenv global ${PYVERSION}; \
     pip install --upgrade pip

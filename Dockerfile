@@ -200,7 +200,17 @@ RUN \
         LDFLAGS="-Wl,-rpath,'\$\$ORIGIN'"; \
     make -j ${NPROC} install; \
     cd ${BUILD}; rm -rf gdal
-# 
+
+# Open SSL is needed for building Python so it's included here for ease
+RUN \
+    OPENSSL_VERSION=1.0.2; \
+    mkdir openssl; \
+    wget -qO- https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
+        | tar xvz -C openssl --strip-components=1; cd openssl; \
+    ./config shared --prefix=${PREFIX}/openssl --openssldir=${PREFIX}/openssl; \
+    make depend; make install; cd ..; rm -rf openssl
+
+
 # Copy shell scripts and config files over
 COPY bin/* /usr/local/bin/
 
