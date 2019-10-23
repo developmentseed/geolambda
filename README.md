@@ -11,7 +11,7 @@ This repository also contains additional images and layers for specific runtimes
 While GeoLambda was initially intended for AWS Lambda it is also useful as a base geospatial Docker image. For detailed info on what is included in each image, see the Dockerfile for that version or the [CHANGELOG](CHANGELOG.md). A version summary is provided here:
 
 | geolambda | GDAL  | Notes |
-| --------- | ----  | |
+| --------- | ----  | ----- |
 | 1.0.0     | 2.3.1 | |
 | 1.1.0     | 2.4.1 | |
 | 1.2.0     | 2.4.2 | Separate Python (3.7.4) image and Lambda Layer added |
