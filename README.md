@@ -11,9 +11,10 @@ This repository also contains examples and pre-built images for specific runtime
 While GeoLambda was initially intended for AWS Lambda they are also useful as base geospatial Docker images. The version of GDAL included for different versions of GeoLambda is shown here:
 
 | geolambda | GDAL  |
-| -------- | ----  |
-| 1.0.0    | 2.3.1 |
-| 1.1.0  | 2.4.1 |
+| --------- | ----  |
+| 1.0.0     | 2.3.1 |
+| 1.1.0     | 2.4.1 |
+| 1.2.0     | 2.4.2 |
 
 To get the version numbers of all installed packages see the [CHANGELOG](CHANGELOG.md) or the Dockerfile for the specific version.
 
