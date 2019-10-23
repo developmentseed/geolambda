@@ -42,8 +42,8 @@ jobs:
             docker push developmentseed/geolambda:latest
             docker push developmentseed/geolambda:${VERSION}
             cd python
-            docker build --build-arg VERSION=${VERSION} --build-arg PYVERSION=3.6.1 . -t developmentseed/geolambda:${VERSION}-python36
-            docker push developmentseed/geolambda:${VERSION}-python36
+            docker build --build-arg VERSION=${VERSION} . -t developmentseed/geolambda:${VERSION}-python
+            docker push developmentseed/geolambda:${VERSION}-python
             cd ..
             # deploy public Lambda layers
             pip install awscli
