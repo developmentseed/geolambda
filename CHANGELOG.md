@@ -6,10 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [v1.2.0] - 2019-10-21
+## [v1.2.0] - 2019-10-24
 
 ### Added
 - A Python GeoLambda Layer is now published, along with the base Lambda Layer. The base layer *must* be included in any Lambda that uses the Python GeoLambda layer. It includes the Python libraries GDAL, rasterio, pyproj, and shapely.
+- Base geolambda includes OpenSSL 1.0.2, as this is required for compiling Python 3.7+. It is not included in the Lambda layer, just the base layer for ease of creating different versions of Python child images.
 
 ### Changed
 - The python diectory, and the new Lambda layer, now uses Python 3.7.4

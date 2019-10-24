@@ -53,18 +53,18 @@ jobs:
             for region in us-east-1 us-west-2 eu-central-1
             do
               LVERSION="$(aws lambda publish-layer-version --region ${region} \
-                --layer-name geolambda-dev --license-info 'MIT' \
+                --layer-name geolambda --license-info 'MIT' \
                 --description 'Native geospatial libaries for all runtimes' \
                 --zip-file fileb://lambda-deploy.zip | jq '.Version')"
               aws lambda add-layer-version-permission --region ${region} \
-                --layer-name geolambda-dev --action lambda:GetLayerVersion \
+                --layer-name geolambda --action lambda:GetLayerVersion \
                 --statement-id public --version-number ${LVERSION} --principal '*'
               LVERSION="$(aws lambda publish-layer-version --region ${region} \
-                --layer-name geolambda-python-dev --license-info 'MIT' \
+                --layer-name geolambda-python --license-info 'MIT' \
                 --description 'Geospatial Python libraries' \
-                --zip-file fileb://lambda-deploy.zip | jq '.Version')"
+                --zip-file fileb://python/lambda-deploy.zip | jq '.Version')"
               aws lambda add-layer-version-permission --region ${region} \
-                --layer-name geolambda-python-dev --action lambda:GetLayerVersion \
+                --layer-name geolambda-python --action lambda:GetLayerVersion \
                 --statement-id public --version-number ${LVERSION} --principal '*'
             done
             # deploy Python Lambda layers
