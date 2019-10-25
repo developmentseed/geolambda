@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 
-## [v2.0.0] - 2019-10-25
+## [v2.0.0rc1] - 2019-10-25
 
 ### Added
 - Added OpenSSL, which is used to compile versions of Python 3.7+, it is not packaged in GeoLambda Layer
@@ -85,7 +85,7 @@ Package Versions
 - GDAL_VERSION=2.3.1
 
 [Unreleased]: https://github.com/sat-utils/sat-stac/compare/master...develop
-[v2.0.0]: https://github.com/developmentseed/geolambda/compare/1.2.0...2.0.0
+[v2.0.0]: https://github.com/developmentseed/geolambda/compare/1.2.0...2.0.0rc1
 [v1.2.0]: https://github.com/developmentseed/geolambda/compare/1.1.0...1.2.0
 [v1.1.0]: https://github.com/developmentseed/geolambda/compare/1.0.0...1.1.0
 [v1.0.0]: https://github.com/developmentseed/geolambda/tree/1.0.0
