@@ -37,9 +37,9 @@ The GeoLambda image does not have an entrypoint defined, so a command must be pr
 
 All of the GDAL CLI tools are installed so could be run on images in the current directory.
 
-### Lambda Layer
+### Lambda Layers
 
-If you just wish to use the publicly available Lambda layer you will need the ARN for the layer in the same region as your Lambda function. Currently, GeoLambda layers are available in `us-east-1`, `us-west-2`, and `eu-central-1`. If you want to use it in another region please file an issue or you can also create your own layer using this repository (see instructions below on 'Create a new version').
+If you just wish to use the publicly available Lambda layers you will need the ARN for the layer in the same region as your Lambda function. Currently, GeoLambda layers are available in `us-east-1`, `us-west-2`, and `eu-central-1`. If you want to use it in another region please file an issue or you can also create your own layer using this repository (see instructions below on 'Create a new version').
 
 #### v2.0.0
 
