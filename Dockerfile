@@ -13,10 +13,10 @@ RUN \
 
 # versions of packages
 ENV \
-    GDAL_VERSION=2.4.2 \
-    PROJ_VERSION=5.2.0 \
+    GDAL_VERSION=3.0.1 \
+    PROJ_VERSION=6.2.0 \
     GEOS_VERSION=3.8.0 \
-    GEOTIFF_VERSION=1.4.3 \
+    GEOTIFF_VERSION=1.5.1 \
     HDF4_VERSION=4.2.14 \
     HDF5_VERSION=1.10.5 \
     NETCDF_VERSION=4.7.1 \
@@ -27,7 +27,8 @@ ENV \
     PKGCONFIG_VERSION=0.29.2 \
     SZIP_VERSION=2.1.1 \
     WEBP_VERSION=1.0.3 \
-    ZSTD_VERSION=1.4.3
+    ZSTD_VERSION=1.4.3 \
+    OPENSSL_VERSION=1.0.2
 
 # Paths to things
 ENV \
@@ -36,7 +37,9 @@ ENV \
     PREFIX=/usr/local \
     GDAL_CONFIG=/usr/local/bin/gdal-config \
     LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64 \
-    GDAL_DATA=/usr/local/share/gdal
+    PKG_CONFIG_PATH=${PREFIX}/lib/pkgconfig:/usr/lib64/pkgconfig \
+    GDAL_DATA=${PREFIX}/share/gdal \
+    PROJ_LIB=${PREFIX}/share/proj
 
 # switch to a build directory
 WORKDIR /build
@@ -203,7 +206,6 @@ RUN \
 
 # Open SSL is needed for building Python so it's included here for ease
 RUN \
-    OPENSSL_VERSION=1.0.2; \
     mkdir openssl; \
     wget -qO- https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
         | tar xvz -C openssl --strip-components=1; cd openssl; \

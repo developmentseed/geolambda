@@ -6,6 +6,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+
+## [v2.0.0] - 2019-10-25
+
+Updated GDAL, PROJ, and Geotiff libraries.
+
+### Package versions
+- GDAL_VERSION=3.0.1
+- PROJ_VERSION=6.2.0
+- GEOS_VERSION=3.8.0
+- GEOTIFF_VERSION=1.5.1
+- HDF4_VERSION=4.2.14
+- HDF5_VERSION=1.10.5
+- NETCDF_VERSION=4.7.1
+- NGHTTP2_VERSION=1.39.2
+- OPENJPEG_VERSION=2.3.1
+- CURL_VERSION=7.66.0
+- LIBJPEG_TURBO_VERSION=2.0.3
+- PKGCONFIG_VERSION=0.29.2
+- SZIP_VERSION=2.1.1
+- WEBP_VERSION=1.0.3
+- ZSTD_VERSION=1.4.3
+- OPENSSL_VERSION=1.0.2
+
+
 ## [v1.2.0] - 2019-10-24
 
 ### Added
@@ -31,6 +55,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - SZIP_VERSION=2.1.1
 - WEBP_VERSION=1.0.3
 - ZSTD_VERSION=1.4.3
+
 
 ## [v1.1.0] - 2018-03-22
 
@@ -65,6 +90,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - WEBP_VERSION=1.0.1
 - ZSTD_VERSION=1.3.8
 
+
 ## [v1.0.0] - 2018-07-27
 
 #### Versions:
@@ -79,5 +105,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - GDAL_VERSION=2.3.1
 
 [Unreleased]: https://github.com/sat-utils/sat-stac/compare/master...develop
+[v2.0.0]: https://github.com/developmentseed/geolambda/compare/1.2.0...2.0.0
+[v1.2.0]: https://github.com/developmentseed/geolambda/compare/1.1.0...1.2.0
 [v1.1.0]: https://github.com/developmentseed/geolambda/compare/1.0.0...1.1.0
 [v1.0.0]: https://github.com/developmentseed/geolambda/tree/1.0.0
