@@ -17,47 +17,34 @@ While GeoLambda was initially intended for AWS Lambda it is also useful as a bas
 | 1.2.0     | 2.4.2 | Separate Python (3.7.4) image and Lambda Layer added |
 | 2.0.0		| 3.0.1 | libgeotiff 1.5.1, proj 6.2.0 |
 
-### Docker images
+#### Environment variables
 
-The Docker images used to create the Lambda layer are also published to Docker Hub, and thus are also suitable for general use as a base image for geospatial applications. 
+When using GeoLambda some environment variables need to be set. These are set in the Docker image, but if using the Lambda Layer they will need to be set:
 
-The developmentseed/geolambda image in Docker Hub is tagged by version.
+- GDAL_DATA=/opt/share/gdal
+- PROJ_LIB=/opt/share/proj   (only needed for GeoLambda 2.0.0+)
 
-	$ docker pull developmentseed/geolambda:<version>
+### Lambda Layers
 
-Or just include it in your own Dockerfile as the base image.
+If you just wish to use the publicly available Lambda layers you will need the ARN for the layer in the same region as your Lambda function. Currently, GeoLambda layers are available in `us-east-1`, `us-west-2`, and `eu-central-1`. If you want to use it in another region please file an issue or you can also create your own layer using this repository (see instructions below on 'Create a new version').
 
-```
-FROM developmentseed/geolambda:<version>
-```
-
-The GeoLambda image does not have an entrypoint defined, so a command must be provided when you run it. This example will mount the current directory to /work and run the container interactively.
-
-	$ docker run --rm -v $PWD:/home/geolambda -it developmentseed/geolambda:latest /bin/bash
-
-All of the GDAL CLI tools are installed so could be run on images in the current directory.
-
-### Lambda Layer
-
-If you just wish to use the publicly available Lambda layer you will need the ARN for the layer in the same region as your Lambda function. Currently, GeoLambda layers are available in `us-east-1`, `us-west-2`, and `eu-central-1`. If you want to use it in another region please file an issue or you can also create your own layer using this repository (see instructions below on 'Create a new version').
-
-#### v2.0.0rc1
+#### v2.0.0
 
 | Region | ARN |
 | ------ | --- |
-| us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda:3 |
-| us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda:3 |
-| eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda:3 |
+| us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda:4 |
+| us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda:4 |
+| eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda:4 |
 
-#### v2.0.0rc1-python
+#### v2.0.0-python
 
 See the [GeoLambda Python README](python/README.md). The Python Lambda Layer includes the libraries `numpy`, `rasterio`, `GDAL`, `pyproj`, and `shapely`.
 
 | Region | ARN |
 | ------ | --- |
-| us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda-python:2 |
-| us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda-python:2 |
-| eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda-python:2 |
+| us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda-python:3 |
+| us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda-python:3 |
+| eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda-python:3 |
 
 #### v1.2.0
 
@@ -84,6 +71,27 @@ See the [GeoLambda Python README](python/README.md). The Python Lambda Layer inc
 | us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda:1 |
 | us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda:1 |
 | eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda:1 |
+
+
+### Docker images
+
+The Docker images used to create the Lambda layer are also published to Docker Hub, and thus are also suitable for general use as a base image for geospatial applications. 
+
+The developmentseed/geolambda image in Docker Hub is tagged by version.
+
+	$ docker pull developmentseed/geolambda:<version>
+
+Or just include it in your own Dockerfile as the base image.
+
+```
+FROM developmentseed/geolambda:<version>
+```
+
+The GeoLambda image does not have an entrypoint defined, so a command must be provided when you run it. This example will mount the current directory to /work and run the container interactively.
+
+	$ docker run --rm -v $PWD:/home/geolambda -it developmentseed/geolambda:latest /bin/bash
+
+All of the GDAL CLI tools are installed so could be run on images in the current directory.
 
 
 ## Development
