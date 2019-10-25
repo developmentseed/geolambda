@@ -32,9 +32,9 @@ If you just wish to use the publicly available Lambda layers you will need the A
 
 | Region | ARN |
 | ------ | --- |
-| us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda:3 |
-| us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda:3 |
-| eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda:3 |
+| us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda:4 |
+| us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda:4 |
+| eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda:4 |
 
 #### v2.0.0-python
 
@@ -42,9 +42,9 @@ See the [GeoLambda Python README](python/README.md). The Python Lambda Layer inc
 
 | Region | ARN |
 | ------ | --- |
-| us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda-python:2 |
-| us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda-python:2 |
-| eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda-python:2 |
+| us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda-python:3 |
+| us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda-python:3 |
+| eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda-python:3 |
 
 #### v1.2.0
 
