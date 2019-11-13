@@ -1,4 +1,4 @@
-ARG VERSION=1.2.0
+ARG VERSION=2.0.0
 FROM developmentseed/geolambda:${VERSION}
 
 LABEL maintainer="Development Seed <info@developmentseed.org>"
