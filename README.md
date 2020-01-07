@@ -38,7 +38,7 @@ If you just wish to use the publicly available Lambda layers you will need the A
 
 #### v2.0.0-python
 
-See the [GeoLambda Python README](python/README.md). The Python Lambda Layer includes the libraries `numpy`, `rasterio`, `GDAL`, `pyproj`, and `shapely`.
+See the [GeoLambda Python README](python/README.md). The Python Lambda Layer includes the libraries `numpy`, `rasterio`, `GDAL`, `pyproj`, and `shapely`. This is an addition to the standard GeoLambda layer; if you wish to use GeoLambda-Python, both layers must be included.
 
 | Region | ARN |
 | ------ | --- |
@@ -56,7 +56,7 @@ See the [GeoLambda Python README](python/README.md). The Python Lambda Layer inc
 
 #### v1.2.0-python
 
-See the [GeoLambda Python README](python/README.md). The Python Lambda Layer includes the libraries `numpy`, `rasterio`, `GDAL`, `pyproj`, and `shapely`.
+See the [GeoLambda Python README](python/README.md). The Python Lambda Layer includes the libraries `numpy`, `rasterio`, `GDAL`, `pyproj`, and `shapely`. This is an addition to the standard GeoLambda layer; if you wish to use GeoLambda-Python, both layers must be included.
 
 | Region | ARN |
 | ------ | --- |
