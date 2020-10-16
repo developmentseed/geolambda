@@ -26,7 +26,7 @@ When using GeoLambda some environment variables need to be set. These are set in
 
 ### Lambda Layers
 
-If you just wish to use the publicly available Lambda layers you will need the ARN for the layer in the same region as your Lambda function. Currently, GeoLambda layers are available in `us-east-1`, `us-west-2`, and `eu-central-1`. If you want to use it in another region please file an issue or you can also create your own layer using this repository (see instructions below on 'Create a new version').
+If you just wish to use the publicly available Lambda layers you will need the ARN for the layer in the same region as your Lambda function. Currently, the latest GeoLambda layers are deployed in `us-east-1`, `us-west-2`, `eu-central-1`, `eu-west-2`, and `eu-north-1`. If you want to use it in another region please file an issue or you can also create your own layer using this repository (see instructions below on 'Create a new version').
 
 #### v2.0.0
 

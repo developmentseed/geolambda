@@ -50,7 +50,7 @@ jobs:
             cd ..
             # deploy public Lambda layers
             pip install awscli
-            for region in us-east-1 us-west-2 eu-central-1
+            for region in us-east-1 us-west-2 eu-central-1 eu-west-2 eu-north-1
             do
               LVERSION="$(aws lambda publish-layer-version --region ${region} \
                 --layer-name geolambda --license-info 'MIT' \
