@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+- README updates regarding versions
+
+### Changed
+- Keep symlinks when zipping, resulting in smaller deploy package
+
 
 ## [v2.0.0] - 2019-10-25
 
