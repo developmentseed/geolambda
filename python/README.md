@@ -39,7 +39,7 @@ This will create geolambda base layer (`lambda-deploy.zip`) file and `/geolambda
 $ docker run --rm -v $PWD:/home/geolambda -it developmentseed/geolambda:${VERSION} package.sh
 ```
 
-This will copy site-packages in /geolambda/python/lambda directory needed for development. Also, it will create a `lambda-layer-deploy.zip` file in the current directory. 
+This will copy site-packages in /geolambda/python/lambda directory needed for development. Also, it will create a `lambda-deploy.zip` file in the current directory. 
 Contents of the zip file are following AWS conventions: https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html#configuration-layers-path
 
 ```
@@ -68,7 +68,7 @@ Deploy the Lambda layer by using AWS CLI.
 $ aws lambda publish-layer-version \
 	--layer-name geolambda-python \
 	--description "Python bindings for GDAL" \
-	--zip-file fileb://lambda-layer-deploy.zip
+	--zip-file fileb://lambda-deploy.zip
 ```
 
 ### Pre-built images
