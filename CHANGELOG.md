@@ -6,11 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+###
+- Added deployments to `eu-west-2` and `eu-north-1`
+
 ### Fixed
 - README updates regarding versions
 
 ### Changed
 - Keep symlinks when zipping, resulting in smaller deploy package
+- Python Lambda Layers no longer need the base GeoLambda layer in addition to the python layer
 
 
 ## [v2.0.0] - 2019-10-25
