@@ -13,22 +13,22 @@ RUN \
 
 # versions of packages
 ENV \
-    GDAL_VERSION=3.0.1 \
-    PROJ_VERSION=6.2.0 \
-    GEOS_VERSION=3.8.0 \
+    GDAL_VERSION=3.1.3 \
+    PROJ_VERSION=7.1.1 \
+    GEOS_VERSION=3.8.1 \
     GEOTIFF_VERSION=1.5.1 \
-    HDF4_VERSION=4.2.14 \
-    HDF5_VERSION=1.10.5 \
-    NETCDF_VERSION=4.7.1 \
-    NGHTTP2_VERSION=1.39.2 \
+    HDF4_VERSION=4.2.15 \
+    HDF5_VERSION=1.10.7 \
+    NETCDF_VERSION=4.7.4 \
+    NGHTTP2_VERSION=1.41.0 \
     OPENJPEG_VERSION=2.3.1 \
-    CURL_VERSION=7.66.0 \
-    LIBJPEG_TURBO_VERSION=2.0.3 \
+    LIBJPEG_TURBO_VERSION=2.0.5 \
+    CURL_VERSION=7.73.0 \
     PKGCONFIG_VERSION=0.29.2 \
     SZIP_VERSION=2.1.1 \
-    WEBP_VERSION=1.0.3 \
-    ZSTD_VERSION=1.4.3 \
-    OPENSSL_VERSION=1.0.2
+    WEBP_VERSION=1.1.0 \
+    ZSTD_VERSION=1.4.5 \
+    OPENSSL_VERSION=1.1.1
 
 # Paths to things
 ENV \
@@ -53,13 +53,24 @@ RUN \
     make -j ${NPROC} install; \
     cd ../; rm -rf pkg-config
 
+# sqlite3 (required by proj)
+RUN \
+    mkdir sqlite3; \
+    wget -qO- https://www.sqlite.org/2020/sqlite-autoconf-3330000.tar.gz \
+        | tar xvz -C sqlite3 --strip-components=1; cd sqlite3; \
+    ./configure --prefix=$PREFIX; \
+    make; make install; \
+    cd ../; rm -rf sqlite3;
+
 # proj
 RUN \
     mkdir proj; \
-    wget -qO- http://download.osgeo.org/proj/proj-$PROJ_VERSION.tar.gz | tar xvz -C proj --strip-components=1; cd proj; \
-    ./configure --prefix=$PREFIX; \
+    wget -qO- http://download.osgeo.org/proj/proj-$PROJ_VERSION.tar.gz \
+        | tar xvz -C proj --strip-components=1; cd proj; \
+    SQLITE3_LIBS="=L$PREFIX/lib -lsqlite3" SQLITE3_INCLUDE_DIRS=$PREFIX/include/proj ./configure --prefix=$PREFIX; \
     make -j ${NPROC} install; \
     cd ..; rm -rf proj
+
 
 # nghttp2
 RUN \
