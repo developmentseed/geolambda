@@ -4,7 +4,7 @@ FROM developmentseed/geolambda:${VERSION}
 LABEL maintainer="Development Seed <info@developmentseed.org>"
 LABEL authors="Matthew Hanson  <matt.a.hanson@gmail.com>"
 
-ARG PYVERSION=3.7.4
+ARG PYVERSION=3.7.9
 
 # install Python
 ENV \
