@@ -19,4 +19,4 @@ rsync -ax $PREFIX/share/proj $DEPLOY_DIR/share/
 
 # zip up deploy package
 cd $DEPLOY_DIR
-zip -ruq ../lambda-deploy.zip ./
+zip --symlinks -ruq ../lambda-deploy.zip ./
