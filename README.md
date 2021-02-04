@@ -1,8 +1,8 @@
 # GeoLambda: geospatial AWS Lambda Layer
 
-The GeoLambda project provides public Docker images and AWS Lambda Layers containing common geospatial native libraries. GeoLambda contains the libraries PROJ.5, GEOS, GeoTIFF, HDF4/5, SZIP, NetCDF, OpenJPEG, WEBP, ZSTD, and GDAL. For some applications you may wish to minimize the size of the libraries by excluding unused libraries, or you may wish to add other libraries. In this case this repository can be used as a template to create your own Docker image or Lambda Layer following the instructions in this README.
+The GeoLambda project provides public Docker images and AWS Lambda Layers containing common geospatial native libraries. GeoLambda contains the libraries for GDAL, Proj, GEOS, GeoTIFF, HDF4/5, SZIP, NetCDF, OpenJPEG, WEBP, ZSTD, and others. For some applications you may wish to minimize the size of the libraries by excluding unused libraries, or you may wish to add other libraries. In this case this repository can be used as a template to create your own Docker image or Lambda Layer following the instructions in this README.
 
-This repository also contains additional images and layers for specific runtimes. Using them as a Layer assumes the use of the basee GeoLambda layer.
+This repository also contains additional images and layers for specific runtimes. Using them as a Layer assumes the use of the base GeoLambda layer.
 
 - [Python](python/README.md)
 
@@ -16,6 +16,7 @@ While GeoLambda was initially intended for AWS Lambda it is also useful as a bas
 | 1.1.0     | 2.4.1 | |
 | 1.2.0     | 2.4.2 | Separate Python (3.7.4) image and Lambda Layer added |
 | 2.0.0		| 3.0.1 | libgeotiff 1.5.1, proj 6.2.0 |
+| 2.1.0		| 3.2.1 | libgeotiff 1.6.0, proj 7.2.1, openjpeg 2.4.0, Python layer 3.7.9 |
 
 #### Environment variables
 
@@ -26,7 +27,30 @@ When using GeoLambda some environment variables need to be set. These are set in
 
 ### Lambda Layers
 
-If you just wish to use the publicly available Lambda layers you will need the ARN for the layer in the same region as your Lambda function. Currently, GeoLambda layers are available in `us-east-1`, `us-west-2`, and `eu-central-1`. If you want to use it in another region please file an issue or you can also create your own layer using this repository (see instructions below on 'Create a new version').
+If you just wish to use the publicly available Lambda layers you will need the ARN for the layer in the same region as your Lambda function. Currently, the latest GeoLambda layers are deployed in `us-east-1`, `us-west-2`, `eu-central-1`, `eu-west-2`, and `eu-north-1`. If you want to use it in another region please file an issue or you can also create your own layer using this repository (see instructions below on 'Create a new version').
+
+#### v2.1.0
+
+| Region | ARN |
+| ------ | --- |
+| us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda:4 |
+| us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda:4 |
+| eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda:4 |
+| eu-west-2 | |
+| eu-north-1 | | 
+
+#### v2.1.0-python
+
+See the [GeoLambda Python README](python/README.md). The Python Lambda Layer includes the libraries `numpy`, `rasterio`, `GDAL`, `pyproj`, and `shapely`, plus everything in the standard GeoLambda layer. Note this is a change from v2.0.0 where both Layers needed to be included in a Lambda.
+
+| Region | ARN |
+| ------ | --- |
+| us-east-1 | arn:aws:lambda:us-east-1:552188055668:layer:geolambda-python:3 |
+| us-west-2 | arn:aws:lambda:us-west-2:552188055668:layer:geolambda-python:3 |
+| eu-central-1 | arn:aws:lambda:eu-central-1:552188055668:layer:geolambda-python:3 |
+| eu-west-2 | |
+| eu-north-1 | | 
+
 
 #### v2.0.0
 

@@ -6,29 +6,29 @@ LABEL authors="Matthew Hanson  <matt.a.hanson@gmail.com>"
 # install system libraries
 RUN \
     yum makecache fast; \
-    yum install -y wget libpng-devel nasm; \
+    yum install -y wget libpng-devel nasm rsync; \
     yum install -y bash-completion --enablerepo=epel; \
     yum clean all; \
     yum autoremove
 
 # versions of packages
 ENV \
-    GDAL_VERSION=3.0.1 \
-    PROJ_VERSION=6.2.0 \
-    GEOS_VERSION=3.8.0 \
-    GEOTIFF_VERSION=1.5.1 \
-    HDF4_VERSION=4.2.14 \
-    HDF5_VERSION=1.10.5 \
-    NETCDF_VERSION=4.7.1 \
-    NGHTTP2_VERSION=1.39.2 \
-    OPENJPEG_VERSION=2.3.1 \
-    CURL_VERSION=7.66.0 \
-    LIBJPEG_TURBO_VERSION=2.0.3 \
+    GDAL_VERSION=3.2.1 \
+    PROJ_VERSION=7.2.1 \
+    GEOS_VERSION=3.8.1 \
+    GEOTIFF_VERSION=1.6.0 \
+    HDF4_VERSION=4.2.15 \
+    HDF5_VERSION=1.10.7 \
+    NETCDF_VERSION=4.7.4 \
+    NGHTTP2_VERSION=1.41.0 \
+    OPENJPEG_VERSION=2.4.0 \
+    LIBJPEG_TURBO_VERSION=2.0.6 \
+    CURL_VERSION=7.73.0 \
     PKGCONFIG_VERSION=0.29.2 \
     SZIP_VERSION=2.1.1 \
-    WEBP_VERSION=1.0.3 \
-    ZSTD_VERSION=1.4.3 \
-    OPENSSL_VERSION=1.0.2
+    WEBP_VERSION=1.1.0 \
+    ZSTD_VERSION=1.4.5 \
+    OPENSSL_VERSION=1.1.1
 
 # Paths to things
 ENV \
@@ -37,9 +37,9 @@ ENV \
     PREFIX=/usr/local \
     GDAL_CONFIG=/usr/local/bin/gdal-config \
     LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64 \
-    PKG_CONFIG_PATH=${PREFIX}/lib/pkgconfig:/usr/lib64/pkgconfig \
-    GDAL_DATA=${PREFIX}/share/gdal \
-    PROJ_LIB=${PREFIX}/share/proj
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/lib64/pkgconfig \
+    GDAL_DATA=/usr/local/share/gdal \
+    PROJ_LIB=/usr/local/share/proj
 
 # switch to a build directory
 WORKDIR /build
@@ -53,13 +53,24 @@ RUN \
     make -j ${NPROC} install; \
     cd ../; rm -rf pkg-config
 
+# sqlite3 (required by proj)
+RUN \
+    mkdir sqlite3; \
+    wget -qO- https://www.sqlite.org/2020/sqlite-autoconf-3330000.tar.gz \
+        | tar xvz -C sqlite3 --strip-components=1; cd sqlite3; \
+    ./configure --prefix=$PREFIX; \
+    make; make install; \
+    cd ../; rm -rf sqlite3;
+
 # proj
 RUN \
     mkdir proj; \
-    wget -qO- http://download.osgeo.org/proj/proj-$PROJ_VERSION.tar.gz | tar xvz -C proj --strip-components=1; cd proj; \
-    ./configure --prefix=$PREFIX; \
+    wget -qO- http://download.osgeo.org/proj/proj-$PROJ_VERSION.tar.gz \
+        | tar xvz -C proj --strip-components=1; cd proj; \
+    SQLITE3_LIBS="=L$PREFIX/lib -lsqlite3" SQLITE3_INCLUDE_DIRS=$PREFIX/include/proj ./configure --prefix=$PREFIX; \
     make -j ${NPROC} install; \
     cd ..; rm -rf proj
+
 
 # nghttp2
 RUN \
@@ -194,9 +205,11 @@ RUN \
         --with-zstd=${PREFIX} \
         --with-jpeg=${PREFIX} \
         --with-threads=yes \
+        --with-sqlite3=$PREFIX \
         --with-curl=${PREFIX}/bin/curl-config \
         --without-python \
         --without-libtool \
+        --disable-driver-elastic \
         --with-geos=$PREFIX/bin/geos-config \
         --with-hide-internal-symbols=yes \
         CFLAGS="-O2 -Os" CXXFLAGS="-O2 -Os" \

@@ -1,10 +1,10 @@
-ARG VERSION=1.2.0
+ARG VERSION=2.1.0
 FROM developmentseed/geolambda:${VERSION}
 
 LABEL maintainer="Development Seed <info@developmentseed.org>"
 LABEL authors="Matthew Hanson  <matt.a.hanson@gmail.com>"
 
-ARG PYVERSION=3.7.4
+ARG PYVERSION=3.7.9
 
 # install Python
 ENV \

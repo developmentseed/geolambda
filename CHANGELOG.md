@@ -6,6 +6,39 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- Added deployments to `eu-west-2` and `eu-north-1`
+
+### Fixed
+- README updates regarding versions
+
+### Changed
+- Keep symlinks when zipping, resulting in smaller deploy package
+- Python Lambda Layers no longer need the base GeoLambda layer in addition to the python layer
+- Manually compile sqlite3 used in Proj, GDAL, nghttp2
+- GDAL 3.2.1
+- Proj 7.2.1
+- GEOS 3.8.1
+- GeoTIFF 1.5.1
+- HDF4 4.2.15
+- HDF5 1.10.7
+- NetCDF 4.7.4
+- Nghttp2 1.41.0
+- OpenJPEG 2.4.0
+- libJPEG Turbo 2.4.0
+- Curl 7.73.0
+- Webp 1.1.0
+- Zstd 1.4.5
+- OpenSSL 1.1.1
+- In python layer:
+    - Python 3.7.4 -> 3.7.9
+    - rasterio 1.1.0 -> 1.2.0
+    - shapely 1.6.4.post2 -> 1.7.1
+    - pyproj 2.4.0 -> 3.0.0.post1
+
+### Removed
+- GDAL Elasticsearch driver
+
 
 ## [v2.0.0] - 2019-10-25
 
@@ -85,6 +118,7 @@ Package Versions
 - GDAL_VERSION=2.3.1
 
 [Unreleased]: https://github.com/sat-utils/sat-stac/compare/master...develop
+[v2.1.0]: https://github.com/developmentseed/geolambda/compare/2.0.0...2.1.0
 [v2.0.0]: https://github.com/developmentseed/geolambda/compare/1.2.0...2.0.0
 [v1.2.0]: https://github.com/developmentseed/geolambda/compare/1.1.0...1.2.0
 [v1.1.0]: https://github.com/developmentseed/geolambda/compare/1.0.0...1.1.0

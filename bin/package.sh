@@ -3,8 +3,6 @@
 # directory used for deployment
 export DEPLOY_DIR=lambda
 
-echo Creating deploy package
-
 # make deployment directory and add lambda handler
 mkdir -p $DEPLOY_DIR/lib
 
@@ -21,4 +19,4 @@ rsync -ax $PREFIX/share/proj $DEPLOY_DIR/share/
 
 # zip up deploy package
 cd $DEPLOY_DIR
-zip -ruq ../lambda-deploy.zip ./
+zip --symlinks -ruq ../lambda-deploy.zip ./
