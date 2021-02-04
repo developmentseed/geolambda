@@ -36,8 +36,6 @@ jobs:
             VERSION=$(cat VERSION)
             docker build . -t developmentseed/geolambda:${VERSION}
             docker run --rm -v ${PWD}:/home/geolambda --entrypoint package.sh -it developmentseed/geolambda:${VERSION}
-            git tag ${VERSION}
-            git push origin ${VERSION}
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker tag developmentseed/geolambda:${VERSION} developmentseed/geolambda:latest
             docker push developmentseed/geolambda:latest
