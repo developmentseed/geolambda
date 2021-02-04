@@ -37,9 +37,9 @@ ENV \
     PREFIX=/usr/local \
     GDAL_CONFIG=/usr/local/bin/gdal-config \
     LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64 \
-    PKG_CONFIG_PATH=${PREFIX}/lib/pkgconfig:/usr/lib64/pkgconfig \
-    GDAL_DATA=${PREFIX}/share/gdal \
-    PROJ_LIB=${PREFIX}/share/proj
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/lib64/pkgconfig \
+    GDAL_DATA=/usr/local/share/gdal \
+    PROJ_LIB=/usr/local/share/proj
 
 # switch to a build directory
 WORKDIR /build
