@@ -41,7 +41,7 @@ cp -r $DEPLOY_DIR ./python
 rm ./python/lambda_function.py
 
 # zip up deploy package
-zip -ruq lambda-deploy.zip ./python
+zip --symlinks -ruq lambda-deploy.zip ./python
 
 # cleanup
 rm -rf ./python
