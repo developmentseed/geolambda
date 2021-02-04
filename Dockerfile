@@ -205,9 +205,11 @@ RUN \
         --with-zstd=${PREFIX} \
         --with-jpeg=${PREFIX} \
         --with-threads=yes \
+        --with-sqlite3=$PREFIX \
         --with-curl=${PREFIX}/bin/curl-config \
         --without-python \
         --without-libtool \
+        --disable-driver-elastic \
         --with-geos=$PREFIX/bin/geos-config \
         --with-hide-internal-symbols=yes \
         CFLAGS="-O2 -Os" CXXFLAGS="-O2 -Os" \
