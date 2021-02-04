@@ -19,11 +19,11 @@ An example Lambda handler is located at [lambda/lambda_function.py](lambda/lambd
 Now, use the [Dockerfile](Dockerfile) can be used to create a new Docker image based on any version of GeoLambda with any version of Python by providing the versions as build arguments to `docker run`. This will install the specified version of Python along with any Python packages provided in [requirements.txt](requirements.txt).
 
 ```
-$ VERSION=2.0.0
-$ docker build . --build-arg VERSION=${VERSION} --build-arg PYVERSION=3.7.4 -t <myimage>:latest
+$ VERSION=2.1.0
+$ docker build . --build-arg VERSION=${VERSION} --build-arg PYVERSION=3.7.9 -t <myimage>:latest
 ```
 
-If not provided, `VERSION` (the version of GeoLambda to use) will default to `latest` and `PYVERSION` (Python version) will default to `3.7.4`.
+If not provided, `VERSION` (the version of GeoLambda to use) will default to `latest` and `PYVERSION` (Python version) will default to `3.7.9`.
 
 **4. Set up development environment and lambda layer zip file**
 
@@ -55,7 +55,8 @@ You can use the [LambCI Docker images](https://github.com/lambci/docker-lambda) 
 ```
 # current dir: geolambda/python
 
-$ docker run --rm -v ${PWD}/lambda:/var/task -v ${PWD}/../lambda:/opt lambci/lambda:python3.7 lambda_function.lambda_handler '{}'
+$ docker run -e GDAL_DATA=/opt/share/gdal -e PROJ_LIB=/opt/share/proj \
+	--rm -v ${PWD}/lambda:/var/task lambci/lambda:python3.7 lambda_function.lambda_handler '{}'
 ```
 
 The last argument is a JSON string that will be passed as the event payload to the handler function.
