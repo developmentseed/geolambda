@@ -13,7 +13,7 @@ ENV \
 
 RUN \
     curl https://pyenv.run | bash; \
-    CONFIGURE_OPTS="--with-openssl=${PREFIX}/openssl" \
+    CONFIGURE_OPTS="--with-openssl=${PREFIX}/openssl --enable-loadable-sqlite-extensions" \
         LD_RUN_PATH="${PREFIX}/openssl/lib" \
         pyenv install ${PYVERSION}; \
     pyenv global ${PYVERSION}; \
