@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 VERSION=$(cat VERSION)
 
 docker build . -t developmentseed/geolambda:${VERSION}
