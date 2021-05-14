@@ -225,6 +225,10 @@ RUN \
     ./config shared --prefix=${PREFIX}/openssl --openssldir=${PREFIX}/openssl; \
     make depend; make install; cd ..; rm -rf openssl
 
+# rsync is required by bin/package.sh, so install it here
+RUN \
+    yum install -y rsync
+
 
 # Copy shell scripts and config files over
 COPY bin/* /usr/local/bin/

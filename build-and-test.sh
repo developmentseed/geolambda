@@ -1,10 +1,11 @@
 #!/bin/bash
-
+set -e
 VERSION=$(cat VERSION)
 PYVERSION=$(cat python/PYVERSION)
 
+INTERACTIVE=$(if test -t 0; then echo -i; fi)
 docker build . -t developmentseed/geolambda:${VERSION}
-docker run --rm -v $PWD:/home/geolambda -it developmentseed/geolambda:${VERSION} package.sh
+docker run --rm -v $PWD:/home/geolambda ${INTERACTIVE} -t developmentseed/geolambda:${VERSION} package.sh
 
 cd python
 docker build . --build-arg VERSION=${VERSION} -t developmentseed/geolambda:${VERSION}-python
